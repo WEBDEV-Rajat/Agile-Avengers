@@ -19,5 +19,11 @@ app.use(express.static("public"));
 // for cookie 
 app.use(cookieParser());// read nd access cookie
 
+import userRouter from "./Routes/user.routes.js";
+import transactionRouter from "./Routes/transaction.routes.js"
+import categoryRouter from "./Routes/category.routes.js"
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/transaction",transactionRouter)
+app.use("/api/v1/category", categoryRouter);
 // routes
 export { app };
