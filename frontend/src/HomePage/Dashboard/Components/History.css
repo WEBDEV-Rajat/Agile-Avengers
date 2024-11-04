@@ -1,0 +1,11 @@
+.history {
+    width : 100%;
+    height : 500px;
+    margin-top : 20px;
+}
+
+.history h1{
+    margin-left : 10px;
+    margin-bottom : 20px;
+    color : green;
+}

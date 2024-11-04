@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family : Poppins;
+}
+
+.dashboard {
+    width : 100%;
+    position : absolute;
+}
+.Hellouser{
+    display : flex;
+    justify-content: space-between;
+    padding : 15px;
+    margin-top : 100px;
+    border-bottom: 1px solid rgba(159, 159, 159, 0.429);
+}
+.Hellouser h1{
+  color: green;
+}
+.button {
+    display : flex;
+    gap : 40px;
+}
+.button .income{
+  padding : 5px 25px;
+  border-radius : 5px;
+  color: white;
+  cursor: pointer;
+  background-color : rgb(15, 102, 79);
+  border: 1px solid rgb(5, 202, 5);
+  box-shadow: 5px 5px 5px rgb(84, 116, 84);
+}
+.button .income:hover{
+    background-color : rgb(42, 164, 129);
+    transition : 0.2s;  
+}
+.button .expense {
+    padding : 5px 25px;
+    border-radius : 5px;
+    color: white;
+    cursor: pointer;
+    background-color: rgb(75, 5, 25);
+    border: 1px solid rgb(247, 128, 128);
+    box-shadow: 5px 5px 5px rgb(112, 73, 73);
+}
+.button .expense:hover{
+    background-color: rgb(190, 18, 60);
+    transition : 0.2s;
+}
+
+.open-popup-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(66, 66, 66, 0.484); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .popup {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+  }
+  
+  .popup h2 {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .popup .s1{
+    color : green;
+  }
+  
+  .popup label {
+    display: block;
+    margin: 10px 0;
+    font-weight : 500;
+    font-family: sans-serif;
+  }
+  
+  .popup input {
+    padding: 8px;
+    width: 100%;
+    margin-top: 4px;
+    box-sizing: border-box;
+  }
+
+  .popup select{
+    margin-bottom: 30px;
+  }
+  
+  .popup button {
+    margin-top: 10px;
+    padding: 8px 12px;
+    display : inline-flex;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+
+  .button2{
+    margin-right : 60%;
+    background-color: rgba(119, 119, 119, 0.21);
+  }
+
+  .button1{
+    background-color: black;
+    color: white;
+  }
