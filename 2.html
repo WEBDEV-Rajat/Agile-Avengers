@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .container {
+        width: 100%;
+        height: 600px;
+        background: linear-gradient(to right, #adedf0 50%, #a5f1b0 50%);
+      }
+      .glass {
+        height: 100px;
+        width: 95%;
+        background-color: transparent;
+        backdrop-filter: blur(50px);
+        top: 0;
+        text-align: center;
+        border-radius: 8px;
+        box-shadow: 15px 15px 20px rgba(0, 0, 0, 0.2);
+        margin-left: 2.5%;
+        margin-top: 5px;
+        border-radius: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.07);
+      }
+      nav {
+        width: 100%;
+        position: fixed;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+      }
+      nav h1:first-child {
+        color: darkorange;
+        font-size: 30px;
+        margin-top: 25px;
+      }
+      h1 {
+        cursor: pointer;
+        margin-top: 30px;
+      }
+      button {
+        margin-top: 25px;
+        padding: 12px;
+        color: white;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+      }
+      .sign-in {
+        background-color: #0d910d;
+      }
+      .get-started {
+        background-color: #1a67e3;
+      }
+      .hero {
+        margin-top: 40px;
+      }
+      .hero .heading {
+        font-size: 30px;
+        display: flex;
+        flex-direction: column;
+        margin-left: 25px;
+      }
+      .hero h1 {
+        margin-top: 5px;
+      }
+
+      .hero h1:nth-of-type(2n) {
+        color: #26a038;
+      }
+      .hero h1:nth-of-type(2n-1) {
+        color: #0d5b19;
+      }
+      .hero p {
+        font-size: 20px;
+        color: #0d5b19;
+      }
+      .hero .one {
+        margin-top: 15px;
+      }
+      .two {
+        margin-top: 5px;
+      }
+
+      .hero button {
+        margin: 25px;
+        padding: 12px;
+        cursor: pointer;
+      }
+
+      .hero img {
+        float: right;
+        height: 404px;
+        aspect-ratio: 1.27;
+        transform: translate(-10%, -90%);
+      }
+
+      .Features h1{
+        margin-left : 40%;
+        text-align: center;
+        color :#0d5b19;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        position: absolute;
+        margin-top: 30px;
+        width: 100%;
+        height: 400px;
+        padding-bottom: 30px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+      }
+      .features div {
+        width: 60%;
+        padding: 20px;
+        margin-left: 17.5%;
+        background-size: contain;
+        border: 1px solid black;
+      }
+      .features p {
+        background-color: transparent;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(132, 132, 132, 0.2);
+        padding: 5px;
+        margin-top: 5%;
+      }
+
+      .features div:nth-child(1) {
+
+        background-image: url("./feature-img-1-dod.png");
+        margin-bottom: 10%;
+      }
+      .features div:nth-child(2) {
+        background-image: url("./feature-img-2-dod.png");
+        margin-bottom: 10%;
+      }
+      .features div:nth-child(3) {
+        background-image: url("./feature-img-3-dod.webp");
+        margin-bottom: 10%;
+      }
+      .features div:nth-child(4) {
+
+        background-image: url("./feature-img-4-dod.png");
+      }
+      .features div:nth-child(5) {
+        background-image: url("./feature-img-5-dod.webp");
+      }
+
+      .features div:nth-child(6) {
+        background-image: url("./feature-img-6-dod.webp");
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="glass">
+        <nav>
+          <h1>ExpenseGuru</h1>
+          <h1>Features</h1>
+          <h1>Testimonials</h1>
+          <h1>About Us</h1>
+          <h1>Contact Us</h1>
+          <button class="sign-in">Sign In</button>
+          <button class="get-started">Get Started</button>
+        </nav>
+      </div>
+      <div class="hero">
+        <div class="heading">
+          <h1>Empower Your</h1>
+          <h1>Finances</h1>
+          <h1>For A Brighter</h1>
+          <h1>Future</h1>
+          <p class="one">Effortlessly Manage Your Expenses</p>
+          <p class="two">Anytime, Anywhere</p>
+        </div>
+        <button class="get-started">Get Started</button>
+        <img src="img-1-dod.png" alt="" />
+      </div>
+    </div>
+    <div class="Features">
+      <h1>Features</h1>
+      <div class="features">
+        <div>
+          <p>
+            Record daily transactions seamlessly across multiple, customizable
+            categories, allowing for detailed tracking and organization tailored
+            to your unique financial needs.
+          </p>
+        </div>
+        <div>
+          <p>
+            Generate clear, easy-to-read expense reports with powerful
+            visualizations that provide a comprehensive view of your spending
+            patterns.
+          </p>
+        </div>
+        <div>
+          <p>
+            Receive timely notifications for upcoming recurring bills and
+            transactions, ensuring you're always informed before due dates.
+          </p>
+        </div>
+        <div>
+          <p>
+            Monitor your savings progress to achieve your financial goals with
+            confidence.
+          </p>
+        </div>
+        <div>
+          <p>
+            Enable detailed expense reports for seamless sharing and analysis by
+            exporting data in multiple formats
+          </p>
+        </div>
+        <div>
+          <p>
+            Integrates comparative analysis tools in your expense tracker app
+            which allows users to evaluate their current expenses against
+            previous months or years
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
