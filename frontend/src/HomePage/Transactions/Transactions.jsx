@@ -4,7 +4,7 @@ import "./Transactions.css";
 import TodoInput from './ToDoInput';
 import Todolist from './TodoList';
 const Transactions = () => {
-  const [listTodo,setListTodo]=useState([]);
+  const [listTodo, setListTodo]=useState([]);
   let addList = (inputText)=>{
     if(inputText!=='')
       setListTodo([...listTodo,inputText]);
