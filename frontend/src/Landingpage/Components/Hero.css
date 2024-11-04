@@ -1,0 +1,42 @@
+.hero {
+    margin-top: 40px;
+  }
+  .hero .heading {
+    font-size: 30px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 25px;
+  }
+  .hero h1 {
+    margin-top: 5px;
+  }
+
+  .hero h1:nth-of-type(2n) {
+    color: #26a038;
+  }
+  .hero h1:nth-of-type(2n-1) {
+    color: #0d5b19;
+  }
+  .hero p {
+    font-size: 20px;
+    color: #0d5b19;
+  }
+  .hero .one {
+    margin-top: 15px;
+  }
+  .two {
+    margin-top: 5px;
+  }
+
+  .hero button {
+    margin: 25px;
+    padding: 12px;
+    cursor: pointer;
+  }
+
+  .hero img {
+    float: right;
+    height: 404px;
+    aspect-ratio: 1.27;
+    transform: translate(-10%, -90%);
+  }
