@@ -1,14 +1,16 @@
 .hero {
-    margin-top: 40px;
+   margin-top : 100px;
+    padding-top: 40px;
+    background: linear-gradient(to right, #adedf0 50%, #a5f1b0 50%);
   }
   .hero .heading {
-    font-size: 30px;
     display: flex;
     flex-direction: column;
     margin-left: 25px;
   }
   .hero h1 {
     margin-top: 5px;
+    font-size : 45px;
   }
 
   .hero h1:nth-of-type(2n) {
@@ -32,6 +34,8 @@
     margin: 25px;
     padding: 12px;
     cursor: pointer;
+    color : white;
+    border-radius: 5px;
   }
 
   .hero img {
