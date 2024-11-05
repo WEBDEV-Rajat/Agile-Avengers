@@ -266,8 +266,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
   user.resetPasswordExpires = Date.now() + 60 * 1000 * 5;
 
   await user.save();
-  // http://localhost:5000/api/v1/users/reset-password/
-  const resetUrl = `${req.protocol}://${`http://localhost:3000/api/v1/users/reset-password/${resetToken}`;
+
+  const resetUrl = `${req.protocol}://${req.get("host")}/api/v1/users/reset-password/${resetToken}`;
 
   await sendEmail({
     email: user.email,
