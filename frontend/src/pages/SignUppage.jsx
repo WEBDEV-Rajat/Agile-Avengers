@@ -22,12 +22,19 @@ const SignUppage = () => {
 
   const handleRegister = (e) => {
     e.preventDefault();
+    console.log("name: " + name);
+    console.log("email: " + email);
+    console.log("password: " + password);
+    console.log("fullname:"+fullName);
+    
     
     const formData = new FormData();
     formData.append("name", name);
     formData.append("email", email);
     formData.append("fullName", fullName);
     formData.append("password", password);
+    console.log("dsjhvhjcd :",formData);
+    
     dispatch(register(formData));
   };
 

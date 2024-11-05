@@ -1,42 +1,35 @@
-import { User } from "../Models/user.model.js";
-import { ApiError } from "../Utils/ApiError.js"; // Assuming you have this utility class for error handling
+import { User } from "../Models/user.model.js"; 
 import asyncHandler from "../Utils/asyncHandler.js";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../Utils/sendEmail.js";
 import { uploadOnCloudinary } from "../Utils/cloudinary.js";
+
 const options = {
   httpOnly: true,
   secure: true,
 };
+
 // Register a new user
 const registerUser = asyncHandler(async (req, res) => {
   const { email, fullName, password, name } = req.body;
 
   // Validate required fields
   if ([email, fullName, password, name].some((field) => !field?.trim())) {
-    throw new ApiError(400, "All fields are required");
+    return res.status(400).json({
+      success: false,
+      message: "All fields are required",
+    });
   }
 
   // Check if the user already exists
   const existingUser = await User.findOne({ email });
   if (existingUser) {
-    throw new ApiError(409, "User already exists with this email");
+    return res.status(400).json({
+      success: false,
+      message: "Email is already registered",
+    });
   }
-  let imagePath;
-  if (
-    req.files &&
-    Array.isArray(req.files.image) &&
-    req.files.image.length > 0
-  ) {
-    imagePath = req.files.image[0].path;
-  }
-
-  if (!imagePath) {
-    throw new ApiError(400, "Image not found");
-  }
-
-  const imageUrl = await uploadOnCloudinary(imagePath);
 
   // Create the user
   const newUser = await User.create({
@@ -44,7 +37,6 @@ const registerUser = asyncHandler(async (req, res) => {
     fullName,
     password,
     name,
-    image: imageUrl?.url || "",
   });
 
   // Generate tokens
@@ -57,7 +49,7 @@ const registerUser = asyncHandler(async (req, res) => {
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
     .json({
-      message: "registered successfully",
+      message: "Registered successfully",
       newUser,
     });
 });
@@ -68,13 +60,25 @@ const loginUser = asyncHandler(async (req, res) => {
 
   // Validate input
   if (!email || !password) {
-    throw new ApiError(400, "Email and password are required");
+    return res.status(400).json({
+      success: false,
+      message: "All fields are required",
+    });
   }
 
   // Find user by email
   const user = await User.findOne({ email });
-  if (!user || !(await user.isPasswordCorrect(password))) {
-    throw new ApiError(401, "Invalid email or password");
+  if (!user ) {
+    return res.status(401).json({
+      success: false,
+      message: "Email is not registered",
+    });
+  }
+  if (!(await user.isPasswordCorrect(password))) {
+    return res.status(401).json({
+      success: false,
+      message: "Incorrect password",
+    });
   }
 
   // Generate tokens
@@ -108,13 +112,19 @@ const changePassword = asyncHandler(async (req, res) => {
 
   // Validate input
   if (!oldPassword || !newPassword) {
-    throw new ApiError(400, "Old password and new password are required");
+    return res.status(400).json({
+      success: false,
+      message: "Old password and new password are required",
+    });
   }
 
   // Find user and check old password
   const user = await User.findById(userId);
   if (!user || !(await user.isPasswordCorrect(oldPassword))) {
-    throw new ApiError(401, "Old password is incorrect");
+    return res.status(401).json({
+      success: false,
+      message: "Old password is incorrect",
+    });
   }
 
   // Hash the new password and save it
@@ -126,31 +136,39 @@ const changePassword = asyncHandler(async (req, res) => {
 
 // Refresh Token
 const refreshToken = asyncHandler(async (req, res) => {
-  console.log("req.cookies:", req.cookies);
-
   const { refreshToken: token } = req.cookies; // Extract the refresh token from cookies
 
   if (!token) {
-    throw new ApiError(401, "Refresh token not provided");
+    return res.status(401).json({
+      success: false,
+      message: "Refresh token not provided",
+    });
   }
 
   // Verify the refresh token
   jwt.verify(token, process.env.JWT_REFRESH_SECRET, async (err, decoded) => {
     if (err) {
-      return res
-        .status(403)
-        .json({ error: "Invalid or expired refresh token" });
+      return res.status(403).json({
+        success: false,
+        message: "Invalid or expired refresh token",
+      });
     }
 
     // Find the user associated with the token
     const user = await User.findById(decoded.userId);
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
     }
 
     // Verify that the refresh token matches the one in the database
     if (user.refreshToken !== token) {
-      throw new ApiError(403, "Refresh token does not match");
+      return res.status(403).json({
+        success: false,
+        message: "Refresh token does not match",
+      });
     }
 
     // Generate a new access token
@@ -237,18 +255,19 @@ const forgotPassword = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    throw new ApiError(404, "This email is not registered");
+    return res.status(404).json({
+      success: false,
+      message: "This email is not registered",
+    });
   }
-  console.log("User found");
 
   const resetToken = crypto.randomBytes(20).toString("hex");
   user.resetPasswordToken = resetToken;
   user.resetPasswordExpires = Date.now() + 60 * 1000 * 5;
-  console.log("User reset token created");
 
   await user.save();
-
-  const resetUrl = `${req.protocol}://${req.get("host")}/api/v1/users/reset-password/${resetToken}`;
+  // http://localhost:5000/api/v1/users/reset-password/
+  const resetUrl = `${req.protocol}://${`http://localhost:3000/api/v1/users/reset-password/${resetToken}`;
 
   await sendEmail({
     email: user.email,
@@ -259,6 +278,22 @@ const forgotPassword = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Password reset link sent to email" });
 });
 
+const getUser = asyncHandler(async (req, res) => {
+  const userId = req.user._id; // Get the user ID from the request
+
+  // Find the user by ID and exclude sensitive information
+  const user = await User.findById(userId).select("-password -createdAt -updatedAt"); // Exclude password and timestamps
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+
+  res.status(200).json({ success: true, user });
+});
+
 const resetPassword = asyncHandler(async (req, res) => {
   const { password, confirmPassword } = req.body;
   const token = req.params.token;
@@ -266,39 +301,37 @@ const resetPassword = asyncHandler(async (req, res) => {
   if (password !== confirmPassword) {
     return res.status(400).json({
       success: false,
-      message: "Password and confirm password do not match"
+      message: "Password and confirm password do not match",
     });
   }
 
-  console.log("Token received:", token);
   const user = await User.findOne({
     resetPasswordToken: token,
-    resetPasswordExpires: { $gt: Date.now() },
+    resetPasswordExpires: { $gt: Date.now() }, // Check if the token is still valid
   });
 
   if (!user) {
-    throw new ApiError(400, "Invalid or expired token");
+    return res.status(404).json({
+      success: false,
+      message: "Invalid or expired reset token",
+    });
   }
 
   user.password = password;
-  user.resetPasswordToken = undefined;
-  user.resetPasswordExpires = undefined;
-
+  user.resetPasswordToken = undefined; // Clear the reset token
+  user.resetPasswordExpires = undefined; // Clear the expiration
   await user.save();
 
-  res.status(200).json({
-    success: true,
-    message: "Password reset successfully"
-  });
+  res.status(200).json({ message: "Password has been reset successfully" });
 });
-
 
 export {
   registerUser,
-  logoutUser,
   loginUser,
+  logoutUser,
   changePassword,
   refreshToken,
   forgotPassword,
+  getUser,
   resetPassword,
 };
