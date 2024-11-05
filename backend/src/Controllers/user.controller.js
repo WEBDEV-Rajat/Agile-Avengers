@@ -267,7 +267,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
   await user.save();
 
-  const resetUrl = `${req.protocol}://${req.get("host")}/api/v1/users/reset-password/${resetToken}`;
+  const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
+
 
   await sendEmail({
     email: user.email,
@@ -295,15 +296,8 @@ const getUser = asyncHandler(async (req, res) => {
 });
 
 const resetPassword = asyncHandler(async (req, res) => {
-  const { password, confirmPassword } = req.body;
+  const { password } = req.body;
   const token = req.params.token;
-
-  if (password !== confirmPassword) {
-    return res.status(400).json({
-      success: false,
-      message: "Password and confirm password do not match",
-    });
-  }
 
   const user = await User.findOne({
     resetPasswordToken: token,

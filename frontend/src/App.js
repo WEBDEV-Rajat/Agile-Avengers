@@ -30,7 +30,7 @@ function App() {
         <Route path="/contact-us" element={<ContactUs />} />
 
         <Route path="/*" element={<FilenotFound />} />
-        {/* <Route path="http://localhost:5000/api/v1/users/reset-password/:token" element={<ResetPasswordPage />} /> */}
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         
       </Routes>
       <ToastContainer position="top-right" theme="dark" />
