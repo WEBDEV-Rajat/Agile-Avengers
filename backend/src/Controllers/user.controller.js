@@ -1,18 +1,21 @@
-import { User } from "../Models/user.model.js"; 
+import { User } from "../Models/user.model.js";
 import asyncHandler from "../Utils/asyncHandler.js";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../Utils/sendEmail.js";
 import { uploadOnCloudinary } from "../Utils/cloudinary.js";
 
+
 const options = {
   httpOnly: true,
   secure: true,
 };
 
+
 // Register a new user
 const registerUser = asyncHandler(async (req, res) => {
   const { email, fullName, password, name } = req.body;
+
 
   // Validate required fields
   if ([email, fullName, password, name].some((field) => !field?.trim())) {
@@ -21,6 +24,7 @@ const registerUser = asyncHandler(async (req, res) => {
       message: "All fields are required",
     });
   }
+
 
   // Check if the user already exists
   const existingUser = await User.findOne({ email });
@@ -31,6 +35,7 @@ const registerUser = asyncHandler(async (req, res) => {
     });
   }
 
+
   // Create the user
   const newUser = await User.create({
     email,
@@ -39,9 +44,11 @@ const registerUser = asyncHandler(async (req, res) => {
     name,
   });
 
+
   // Generate tokens
   const accessToken = newUser.generateAccessToken();
   const refreshToken = newUser.generateRefreshToken();
+
 
   // Send response with tokens
   res
@@ -54,9 +61,11 @@ const registerUser = asyncHandler(async (req, res) => {
     });
 });
 
+
 // User login
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+
 
   // Validate input
   if (!email || !password) {
@@ -65,6 +74,7 @@ const loginUser = asyncHandler(async (req, res) => {
       message: "All fields are required",
     });
   }
+
 
   // Find user by email
   const user = await User.findOne({ email });
@@ -81,9 +91,11 @@ const loginUser = asyncHandler(async (req, res) => {
     });
   }
 
+
   // Generate tokens
   const accessToken = user.generateAccessToken();
   const refreshToken = user.generateRefreshToken();
+
 
   // Send response with tokens
   res
@@ -96,6 +108,7 @@ const loginUser = asyncHandler(async (req, res) => {
     });
 });
 
+
 // Logout user
 const logoutUser = asyncHandler(async (req, res) => {
   res
@@ -105,10 +118,12 @@ const logoutUser = asyncHandler(async (req, res) => {
     .json({ message: "Logout successful" });
 });
 
+
 // Change password
 const changePassword = asyncHandler(async (req, res) => {
   const { oldPassword, newPassword } = req.body;
   const userId = req.user._id; // Assuming the user is authenticated and user ID is in the request
+
 
   // Validate input
   if (!oldPassword || !newPassword) {
@@ -117,6 +132,7 @@ const changePassword = asyncHandler(async (req, res) => {
       message: "Old password and new password are required",
     });
   }
+
 
   // Find user and check old password
   const user = await User.findById(userId);
@@ -127,16 +143,20 @@ const changePassword = asyncHandler(async (req, res) => {
     });
   }
 
+
   // Hash the new password and save it
   user.password = newPassword;
   await user.save();
 
+
   res.status(200).json({ message: "Password changed successfully" });
 });
+
 
 // Refresh Token
 const refreshToken = asyncHandler(async (req, res) => {
   const { refreshToken: token } = req.cookies; // Extract the refresh token from cookies
+
 
   if (!token) {
     return res.status(401).json({
@@ -144,6 +164,7 @@ const refreshToken = asyncHandler(async (req, res) => {
       message: "Refresh token not provided",
     });
   }
+
 
   // Verify the refresh token
   jwt.verify(token, process.env.JWT_REFRESH_SECRET, async (err, decoded) => {
@@ -154,6 +175,7 @@ const refreshToken = asyncHandler(async (req, res) => {
       });
     }
 
+
     // Find the user associated with the token
     const user = await User.findById(decoded.userId);
     if (!user) {
@@ -163,6 +185,7 @@ const refreshToken = asyncHandler(async (req, res) => {
       });
     }
 
+
     // Verify that the refresh token matches the one in the database
     if (user.refreshToken !== token) {
       return res.status(403).json({
@@ -171,8 +194,10 @@ const refreshToken = asyncHandler(async (req, res) => {
       });
     }
 
+
     // Generate a new access token
     const newAccessToken = user.generateAccessToken();
+
 
     // Send the new access token as a cookie
     res.status(200).cookie("accessToken", newAccessToken, options).json({
@@ -181,6 +206,7 @@ const refreshToken = asyncHandler(async (req, res) => {
     });
   });
 });
+
 
 const generateResetEmail = (resetUrl) => `
   <!DOCTYPE html>
@@ -250,9 +276,11 @@ const generateResetEmail = (resetUrl) => `
   </html>
 `;
 
+
 const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
+
 
   if (!user) {
     return res.status(404).json({
@@ -261,13 +289,19 @@ const forgotPassword = asyncHandler(async (req, res) => {
     });
   }
 
+
   const resetToken = crypto.randomBytes(20).toString("hex");
   user.resetPasswordToken = resetToken;
   user.resetPasswordExpires = Date.now() + 60 * 1000 * 5;
 
+
   await user.save();
 
-  const resetUrl = `${req.protocol}://${req.get("host")}/api/v1/users/reset-password/${resetToken}`;
+
+  const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
+
+
+
 
   await sendEmail({
     email: user.email,
@@ -275,14 +309,18 @@ const forgotPassword = asyncHandler(async (req, res) => {
     htmlContent: generateResetEmail(resetUrl),
   });
 
+
   res.status(200).json({ message: "Password reset link sent to email" });
 });
+
 
 const getUser = asyncHandler(async (req, res) => {
   const userId = req.user._id; // Get the user ID from the request
 
+
   // Find the user by ID and exclude sensitive information
   const user = await User.findById(userId).select("-password -createdAt -updatedAt"); // Exclude password and timestamps
+
 
   if (!user) {
     return res.status(404).json({
@@ -291,24 +329,21 @@ const getUser = asyncHandler(async (req, res) => {
     });
   }
 
+
   res.status(200).json({ success: true, user });
 });
 
+
 const resetPassword = asyncHandler(async (req, res) => {
-  const { password, confirmPassword } = req.body;
+  const { password } = req.body;
   const token = req.params.token;
 
-  if (password !== confirmPassword) {
-    return res.status(400).json({
-      success: false,
-      message: "Password and confirm password do not match",
-    });
-  }
 
   const user = await User.findOne({
     resetPasswordToken: token,
     resetPasswordExpires: { $gt: Date.now() }, // Check if the token is still valid
   });
+
 
   if (!user) {
     return res.status(404).json({
@@ -317,13 +352,16 @@ const resetPassword = asyncHandler(async (req, res) => {
     });
   }
 
+
   user.password = password;
   user.resetPasswordToken = undefined; // Clear the reset token
   user.resetPasswordExpires = undefined; // Clear the expiration
   await user.save();
 
+
   res.status(200).json({ message: "Password has been reset successfully" });
 });
+
 
 export {
   registerUser,
@@ -335,3 +373,7 @@ export {
   getUser,
   resetPassword,
 };
+
+
+
+

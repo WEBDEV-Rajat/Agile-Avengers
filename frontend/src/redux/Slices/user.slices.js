@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -112,7 +113,7 @@ const userSlice = createSlice({
     },
     resetPasswordSuccess(state, action) {
       state.loading = false;
-      state.isAuthenticated = false; // Optionally keep this true if the user is authenticated
+      state.isAuthenticated = false;
       state.user = {};
       state.error = null;
       state.message = action.payload.message;
@@ -126,6 +127,7 @@ const userSlice = createSlice({
     },
   },
 });
+
 
 // Thunks for asynchronous actions
 export const register = (data) => async (dispatch) => {
@@ -146,6 +148,7 @@ export const register = (data) => async (dispatch) => {
   }
 };
 
+
 export const login = (data) => async (dispatch) => {
   dispatch(userSlice.actions.loginRequest());
   try {
@@ -163,6 +166,7 @@ export const login = (data) => async (dispatch) => {
     dispatch(userSlice.actions.loginFailed(error.response.data.message));
   }
 };
+
 
 export const forgotPassword = (data) => async (dispatch) => {
   dispatch(userSlice.actions.forgotPasswordRequest());
@@ -185,8 +189,8 @@ export const resetPassword = (data) => async (dispatch) => {
   dispatch(userSlice.actions.resetPasswordRequest());
   try {
     const response = await axios.post(
-      "http://localhost:3000/api/v1/users/reset-password/:token",
-      data,
+      `http://localhost:5000/api/v1/users/reset-password/${data.token}`,
+      { password: data.password },
       {
         withCredentials: true,
         headers: { "Content-Type": "application/json" },
@@ -198,6 +202,7 @@ export const resetPassword = (data) => async (dispatch) => {
     dispatch(userSlice.actions.resetPasswordFailed(error.response.data.message));
   }
 };
+
 
 export const getUser = () => async (dispatch) => {
   dispatch(userSlice.actions.fetchUserRequest());
@@ -216,6 +221,7 @@ export const getUser = () => async (dispatch) => {
   }
 };
 
+
 export const logout = () => async (dispatch) => {
   try {
     await axios.get(
@@ -231,8 +237,15 @@ export const logout = () => async (dispatch) => {
   }
 };
 
+
 export const clearAllUserErrors = () => (dispatch) => {
   dispatch(userSlice.actions.clearAllErrors());
 };
 
+
 export default userSlice.reducer;
+
+
+
+
+

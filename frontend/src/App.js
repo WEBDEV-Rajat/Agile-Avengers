@@ -28,7 +28,7 @@ function App() {
         <Route path="/about-us" element={<AboutUs />} />
 
         <Route path="/contact-us" element={<ContactUs />} />
-
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route path="/*" element={<FilenotFound />} />
         {/* <Route path="http://localhost:5000/api/v1/users/reset-password/:token" element={<ResetPasswordPage />} /> */}
         
