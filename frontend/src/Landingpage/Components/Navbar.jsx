@@ -15,7 +15,7 @@ const Navbar = () => {
     toast.success("Logged out successfully.");
   };
   return (
-    <div>
+    <div className="navbar">
       <div class="container">
         <div class="glass">
           <nav>

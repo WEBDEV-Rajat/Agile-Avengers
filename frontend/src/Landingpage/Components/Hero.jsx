@@ -1,5 +1,6 @@
 import React from 'react'
 import "./Hero.css"
+import img1 from "../Assets/img-1-dod.png"
 
 const Hero = () => {
   return (
@@ -13,7 +14,7 @@ const Hero = () => {
       <p class="two">Anytime, Anywhere</p>
     </div>
     <button class="get-started">Get Started</button>
-    <img src="img-1-dod.png" alt="" />
+    <img src={img1} alt="" />
   </div>
   )
 }
