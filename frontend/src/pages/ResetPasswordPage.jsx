@@ -8,7 +8,7 @@ export const ResetPasswordPage = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const dispatch = useDispatch();
-  const { token } = useParams(); // Get the token from the URL
+  const { token } = useParams(); 
   const { loading, message, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
@@ -20,15 +20,14 @@ export const ResetPasswordPage = () => {
       return;
     }
 
-    const formData = { password: newPassword, token };
-    dispatch(resetPassword(formData)); // Dispatch the reset password action
+    const formData = { password: newPassword, token }; // Include token in formData
+    dispatch(resetPassword(formData)); 
   };
 
-  // Display success or error messages as toasts and handle navigation
   useEffect(() => {
     if (loading) {
-      toast.success(message);
-      navigate("/login"); // Redirect to login after successful reset
+      toast.success("Password reset successfully");
+      navigate("/login"); 
     }
     if (error) {
       toast.error(error);
@@ -74,5 +73,3 @@ export const ResetPasswordPage = () => {
     </section>
   );
 };
-
-// export const ResetPasswordPage;

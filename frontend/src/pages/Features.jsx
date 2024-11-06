@@ -1,5 +1,8 @@
 import React from "react";
+<<<<<<< HEAD
 
+=======
+>>>>>>> d89e5f9ed0ec77a86550bd53283d074934e0cb55
 
 function Features() {
   return (
@@ -53,5 +56,9 @@ function Features() {
   );
 }
 
+<<<<<<< HEAD
 
 export default Features;
+=======
+export default Features;
+>>>>>>> d89e5f9ed0ec77a86550bd53283d074934e0cb55

@@ -1,5 +1,8 @@
 import React from 'react';
+<<<<<<< HEAD
 
+=======
+>>>>>>> d89e5f9ed0ec77a86550bd53283d074934e0cb55
 
 function Testimonials() {
   return (
@@ -26,7 +29,11 @@ function Testimonials() {
             </div>
           </div>
         </div>
+<<<<<<< HEAD
        
+=======
+        
+>>>>>>> d89e5f9ed0ec77a86550bd53283d074934e0cb55
         {/* Testimonial Card 2 */}
         <div className="bg-white shadow-lg rounded-lg p-6 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl hover:bg-indigo-50">
           <p className="text-gray-600 mb-4">
@@ -44,7 +51,11 @@ function Testimonials() {
             </div>
           </div>
         </div>
+<<<<<<< HEAD
        
+=======
+        
+>>>>>>> d89e5f9ed0ec77a86550bd53283d074934e0cb55
         {/* Testimonial Card 3 */}
         <div className="bg-white shadow-lg rounded-lg p-6 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl hover:bg-indigo-50">
           <p className="text-gray-600 mb-4">
@@ -67,9 +78,13 @@ function Testimonials() {
   );
 }
 
+<<<<<<< HEAD
 
 export default Testimonials;
 
 
 
 
+=======
+export default Testimonials;
+>>>>>>> d89e5f9ed0ec77a86550bd53283d074934e0cb55
