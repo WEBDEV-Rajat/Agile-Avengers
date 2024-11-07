@@ -6,7 +6,7 @@ import Features from './Components/Features';
 const LandingPage = () => {
   return (
     <div>
-      <Navbar />
+      < Navbar />
       <Hero />
       <Features />
     </div>

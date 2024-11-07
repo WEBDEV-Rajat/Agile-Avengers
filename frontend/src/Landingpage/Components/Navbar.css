@@ -40,21 +40,11 @@
     font-size: 30px;
     margin-top: 16px;
   }
-  
-  nav h1 button {
-    cursor: pointer;
-    font-size: 15px;
-    /* margin-top: 25px; */
-
-  }
   h1 {
     cursor: pointer;
     margin-top: 30px;
     font-weight : 500;
   }
-<<<<<<< HEAD
-  
-=======
   h1:nth-of-type(6){
     margin-top: 23px;
     padding : 8px 12px;
@@ -69,10 +59,10 @@
     color : white;
     border-radius: 5px;
   }
->>>>>>> c1679e120ba9cc9ff2eaf0a7cb15a3d86cb8f772
   .sign-in {
     background-color: #0d910d;
   }
   .get-started {
     background-color: #1a67e3;
   }
+

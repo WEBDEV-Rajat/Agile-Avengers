@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ForgotPass from "./pages/ForgotPass";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage";
 import { ToastContainer } from "react-toastify";
+import Dashboard from "./HomePage/Dashboard/Dashboard";
 function App() {
   return (
     <div className="App">
@@ -28,7 +29,7 @@ function App() {
         <Route path="/about-us" element={<AboutUs />} />
 
         <Route path="/contact-us" element={<ContactUs />} />
-
+        {/* <Route path="/dashboard" element=  {<Dashboard/>}/> */}
         <Route path="/*" element={<FilenotFound />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         

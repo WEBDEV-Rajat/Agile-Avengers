@@ -15,20 +15,14 @@ const Navbar = () => {
   };
 
   return (
-<<<<<<< HEAD
-    <div>
+    <div className="navbar">
       <div className="container">
         <div className="glass">
-=======
-    <div className="navbar">
-      <div class="container">
-        <div class="glass">
->>>>>>> c1679e120ba9cc9ff2eaf0a7cb15a3d86cb8f772
           <nav>
-            <h1>
-              <Link to="/">ExpenseGuru</Link>
+            <h1 >
+              <Link  to="/">ExpenseGuru</Link>
             </h1>
-            <h1>
+            <h1 >
               <Link to="/features">Features</Link>
             </h1>
             <h1>
