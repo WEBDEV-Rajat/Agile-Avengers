@@ -297,16 +297,11 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
   await user.save();
 
-<<<<<<< HEAD
 
   const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
 
 
 
-=======
-  const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
-
->>>>>>> d89e5f9ed0ec77a86550bd53283d074934e0cb55
 
   await sendEmail({
     email: user.email,
@@ -343,10 +338,6 @@ const resetPassword = asyncHandler(async (req, res) => {
   const { password } = req.body;
   const token = req.params.token;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> d89e5f9ed0ec77a86550bd53283d074934e0cb55
   const user = await User.findOne({
     resetPasswordToken: token,
     resetPasswordExpires: { $gt: Date.now() }, // Check if the token is still valid

@@ -24,9 +24,7 @@ function App() {
         <Route path="/testimonials" element={<Testimonials />} />
         <Route path="/forgot-password" element={<ForgotPass />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
-
         <Route path="/about-us" element={<AboutUs />} />
-
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route path="/*" element={<FilenotFound />} />

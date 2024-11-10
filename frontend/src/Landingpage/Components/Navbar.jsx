@@ -15,15 +15,9 @@ const Navbar = () => {
   };
 
   return (
-<<<<<<< HEAD
     <div>
       <div className="container">
         <div className="glass">
-=======
-    <div className="navbar">
-      <div class="container">
-        <div class="glass">
->>>>>>> c1679e120ba9cc9ff2eaf0a7cb15a3d86cb8f772
           <nav>
             <h1>
               <Link to="/">ExpenseGuru</Link>
@@ -44,11 +38,11 @@ const Navbar = () => {
               {isAuthenticated ? (
                 <button onClick={handleLogout}>Logout</button>
               ) : (
-                <>
+                <div className="get-started">
                   <Link to="/login">Login</Link>
                   <span> / </span>
                   <Link to="/register">Get Started</Link>
-                </>
+                </div>
               )}
             </h1>
           </nav>
