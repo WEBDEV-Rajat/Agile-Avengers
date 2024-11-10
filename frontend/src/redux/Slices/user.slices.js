@@ -66,7 +66,7 @@ const userSlice = createSlice({
       state.isAuthenticated = false;
       state.user = {};
       state.error = null;
-      state.message = action.payload.message; // Update to include message
+      state.message = action.payload.message;
     },
     forgotPasswordFailed(state, action) {
       state.loading = false;
@@ -113,7 +113,7 @@ const userSlice = createSlice({
     },
     resetPasswordSuccess(state, action) {
       state.loading = false;
-      state.isAuthenticated = false; 
+      state.isAuthenticated = false;
       state.user = {};
       state.error = null;
       state.message = action.payload.message;
@@ -189,8 +189,8 @@ export const resetPassword = (data) => async (dispatch) => {
   dispatch(userSlice.actions.resetPasswordRequest());
   try {
     const response = await axios.post(
-      `http://localhost:5000/api/v1/users/reset-password/${data.token}`, 
-      { password: data.password }, 
+      `http://localhost:5000/api/v1/users/reset-password/${data.token}`,
+      { password: data.password },
       {
         withCredentials: true,
         headers: { "Content-Type": "application/json" },

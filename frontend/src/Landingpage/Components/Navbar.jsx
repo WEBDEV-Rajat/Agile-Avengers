@@ -15,7 +15,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar">
+    <div>
       <div className="container">
         <div className="glass">
           <nav>
@@ -38,11 +38,11 @@ const Navbar = () => {
               {isAuthenticated ? (
                 <button onClick={handleLogout}>Logout</button>
               ) : (
-                <>
+                <div className="get-started">
                   <Link to="/login">Login</Link>
                   <span> / </span>
                   <Link to="/register">Get Started</Link>
-                </>
+                </div>
               )}
             </h1>
           </nav>
