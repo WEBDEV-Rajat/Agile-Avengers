@@ -4,11 +4,13 @@ import { forgotPassword } from "../redux/Slices/user.slices";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
+
 function ForgotPass() {
   const [email, setEmail] = useState("");
   const dispatch = useDispatch();
   const { loading, message, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
+
 
   const handleForgotPassword = (e) => {
     e.preventDefault();
@@ -21,6 +23,7 @@ function ForgotPass() {
     }
   };
 
+
   // Display success or error messages as toasts and handle navigation
   useEffect(() => {
     if (message) {
@@ -31,6 +34,7 @@ function ForgotPass() {
       toast.error(error); // Display error messages
     }
   }, [message, error, navigate]); // Ensure navigate is included in the dependencies
+
 
   return (
     <section className="flex items-center justify-center h-screen bg-gray-100">
@@ -65,4 +69,10 @@ function ForgotPass() {
   );
 }
 
+
 export default ForgotPass;
+
+
+
+
+

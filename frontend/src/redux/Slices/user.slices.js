@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -127,6 +128,7 @@ const userSlice = createSlice({
   },
 });
 
+
 // Thunks for asynchronous actions
 export const register = (data) => async (dispatch) => {
   dispatch(userSlice.actions.registerRequest());
@@ -146,6 +148,7 @@ export const register = (data) => async (dispatch) => {
   }
 };
 
+
 export const login = (data) => async (dispatch) => {
   dispatch(userSlice.actions.loginRequest());
   try {
@@ -163,6 +166,7 @@ export const login = (data) => async (dispatch) => {
     dispatch(userSlice.actions.loginFailed(error.response.data.message));
   }
 };
+
 
 export const forgotPassword = (data) => async (dispatch) => {
   dispatch(userSlice.actions.forgotPasswordRequest());
@@ -199,6 +203,7 @@ export const resetPassword = (data) => async (dispatch) => {
   }
 };
 
+
 export const getUser = () => async (dispatch) => {
   dispatch(userSlice.actions.fetchUserRequest());
   try {
@@ -216,6 +221,7 @@ export const getUser = () => async (dispatch) => {
   }
 };
 
+
 export const logout = () => async (dispatch) => {
   try {
     await axios.get(
@@ -231,8 +237,15 @@ export const logout = () => async (dispatch) => {
   }
 };
 
+
 export const clearAllUserErrors = () => (dispatch) => {
   dispatch(userSlice.actions.clearAllErrors());
 };
 
+
 export default userSlice.reducer;
+
+
+
+
+
