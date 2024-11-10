@@ -7,7 +7,7 @@ const addTransaction = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const { amount, date, category, type, note } = req.body;
 
-  // Validate required fields
+
   if (!amount || !category || !type) {
     return res.status(400).json({
       success: false,
@@ -15,7 +15,7 @@ const addTransaction = asyncHandler(async (req, res) => {
     });
   }
 
-  // Validate type (income or expense)
+  
   if (!["income", "expense"].includes(type)) {
     return res.status(400).json({
       success: false,
@@ -23,7 +23,7 @@ const addTransaction = asyncHandler(async (req, res) => {
     });
   }
 
-  // Find the category by name and user ID
+ 
   const categoryData = await Category.findOne({ name: category, userId,type});
   if (!categoryData) {
     return res.status(400).json({
@@ -32,11 +32,11 @@ const addTransaction = asyncHandler(async (req, res) => {
     });
   }
 
-  // Create new transaction with the category's ObjectId
+  
   const newTransaction = await Transaction.create({
     amount,
     date,
-    category: categoryData._id, // Use ObjectId instead of name
+    category: categoryData._id, 
     type,
     note,
     userId,

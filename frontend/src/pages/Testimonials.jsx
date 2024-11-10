@@ -25,7 +25,7 @@ function Testimonials() {
             </div>
           </div>
         </div>
-       
+        
         {/* Testimonial Card 2 */}
         <div className="bg-white shadow-lg rounded-lg p-6 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl hover:bg-indigo-50">
           <p className="text-gray-600 mb-4">
@@ -43,7 +43,7 @@ function Testimonials() {
             </div>
           </div>
         </div>
-       
+        
         {/* Testimonial Card 3 */}
         <div className="bg-white shadow-lg rounded-lg p-6 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl hover:bg-indigo-50">
           <p className="text-gray-600 mb-4">
@@ -66,9 +66,4 @@ function Testimonials() {
   );
 }
 
-
 export default Testimonials;
-
-
-
-

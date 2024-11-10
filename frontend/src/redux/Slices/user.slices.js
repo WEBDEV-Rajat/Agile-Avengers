@@ -66,7 +66,7 @@ const userSlice = createSlice({
       state.isAuthenticated = false;
       state.user = {};
       state.error = null;
-      state.message = action.payload.message; // Update to include message
+      state.message = action.payload.message;
     },
     forgotPasswordFailed(state, action) {
       state.loading = false;

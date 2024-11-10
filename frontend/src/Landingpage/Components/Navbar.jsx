@@ -19,10 +19,10 @@ const Navbar = () => {
       <div className="container">
         <div className="glass">
           <nav>
-            <h1>
-              <Link to="/">ExpenseGuru</Link>
+            <h1 >
+              <Link  to="/">ExpenseGuru</Link>
             </h1>
-            <h1>
+            <h1 >
               <Link to="/features">Features</Link>
             </h1>
             <h1>

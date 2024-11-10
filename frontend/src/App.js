@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ForgotPass from "./pages/ForgotPass";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage";
 import { ToastContainer } from "react-toastify";
+import Dashboard from "./HomePage/Dashboard/Dashboard";
 function App() {
   return (
     <div className="App">

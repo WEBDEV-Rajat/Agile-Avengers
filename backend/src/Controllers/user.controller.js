@@ -12,12 +12,10 @@ const options = {
 };
 
 
-// Register a new user
 const registerUser = asyncHandler(async (req, res) => {
   const { email, fullName, password, name } = req.body;
 
 
-  // Validate required fields
   if ([email, fullName, password, name].some((field) => !field?.trim())) {
     return res.status(400).json({
       success: false,
@@ -26,7 +24,6 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
 
-  // Check if the user already exists
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     return res.status(400).json({
@@ -36,7 +33,6 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
 
-  // Create the user
   const newUser = await User.create({
     email,
     fullName,
@@ -45,12 +41,10 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
 
-  // Generate tokens
   const accessToken = newUser.generateAccessToken();
   const refreshToken = newUser.generateRefreshToken();
 
 
-  // Send response with tokens
   res
     .status(200)
     .cookie("accessToken", accessToken, options)
@@ -62,12 +56,12 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 
-// User login
+
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
 
-  // Validate input
+
   if (!email || !password) {
     return res.status(400).json({
       success: false,
@@ -76,7 +70,7 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 
 
-  // Find user by email
+ 
   const user = await User.findOne({ email });
   if (!user ) {
     return res.status(401).json({
@@ -92,12 +86,12 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 
 
-  // Generate tokens
+
   const accessToken = user.generateAccessToken();
   const refreshToken = user.generateRefreshToken();
 
 
-  // Send response with tokens
+
   res
     .status(200)
     .cookie("accessToken", accessToken, options)
@@ -109,7 +103,7 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 
-// Logout user
+
 const logoutUser = asyncHandler(async (req, res) => {
   res
     .status(200)
@@ -119,11 +113,10 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 
-// Change password
+
 const changePassword = asyncHandler(async (req, res) => {
   const { oldPassword, newPassword } = req.body;
   const userId = req.user._id; // Assuming the user is authenticated and user ID is in the request
-
 
   // Validate input
   if (!oldPassword || !newPassword) {
@@ -134,7 +127,6 @@ const changePassword = asyncHandler(async (req, res) => {
   }
 
 
-  // Find user and check old password
   const user = await User.findById(userId);
   if (!user || !(await user.isPasswordCorrect(oldPassword))) {
     return res.status(401).json({
@@ -144,7 +136,7 @@ const changePassword = asyncHandler(async (req, res) => {
   }
 
 
-  // Hash the new password and save it
+
   user.password = newPassword;
   await user.save();
 
@@ -153,7 +145,7 @@ const changePassword = asyncHandler(async (req, res) => {
 });
 
 
-// Refresh Token
+
 const refreshToken = asyncHandler(async (req, res) => {
   const { refreshToken: token } = req.cookies; // Extract the refresh token from cookies
 
@@ -297,10 +289,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
   await user.save();
 
-
   const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
-
-
 
 
   await sendEmail({
@@ -316,7 +305,6 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
 const getUser = asyncHandler(async (req, res) => {
   const userId = req.user._id; // Get the user ID from the request
-
 
   // Find the user by ID and exclude sensitive information
   const user = await User.findById(userId).select("-password -createdAt -updatedAt"); // Exclude password and timestamps
@@ -340,7 +328,7 @@ const resetPassword = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({
     resetPasswordToken: token,
-    resetPasswordExpires: { $gt: Date.now() }, // Check if the token is still valid
+    resetPasswordExpires: { $gt: Date.now() }, 
   });
 
 
@@ -353,8 +341,8 @@ const resetPassword = asyncHandler(async (req, res) => {
 
 
   user.password = password;
-  user.resetPasswordToken = undefined; // Clear the reset token
-  user.resetPasswordExpires = undefined; // Clear the expiration
+  user.resetPasswordToken = undefined; 
+  user.resetPasswordExpires = undefined;
   await user.save();
 
 
