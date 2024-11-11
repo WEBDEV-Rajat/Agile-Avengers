@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const BudgetSchema = new mongoose.Schema({
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -24,5 +26,5 @@ const BudgetSchema = new mongoose.Schema({
     },
   });
   
-  module.exports = mongoose.model('Budget', BudgetSchema);
+  export const Budget = mongoose.model('Budget', BudgetSchema);
   

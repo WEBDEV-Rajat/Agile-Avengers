@@ -10,7 +10,7 @@ const CategorySchema = new mongoose.Schema({
       required: true,
     },
     icon: {
-      type: String, // e.g., an icon name or URL
+      type: String, 
     },
     type: {
       type: String,

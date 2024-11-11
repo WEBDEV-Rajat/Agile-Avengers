@@ -33,7 +33,7 @@ function App() {
         <Route path="/transactions" element={<Transactions />} />
         <Route path="/manage" element={<Manage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-        
+        <Route path="/dashboard" element = {<Dashboard/>}/>
       </Routes>
       <ToastContainer position="top-right" theme="dark" />
     </div>
