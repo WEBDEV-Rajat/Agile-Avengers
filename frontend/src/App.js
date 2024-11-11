@@ -30,7 +30,7 @@ function App() {
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route path="/*" element={<FilenotFound />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-        
+        <Route path="/dashboard" element = {<Dashboard/>}/>
       </Routes>
       <ToastContainer position="top-right" theme="dark" />
     </div>

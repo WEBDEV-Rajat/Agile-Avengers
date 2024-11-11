@@ -22,8 +22,9 @@ app.use(cookieParser());// read nd access cookie
 import userRouter from "./Routes/user.routes.js";
 import transactionRouter from "./Routes/transaction.routes.js"
 import categoryRouter from "./Routes/category.routes.js"
+import budgetRouter from "./Routes/budget.routes.js"
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/transaction",transactionRouter)
 app.use("/api/v1/category", categoryRouter);
-// routes
+app.use("/api/v1/budget", budgetRouter);
 export { app };
