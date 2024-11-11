@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 const SavingsGoalSchema = new mongoose.Schema({
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -25,5 +26,5 @@ const SavingsGoalSchema = new mongoose.Schema({
     },
   });
   
-  module.exports = mongoose.model('SavingsGoal', SavingsGoalSchema);
+  export const SavingsGoal = mongoose.model('SavingsGoal', SavingsGoalSchema);
   
