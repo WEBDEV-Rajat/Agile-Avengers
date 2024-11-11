@@ -7,7 +7,7 @@ export const sendEmail = async ({ email, subject, htmlContent }) => {
     const transporter = nodeMailer.createTransport({
       host: process.env.SMTP_HOST,
       service: process.env.SMTP_SERVICE,
-      port: Number(process.env.SMTP_PORT), // Ensure port is a number
+      port: Number(process.env.SMTP_PORT), 
       auth: {
         user: process.env.SMTP_MAIL,
         pass: process.env.SMTP_PASSWORD,
@@ -29,6 +29,6 @@ export const sendEmail = async ({ email, subject, htmlContent }) => {
     console.log("Mail sent successfully");
   } catch (error) {
     console.error("Couldn't send mail:", error);
-    // If used in an Express app, consider returning an error response.
+    
   }
 };
