@@ -41,7 +41,8 @@
 
   .hero img {
     float: right;
-    height: 404px;
-    aspect-ratio: 1.27;
-    transform: translate(-10%, -90%);
+    height : 400px;
+    width: 380px;
+    transform: translate(10%, -90%);
+    margin-right : 10%;
   }

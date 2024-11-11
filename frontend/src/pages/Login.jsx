@@ -34,7 +34,7 @@ const Login = () => {
     }
     if (isAuthenticated) {
       toast.success("Logged in successfully");
-      navigateTo("/");
+      navigateTo("/dashboard");
     }
   }, [dispatch, error, isAuthenticated, navigateTo]);
 

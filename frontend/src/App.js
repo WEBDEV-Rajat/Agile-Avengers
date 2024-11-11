@@ -7,11 +7,12 @@ import Login from "./pages/Login";
 import Features from "./pages/Features";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
-import FilenotFound from "./pages/FilenotFound";
 import Testimonials from "./pages/Testimonials";
 import "react-toastify/dist/ReactToastify.css";
 import ForgotPass from "./pages/ForgotPass";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage";
+import Transactions from "./HomePage/Transactions/Transactions"
+import Manage from "./HomePage/Manage/Manage"
 import { ToastContainer } from "react-toastify";
 import Dashboard from "./HomePage/Dashboard/Dashboard";
 function App() {
@@ -28,7 +29,9 @@ function App() {
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-        <Route path="/*" element={<FilenotFound />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/transactions" element={<Transactions />} />
+        <Route path="/manage" element={<Manage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         
       </Routes>

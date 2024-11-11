@@ -7,6 +7,7 @@
 .overview h1{
     margin-left : 10px;
     margin-bottom : 20px;
+    font-size: 30px;
     color : green;
 }
 
@@ -22,14 +23,16 @@
     border-radius: 10px;
     box-shadow: 5px 5px 5px rgba(188, 188, 188, 0.591);
 }
- p{
+p{
   margin-top: 20px ;
   margin-left : 10px;
   color : rgba(48, 47, 47, 0.82);
   font-weight : 500;
 }
-h2{
-    margin-left : 10px;  
+.Amount h2{
+    margin-left : 10px;
+    font-size : 25px;
+    font-weight: 500;  
 }
 .Expense{
     border: 1px solid rgba(159, 159, 159, 0.429);

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Navbar from '../Navbar';
+import Navigationbar from '../Navigationbar';
 import "./Dashboard.css"
 import Overview from "./Components/Overview";
 import History from './Components/History';
@@ -16,10 +16,10 @@ const Dashboard = () => {
 
   return (
     <div className='dashboard'>
-      <Navbar/>
+      <Navigationbar/>
       <div className='Hellouser'>
       <h1 className='hello'>Hello, A!</h1>
-      <div className='button'>
+      <div className='buttons'>
       <button className='income' onClick={openIncomePopup}>New Income</button>
       {isIncomeOpen && (
         <div className="popup-overlay" onClick={closeIncomePopup}>
