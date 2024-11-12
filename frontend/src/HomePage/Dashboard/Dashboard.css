@@ -78,7 +78,6 @@
     max-width: 400px;
     width: 100%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    z-index: 1001;
   }
   
   .popup h2 {
@@ -134,3 +133,24 @@
     background-color: black;
     color: white;
   }
+
+  .popup-overlay2{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(66, 66, 66, 0.484); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+  }
+  .create-category-btn{
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+    font-size: 12px;
+    margin-left : 10px;
+  }  
+

@@ -24,7 +24,7 @@ const BudgetSchema = new mongoose.Schema({
       type: Date,
       default: Date.now,
     },
-  });
+  }); 
   
   export const Budget = mongoose.model('Budget', BudgetSchema);
   

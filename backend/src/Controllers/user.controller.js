@@ -304,7 +304,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
 
 const getUser = asyncHandler(async (req, res) => {
-  const userId = req.user._id; // Get the user ID from the request
+  const userId = req.user._id; 
 
   // Find the user by ID and exclude sensitive information
   const user = await User.findById(userId).select("-password -createdAt -updatedAt"); // Exclude password and timestamps
