@@ -42,7 +42,22 @@ const deletecategory = asyncHandler(async (req, res) => {
     category, "Category deleted successfully"
   ));
 });
+const getAllincomeCategory = asyncHandler(async (req,res) => {
+  const userId = req.user._id;
+  const type = "income"
+  const data = await Category.find({userId,type})
+  return res.status(200).json(
+    new ApiResponse(200, data, "Category fetched successfully")
+  )
+})
+const getAllexpenseCategory = asyncHandler(async (req,res) => {
+  const userId = req.user._id;
+  const type = "expense"
+  const data = await Category.find({userId,type})
+  return res.status(200).json(
+    new ApiResponse(200, data, "Category fetched successfully")
+  )
+})
 
-// we can add edit categories
 
-export { addCategory,deletecategory };
+export { addCategory,deletecategory ,getAllincomeCategory,getAllexpenseCategory}

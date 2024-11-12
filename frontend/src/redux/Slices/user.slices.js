@@ -10,6 +10,7 @@ const userSlice = createSlice({
     user: {},
     error: null,
     message: null,
+    // token
   },
   reducers: {
     registerRequest(state) {
@@ -22,7 +23,7 @@ const userSlice = createSlice({
     registerSuccess(state, action) {
       state.loading = false;
       state.isAuthenticated = true;
-      state.user = action.payload.user;
+      state.user = action.payload.data;
       state.error = null;
       state.message = action.payload.message;
     },
@@ -43,7 +44,7 @@ const userSlice = createSlice({
     loginSuccess(state, action) {
       state.loading = false;
       state.isAuthenticated = true;
-      state.user = action.payload.user;
+      state.user = action.payload.data;
       state.error = null;
       state.message = action.payload.message;
     },
@@ -120,7 +121,7 @@ const userSlice = createSlice({
     },
     resetPasswordFailed(state, action) {
       state.loading = false;
-      state.isAuthenticated = false; // Optionally keep this true if the user is authenticated
+      state.isAuthenticated = false; 
       state.user = {};
       state.error = action.payload;
       state.message = null;
@@ -129,7 +130,6 @@ const userSlice = createSlice({
 });
 
 
-// Thunks for asynchronous actions
 export const register = (data) => async (dispatch) => {
   dispatch(userSlice.actions.registerRequest());
   try {
@@ -141,6 +141,9 @@ export const register = (data) => async (dispatch) => {
         headers: { "Content-Type": "application/json" },
       }
     );
+    
+
+    
     dispatch(userSlice.actions.registerSuccess(response.data));
     dispatch(userSlice.actions.clearAllErrors());
   } catch (error) {
@@ -160,6 +163,9 @@ export const login = (data) => async (dispatch) => {
         headers: { "Content-Type": "application/json" },
       }
     );
+    // console.log("hjdsfuhsanmvhjdcds",response);
+    
+    // console.log("hjdsfuhcds",response.data);
     dispatch(userSlice.actions.loginSuccess(response.data));
     dispatch(userSlice.actions.clearAllErrors());
   } catch (error) {
