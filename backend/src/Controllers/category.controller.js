@@ -50,6 +50,7 @@ const getAllincomeCategory = asyncHandler(async (req,res) => {
     new ApiResponse(200, data, "Category fetched successfully")
   )
 })
+
 const getAllexpenseCategory = asyncHandler(async (req,res) => {
   const userId = req.user._id;
   const type = "expense"

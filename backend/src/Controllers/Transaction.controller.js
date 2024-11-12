@@ -192,13 +192,19 @@ const getallTransactionsofaCategory = asyncHandler(async (req, res) => {
 const transactionDetails = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const { id } = req.params;
-  const transaction = await Transaction.findOne({ userId, _id: id });
+
+  const transaction = await Transaction.findOne({ userId, _id: id }).populate(
+    "category",
+    "name icon"
+  );
+
   if (!transaction) {
     return res.status(404).json({
       success: false,
       message: "Transaction not found",
     });
   }
+
   return res
     .status(200)
     .json(
@@ -210,6 +216,157 @@ const transactionDetails = asyncHandler(async (req, res) => {
     );
 });
 
+const totalTransaction = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  const transactions = await Transaction.find({ userId });
+
+  let totalIncome = 0;
+  let totalExpense = 0;
+
+  transactions.forEach((transaction) => {
+    if (transaction.type === "income") {
+      totalIncome += transaction.amount;
+    } else if (transaction.type === "expense") {
+      totalExpense += transaction.amount;
+    }
+  });
+
+  const difference = totalIncome - totalExpense;
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { totalIncome, totalExpense, difference },
+        "details fetched successfully"
+      )
+    );
+});
+
+const getFilteredTransactions = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const { type, category } = req.body; // Change req.query to req.body
+
+  if (!userId) {
+    return res
+      .status(400)
+      .json(new ApiResponse(400, null, "User ID is required"));
+  }
+
+  let filter = { userId };
+
+  if (type !== "all") {
+    filter.type = type;
+  }
+
+  if (category !== "all") {
+    const trimmedCategory = category.trim();
+    const cat = await Category.findOne({ userId, name: trimmedCategory });
+
+    if (!cat) {
+      return res
+        .status(404)
+        .json(
+          new ApiResponse(404, null, `Category '${trimmedCategory}' not found`)
+        );
+    }
+    filter.category = cat._id;
+  }
+
+  const transactions = await Transaction.find(filter)
+    .sort({ date: -1 })
+    .populate("category", "name icon");
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, transactions, "Transactions retrieved successfully")
+    );
+});
+
+const getincomePercentage = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  const transactions = await Transaction.find({
+    userId,
+    type: "income",
+  }).populate("category", "name");
+
+  const totalIncome = transactions.reduce(
+    (total, transaction) => total + transaction.amount,
+    0
+  );
+
+  const categoryTotals = transactions.reduce((acc, transaction) => {
+    const categoryName = transaction.category?.name;
+    if (categoryName) {
+      if (acc[categoryName]) {
+        acc[categoryName] += transaction.amount;
+      } else {
+        acc[categoryName] = transaction.amount;
+      }
+    }
+    return acc;
+  }, {});
+
+  const categoryPercentages = Object.keys(categoryTotals).map(
+    (categoryName) => {
+      const categoryTotal = categoryTotals[categoryName];
+      const percentage = ((categoryTotal / totalIncome) * 100).toFixed(2);
+      return {
+        category: categoryName,
+        total: categoryTotal,
+        percentage: `${percentage}%`,
+      };
+    }
+  );
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(200, categoryPercentages, "Data fetched successfully")
+    );
+});
+const getExpensePercentage = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  const transactions = await Transaction.find({ userId, type: "expense" }).populate('category', 'name');
+
+  const totalExpense = transactions.reduce(
+    (total, transaction) => total + transaction.amount,
+    0
+  );
+
+  const categoryTotals = transactions.reduce((acc, transaction) => {
+    const categoryName = transaction.category?.name;
+    if (categoryName) {
+      if (acc[categoryName]) {
+        acc[categoryName] += transaction.amount;
+      } else {
+        acc[categoryName] = transaction.amount;
+      }
+    }
+    return acc;
+  }, {});
+
+  const categoryPercentages = Object.keys(categoryTotals).map((categoryName) => {
+    const categoryTotal = categoryTotals[categoryName];
+    const percentage = ((categoryTotal / totalExpense) * 100).toFixed(2);
+    return {
+      category: categoryName,
+      total: categoryTotal,
+      percentage: `${percentage}%`,
+    };
+  });
+
+  res.status(200).json(
+    new ApiResponse(200, categoryPercentages, "Data fetched successfully")
+  );
+});
+
+
 export {
   addTransaction,
   editTransaction,
@@ -218,4 +375,8 @@ export {
   getallExporInc,
   getallTransactionsofaCategory,
   transactionDetails,
+  getFilteredTransactions,
+  totalTransaction,
+  getincomePercentage,
+  getExpensePercentage
 };
