@@ -8,8 +8,7 @@ const Navigationbar = () => {
       <h1>ExpenseGuru</h1>
       <div>
         <Link to="/dashboard">Dashboard</Link>
-        <Link to="/transactions">Transactions</Link>
-        <Link to="/budget-plan">Budget Plan</Link>
+        <Link to="/analysis">Analysis</Link>
         <Link to="/manage">Manage</Link>
 
       </div>

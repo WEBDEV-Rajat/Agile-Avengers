@@ -11,12 +11,14 @@ import Testimonials from "./pages/Testimonials";
 import "react-toastify/dist/ReactToastify.css";
 import ForgotPass from "./pages/ForgotPass";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage";
-import Transactions from "./HomePage/Transactions/Transactions"
 import Manage from "./HomePage/Manage/Manage"
 import { ToastContainer } from "react-toastify";
 import Dashboard from "./HomePage/Dashboard/Dashboard";
 import BudgetPlan from "./HomePage/BudgetPlan/BudgetPlan";
+import Savings from "./HomePage/Savings/Savings";
 import TransactionDetails from "./HomePage/Dashboard/Components/TransactionDetails";
+import Analysis from "./HomePage/Transactions/Transactions";
+import RecurringTransaction from "./HomePage/RecurringTransaction/RecurringTransaction";
 function App() {
   return (
     <div className="App">
@@ -32,12 +34,15 @@ function App() {
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/transactions" element={<Transactions />} />
+        <Route path="/analysis" element={<Analysis />} />
         <Route path="/manage" element={<Manage />} />
         <Route path="/budget-plan" element={<BudgetPlan/>}/>
+        <Route path="/recurring-transactions" element={<RecurringTransaction/>}/>
+        <Route path="/savings" element={<Savings/>}/>
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route path="/dashboard" element = {<Dashboard/>}/>
         <Route path="/transaction/:id" element = {<TransactionDetails/>}/>
+        
       </Routes>
       <ToastContainer position="top-right" theme="dark" />
     </div>
