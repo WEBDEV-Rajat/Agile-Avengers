@@ -13,7 +13,7 @@ const Manage = () => {
       <div className='inc-cat'>
         <div className='manage-cats'>
         <h1>Manage Income Categories</h1>
-        <button type="button" onClick={openCategoryPopup} className="create-category-btn">
+        <button type="button" onClick={openCategoryPopup} className="category-btn">
            + Create New Category
         </button>
           {isCategoryOpen && (
@@ -48,7 +48,7 @@ const Manage = () => {
       <div className="exp-cat">
       <div className='manage-cats'>
         <h1>Manage Expense Categories</h1>
-        <button type="button" onClick={openCategoryPopup} className="create-category-btn">
+        <button type="button" onClick={openCategoryPopup} className="category-btn">
            + Create New Category
         </button>
           {isCategoryOpen && (

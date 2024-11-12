@@ -1,0 +1,31 @@
+.budget{
+    width: 100%;
+    position: absolute;
+    margin-top: 90px;
+}
+
+.budget h1{
+    color : green;
+    margin: 15px 0 15px 15px;
+    font-size: 20px;
+}
+
+.heading{
+    font-size : 30px !important;
+}
+
+.fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    column-gap: 10%;
+    width: 100%;
+    height : 250px;
+}
+
+.budget input, .budget select{
+    width : 70%;
+    height: 40px;
+    border: 1px solid black;
+    border-radius : 8px;
+    margin-left : 15px;
+  }

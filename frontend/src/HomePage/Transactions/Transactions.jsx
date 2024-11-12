@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import Navbar from '../Navigationbar';
+import Navigationbar from '../Navigationbar';
 import "./Transactions.css";
 import TodoInput from './ToDoInput';
 import Todolist from './TodoList';
@@ -16,10 +16,10 @@ const Transactions = () => {
   }
   return (
     <>
-     <Navbar/>
+     <Navigationbar/>
     <div className="main-container">
       <div className='new-transaction'>
-      <h1>Create New Transaction</h1>
+      <h1>Reccuring Transactions</h1>
       <div className="center-container">
         <TodoInput addList={addList}/>
         {listTodo.map((listItem,i)=>{

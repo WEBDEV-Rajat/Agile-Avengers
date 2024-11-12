@@ -15,6 +15,7 @@ import Transactions from "./HomePage/Transactions/Transactions"
 import Manage from "./HomePage/Manage/Manage"
 import { ToastContainer } from "react-toastify";
 import Dashboard from "./HomePage/Dashboard/Dashboard";
+import BudgetPlan from "./HomePage/BudgetPlan/BudgetPlan";
 function App() {
   return (
     <div className="App">
@@ -32,6 +33,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/transactions" element={<Transactions />} />
         <Route path="/manage" element={<Manage />} />
+        <Route path="/budget-plan" element={<BudgetPlan/>}/>
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route path="/dashboard" element = {<Dashboard/>}/>
       </Routes>

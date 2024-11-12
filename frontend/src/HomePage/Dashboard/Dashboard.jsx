@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
+import AddCategory from "./Components/AddCategory";
 
 const Dashboard = () => {
   const [amount, setAmount] = useState(null);
@@ -15,7 +16,6 @@ const Dashboard = () => {
   const [date, setDate] = useState(null);
   const [isIncomeOpen, setIsIncomeOpen] = useState(false);
   const [isExpenseOpen, setIsExpenseOpen] = useState(false);
-  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [incomecategories, setIncomeCategories] = useState([]);
   const [expensecategories, setExpenseCategories] = useState([]);
 
@@ -25,8 +25,7 @@ const Dashboard = () => {
   const closeIncomePopup = () => setIsIncomeOpen(false);
   const openExpensePopup = () => setIsExpenseOpen(true);
   const closeExpensePopup = () => setIsExpenseOpen(false);
-  const openCategoryPopup = () => setIsCategoryOpen(true);
-  const closeCategoryPopup = () => setIsCategoryOpen(false);
+
 
   const incomeHandler = async () => {
     const form = new FormData();
@@ -166,13 +165,13 @@ const Dashboard = () => {
                   <div className="catselect">
                     <select onChange={(e) => setCategory(e.target.value)}>
                       <option value="">Select income Categories</option>
-                      <option value="newCategory">+ Create New Category</option>
                       {incomecategories.map((cat) => (
                         <option key={cat._id} value={cat.name}>
                           {cat.name}
                         </option>
                       ))}
                     </select>
+                    <AddCategory/>
                   </div>
                   <label>
                     Transaction Date
@@ -237,7 +236,7 @@ const Dashboard = () => {
                       onChange={(e) => setCategory(e.target.value)}
                     >
                       <option value="">Select expense Categories</option>
-                      <option value="newCategory">+ Create New Category</option>
+                      <AddCategory />
                       {expensecategories.map((cat) => (
                         <option key={cat._id} value={cat.name}>
                           {cat.name}
