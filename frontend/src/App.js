@@ -20,6 +20,8 @@ import Analysis from "./HomePage/Transactions/Transactions";
 import RecurringTransaction from "./HomePage/RecurringTransaction/RecurringTransaction";
 import Recard from "./HomePage/RecurringTransaction/Recard";
 
+import IncomeCategories from "./HomePage/IncomeCategories/IncomeCategories";
+import ExpenseCategories from "./HomePage/ExpenseCategories/ExpenseCategories";
 function App() {
   return (
     <div className="App">
@@ -39,6 +41,8 @@ function App() {
         <Route path="/budget-plan" element={<BudgetPlan />} />
         <Route path="/recurring-transactions" element={<RecurringTransaction />} />
         <Route path="/savings" element={<Savings />} />
+        <Route path="/income-categories" element={<IncomeCategories/>}/>
+        <Route path="/expense-categories" element={<ExpenseCategories/>}/>
         <Route path="/transaction/:id" element={<TransactionDetails />} />
         <Route path="/card/:id" element={<Recard />} />
       </Routes>

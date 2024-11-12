@@ -10,10 +10,6 @@
     font-size: 30px;
     color : green;
 }
-.rdp-root{
-    border: 1px solid red;
-    width: 20%;
-}
 
 .incexpbal{
     display: flex;
@@ -92,26 +88,15 @@ img{
 }
 
 .incomes{
-    transform: translateY(25%);
+    transform: translate(-7%, -13.6%);
     height : 75%;
     text-align: center;
 }
 
 .expenses {
-    transform: translateY(25%);
+    transform: translate(-7%, -13.6%);
     height : 75%;
     text-align: center;
-}
-
-.p2{
-   color: rgb(65, 65, 65);
-   font-size: 17px;
-   margin-bottom : -20px;
-}
-
-.p3{
-    color: rgb(91, 91, 91);
-    font-size: 12px;
 }
 
 .incexpbal .Amount {

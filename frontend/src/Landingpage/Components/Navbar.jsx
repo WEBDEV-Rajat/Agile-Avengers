@@ -15,8 +15,7 @@ const Navbar = () => {
   };
 
   return (
-    <div>
-      <div className="container">
+    <div className="container">
         <div className="glass">
           <nav>
             <h1 >
@@ -48,7 +47,6 @@ const Navbar = () => {
           </nav>
         </div>
       </div>
-    </div>
   );
 };
 
