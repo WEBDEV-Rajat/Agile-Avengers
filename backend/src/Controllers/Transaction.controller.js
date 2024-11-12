@@ -3,10 +3,19 @@ import { Category } from "../Models/category.model.js";
 import { ApiResponse } from "../Utils/ApiResponse.js";
 import asyncHandler from "../Utils/asyncHandler.js";
 
-
 const addTransaction = asyncHandler(async (req, res) => {
+  console.log("well here i am");
+
   const userId = req.user._id;
+  console.log("user", userId);
+
   const { amount, date, category, type, note } = req.body;
+  console.log("amount", amount);
+  console.log(date);
+  console.log("category", category);
+  console.log("type", type);
+
+  console.log("note", note);
 
   if (!amount || !category || !type) {
     return res.status(400).json({
@@ -21,14 +30,15 @@ const addTransaction = asyncHandler(async (req, res) => {
       message: "Type must be either 'income' or 'expense'",
     });
   }
+  console.log("cvbnm");
 
   const categoryData = await Category.findOne({ name: category, userId, type });
   if (!categoryData) {
-    return res.status(400).json({
-      success: false,
-      message: "Category not found",
-    });
+    return res
+      .status(400)
+      .json(new ApiResponse(400, null, "Category not found"));
   }
+  console.log("cvbnbvbcxzvzb", categoryData);
 
   const newTransaction = await Transaction.create({
     amount,
@@ -182,7 +192,7 @@ const getallTransactionsofaCategory = asyncHandler(async (req, res) => {
 const transactionDetails = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const { id } = req.params;
-  const transaction = await Transaction.findOne({userId ,_id: id });
+  const transaction = await Transaction.findOne({ userId, _id: id });
   if (!transaction) {
     return res.status(404).json({
       success: false,
@@ -200,8 +210,6 @@ const transactionDetails = asyncHandler(async (req, res) => {
     );
 });
 
-
-
 export {
   addTransaction,
   editTransaction,
@@ -209,5 +217,5 @@ export {
   getallTransactions,
   getallExporInc,
   getallTransactionsofaCategory,
-  transactionDetails
+  transactionDetails,
 };

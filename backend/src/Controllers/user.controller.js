@@ -56,7 +56,8 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const accessToken = user.generateAccessToken();
   const refreshToken = user.generateRefreshToken();
-
+  console.log("user:",user);
+  
   res
     .status(200)
     .cookie("accessToken", accessToken, options)

@@ -1,5 +1,5 @@
 import React from 'react';
-import {DayPicker} from "react-day-picker";
+// import {DayPicker} from "react-day-picker";
 import "./Overview.css";
 import img1 from './assets/img-1.avif';
 import img2 from './assets/img-2.png';
