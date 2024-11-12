@@ -1,56 +1,104 @@
-import './History.css';
+import "./History.css";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import Card from "./Card";
 const History = () => {
+  const [history, setHistory] = useState([]);
+  const [category, setCategory] = useState("all");
+  const [type, setType] = useState("all");
+  const [categories, setCategories] = useState([]);
 
-  const { loading, isAuthenticated, error, user } = useSelector(
-    (state) => state.user
-  );
-  console.log("state::", user);
-  console.log("isAhistoyuthenticated:", isAuthenticated);
+  const { isAuthenticated, user } = useSelector((state) => state.user);
+
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/v1/category/get-all-income",
+        const response = await axios.post(
+          "http://localhost:5000/api/v1/transaction/get-all",
+          { category, type },
           {
             withCredentials: true,
             headers: { "Content-Type": "application/json" },
           }
         );
-        setIncomeCategories(response.data.data);
+        setHistory(response.data.data);
+        console.log("history data :", response.data.data);
+        
       } catch (error) {
-        console.error("Error fetching income categories:", error);
+        toast.warning(error?.response?.data?.message || "An error occurred");
       }
     };
-
-    const fetchExpenseCategories = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/api/v1/category/get-all-expense",
-          {
-            withCredentials: true,
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        console.log("Fetched Expense Categories:", response.data.data);
-        setExpenseCategories(response.data.data);
-      } catch (error) {
-        console.error("Error fetching expense categories:", error);
-      }
-    };
-
     fetchHistory();
-  }, []);
+  }, [type, category]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        console.log("satjkhjcxvnhjdgskmxcnhj");
+
+        const url =
+          type === "income"
+            ? "http://localhost:5000/api/v1/category/get-all-expense"
+            : "http://localhost:5000/api/v1/category/get-all-income";
+
+        const response = await axios.get(url, {
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
+        });
+        setCategories(response.data.data);
+        console.log("fgdhfwgjkdfbcv bm:", response.data.data);
+      } catch (error) {
+        console.log(
+          error.response?.data?.message || "Error fetching categories"
+        );
+      }
+    };
+
+    if (type !== "all") {
+      fetchCategories();
+    }
+  }, [type]);
 
   return (
-    <div className='history'>
-      <h1>History</h1>
+    <div className="history p-6 bg-gray-50 min-h-screen">
+      <h1 className="text-2xl font-bold  mb-6 text-gray-800">History</h1>
+
+      <div className="filters flex  space-x-4 mb-6">
+        <select
+          onChange={(e) => setCategory(e.target.value)}
+          value={category}
+          className="filter-select bg-white border border-gray-300 text-gray-700 rounded-md p-2 focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="all">All Categories</option>
+          {categories.map((cat) => (
+            <option key={cat._id} value={cat.name}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
+
+        <select
+          onChange={(e) => setType(e.target.value)}
+          value={type}
+          className="filter-select bg-white border border-gray-300 text-gray-700 rounded-md p-2 focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="all">All Types</option>
+          <option value="expense">Expense</option>
+          <option value="income">Income</option>
+        </select>
+      </div>
+
+      <div className="space-y-4">
+        {history.length > 0 ? (
+          history.map((item, index) => <Card key={index} {...item} />)
+        ) : (
+          <p className="text-center text-gray-500">No transactions found.</p>
+        )}
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default History;

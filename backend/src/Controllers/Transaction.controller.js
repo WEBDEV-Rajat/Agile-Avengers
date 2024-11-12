@@ -192,13 +192,17 @@ const getallTransactionsofaCategory = asyncHandler(async (req, res) => {
 const transactionDetails = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const { id } = req.params;
-  const transaction = await Transaction.findOne({ userId, _id: id });
+
+  const transaction = await Transaction.findOne({ userId, _id: id })
+    .populate('category', 'name icon'); 
+
   if (!transaction) {
     return res.status(404).json({
       success: false,
       message: "Transaction not found",
     });
   }
+
   return res
     .status(200)
     .json(
@@ -210,6 +214,52 @@ const transactionDetails = asyncHandler(async (req, res) => {
     );
 });
 
+
+
+const getFilteredTransactions = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const { type, category } = req.body;  // Change req.query to req.body
+
+  if (!userId) {
+    return res
+      .status(400)
+      .json(new ApiResponse(400, null, "User ID is required"));
+  }
+
+  let filter = { userId };
+
+  if (type!=='all') {
+    filter.type = type;
+  }
+
+  if (category!=="all") {
+    const trimmedCategory = category.trim();
+    const cat = await Category.findOne({ userId, name: trimmedCategory });
+    
+    if (!cat) {
+      return res
+        .status(404)
+        .json(new ApiResponse(404, null, `Category '${trimmedCategory}' not found`));
+    }
+    filter.category = cat._id;
+  }
+
+  const transactions = await Transaction.find(filter)
+    .sort({ date: -1 })
+    .populate('category', 'name icon');
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        transactions,
+        "Transactions retrieved successfully"
+      )
+    );
+});
+
+
 export {
   addTransaction,
   editTransaction,
@@ -218,4 +268,5 @@ export {
   getallExporInc,
   getallTransactionsofaCategory,
   transactionDetails,
+  getFilteredTransactions
 };

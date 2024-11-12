@@ -15,6 +15,7 @@ import Transactions from "./HomePage/Transactions/Transactions"
 import Manage from "./HomePage/Manage/Manage"
 import { ToastContainer } from "react-toastify";
 import Dashboard from "./HomePage/Dashboard/Dashboard";
+import TransactionDetails from "./HomePage/Dashboard/Components/TransactionDetails";
 function App() {
   return (
     <div className="App">
@@ -34,6 +35,7 @@ function App() {
         <Route path="/manage" element={<Manage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route path="/dashboard" element = {<Dashboard/>}/>
+        <Route path="/transaction/:id" element = {<TransactionDetails/>}/>
       </Routes>
       <ToastContainer position="top-right" theme="dark" />
     </div>

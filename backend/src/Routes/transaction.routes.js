@@ -6,7 +6,8 @@ import {
   getallTransactions,
   getallExporInc,
   getallTransactionsofaCategory,
-  transactionDetails
+  transactionDetails,
+  getFilteredTransactions
 } from "../Controllers/Transaction.controller.js";
 import { verifyJWT } from "../Middlewares/verifyJwt.middleware.js";
 import { verify } from "crypto";
@@ -19,4 +20,5 @@ router.route("/get-all-transactions").get(verifyJWT, getallTransactions)
 router.route("/get-all-transactions/:type").get(verifyJWT, getallExporInc)
 router.route("/get-all-transactions-cat").post(verifyJWT,getallTransactionsofaCategory)
 router.route("/get-details/:id").get(verifyJWT, transactionDetails)
+router.route("/get-all").post(verifyJWT, getFilteredTransactions)
 export default router;
