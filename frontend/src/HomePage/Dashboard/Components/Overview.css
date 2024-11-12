@@ -113,3 +113,27 @@ img{
     color: rgb(91, 91, 91);
     font-size: 12px;
 }
+
+.incexpbal .Amount {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+  }
+  
+  .incexpbal .Amount h2 {
+    font-size: 1.5rem;
+    margin-top: 10px;
+  }
+  
+  .incexpbycat .incomes, .expbycat .expenses {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .incexpbycat .incomes div, .expbycat .expenses div {
+    margin: 10px;
+    text-align: center;
+  }
+  
