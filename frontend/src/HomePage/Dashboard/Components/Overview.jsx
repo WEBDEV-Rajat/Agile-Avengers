@@ -1,17 +1,18 @@
 import "./Overview.css";
-import img1 from './assets/img-1.avif';
-import img2 from './assets/img-2.png';
-import img3 from './assets/img-3.png';
+import img1 from "./assets/img-1.avif";
+import img2 from "./assets/img-2.png";
+import img3 from "./assets/img-3.png";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
+import { Chart } from "react-google-charts";
 
 const Overview = () => {
   const { user } = useSelector((state) => state.user);
   const [data, setData] = useState(null);
-  const [expense, setExpense] = useState(null);
-  const [income, setIncome] = useState(null);
+  const [expense, setExpense] = useState([["Category", "Amount"]]);
+  const [income, setIncome] = useState([["Category", "Amount"]]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,12 +24,9 @@ const Overview = () => {
             headers: { "Content-Type": "application/json" },
           }
         );
-        console.log(response.data);
-        setData(response.data.data); 
-        console.log("sdhjgbn0",data);
-        
+        setData(response.data.data);
       } catch (error) {
-        console.error("Error fetching income categories:", error);
+        console.error("Error fetching total data:", error);
       }
     };
 
@@ -41,8 +39,21 @@ const Overview = () => {
             headers: { "Content-Type": "application/json" },
           }
         );
-        console.log(response.data);
-        setIncome(response.data.data); 
+        const incomeData = response.data.data || [];
+
+        // Check and transform income data to the format required by Google Charts
+        const transformedIncome = [["Category", "Amount"]];
+        incomeData.forEach((item) => {
+          if (item.category && typeof item.total === "number") {
+            transformedIncome.push([item.category, item.total]);
+          } else {
+            console.warn("Skipping income item with missing fields:", item);
+          }
+        });
+
+        if (transformedIncome.length > 1) {
+          setIncome(transformedIncome);
+        }
       } catch (error) {
         console.error("Error fetching income categories:", error);
       }
@@ -57,20 +68,46 @@ const Overview = () => {
             headers: { "Content-Type": "application/json" },
           }
         );
-        setExpense(response.data.data); 
+        const expenseData = response.data.data || [];
+
+        // Check and transform expense data to the format required by Google Charts
+        const transformedExpense = [["Category", "Amount"]];
+        expenseData.forEach((item) => {
+          if (item.category && typeof item.total === "number") {
+            transformedExpense.push([item.category, item.total]);
+          } else {
+            console.warn("Skipping expense item with missing fields:", item);
+          }
+        });
+
+        if (transformedExpense.length > 1) {
+          setExpense(transformedExpense);
+        }
       } catch (error) {
         console.error("Error fetching expense categories:", error);
       }
     };
 
     fetchData();
-    fetchIncome();
+    fetchIncome();  
     fetchExpense();
   }, []);
 
-  if (!data || !income || !expense) {
+  if (!data || income.length <= 1 || expense.length <= 1) {
     return <div>Loading...</div>;
   }
+
+  const incomeOptions = {
+    title: "Incomes By Category",
+    pieHole: 0.4,
+    is3D: false,
+  };
+
+  const expenseOptions = {
+    title: "Expenses By Category",
+    pieHole: 0.4,
+    is3D: false,
+  };
 
   return (
     <div className="overview">
@@ -103,35 +140,25 @@ const Overview = () => {
 
       <div className="incexpbycat">
         <div className="incbycat">
-          <p className="p1">Incomes By Category</p>
           <div className="incomes">
-            {income ? (
-              income.map((category, index) => (
-                <div key={index}>
-                  <p>{category.category}</p>
-                  <p>{category.total}</p>
-                  <p>{category.percentage}</p>
-                </div>
-              ))
-            ) : (
-              <p>No data for the selected period</p>
-            )}
+            <Chart
+              chartType="PieChart"
+              width="100%"
+              height="299px"
+              data={income}
+              options={incomeOptions}
+            />
           </div>
         </div>
         <div className="expbycat">
-          <p className="p1">Expenses By Category</p>
           <div className="expenses">
-            {expense ? (
-              expense.map((category, index) => (
-                <div key={index}>
-                  <p>{category.category}</p>
-                  <p>{category.total}</p>
-                  <p>{category.percentage}</p>
-                </div>
-              ))
-            ) : (
-              <p>No data for the selected period</p>
-            )}
+            <Chart
+              chartType="PieChart"
+              width="100%"
+              height="299px"
+              data={expense}
+              options={expenseOptions}
+            />
           </div>
         </div>
       </div>
