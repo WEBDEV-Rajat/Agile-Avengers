@@ -157,6 +157,18 @@ const getUpcomingTransactions = asyncHandler(async (req, res) => {
     );
 });
 
+const getdetails = asyncHandler(async(req,res)=>{
+  const userId = req.user._id
+  const { id } = req.params
+  const transaction = await RecurringTransaction.findOne({
+    _id: id,
+    userId: userId,
+  })
+  if(!transaction){
+    return res.status(404).json(new ApiResponse(404, null, "Transaction not found"))
+  }
+  res.status(200).json(new ApiResponse(200, transaction, "Transaction details fetched successfully"))
+})
 
 export {
   addTransaction,
@@ -165,5 +177,5 @@ export {
   ChangeStatusRecurringTransaction,
   getUpcomingTransactions,
   deleteRecurringTransaction,
-  
+  getdetails
 };

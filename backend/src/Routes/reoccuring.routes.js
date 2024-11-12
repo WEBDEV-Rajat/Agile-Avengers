@@ -6,6 +6,8 @@ import {
   deleteRecurringTransaction,
   getallRecurringTransactions,
   
+  getdetails,
+  
   getUpcomingTransactions,
   updateRecurringTransaction,
 } from "../Controllers/reoccuringTransaction.controller.js";
@@ -22,5 +24,5 @@ router.route("/get-upcoming").post(verifyJWT, getUpcomingTransactions);
 router
   .route("/delete/:transactionId")
   .delete(verifyJWT, deleteRecurringTransaction);
-
+router.route("/get-details/:id").get(verifyJWT, getdetails);
 export default router;
