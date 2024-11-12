@@ -40,8 +40,8 @@ const History = () => {
 
         const url =
           type === "income"
-            ? "http://localhost:5000/api/v1/category/get-all-expense"
-            : "http://localhost:5000/api/v1/category/get-all-income";
+            ? "http://localhost:5000/api/v1/category/get-all-income"
+            : "http://localhost:5000/api/v1/category/get-all-expense";
 
         const response = await axios.get(url, {
           withCredentials: true,

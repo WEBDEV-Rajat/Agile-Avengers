@@ -237,30 +237,7 @@ const BudgetPlan = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Frequency
-                  </label>
-                  <select
-                    required
-                    value={newTransaction.frequency}
-                    onChange={(e) =>
-                      setNewTransaction({
-                        ...newTransaction,
-                        frequency: e.target.value,
-                      })
-                    }
-                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="">Select Frequency</option>
-                    <option value="daily">Daily</option>
-                    <option value="weekly">Weekly</option>
-                    <option value="monthly">Monthly</option>
-                    <option value="yearly">Yearly</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Next Due Date
+                    Date
                   </label>
                   <input
                     type="date"
@@ -297,7 +274,7 @@ const BudgetPlan = () => {
                   type="submit"
                   className="w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 transition duration-300"
                 >
-                  Add Transaction
+                  Add Budget Plan
                 </button>
               </form>
             </div>

@@ -13,7 +13,7 @@ const Hero = () => {
       <p class="one">Effortlessly Manage Your Expenses</p>
       <p class="two">Anytime, Anywhere</p>
     </div>
-    <button class="get-started">Get Started</button>
+     <button class="get-started">Get Started</button>
     <img src={img1} alt="" />
   </div>
   )

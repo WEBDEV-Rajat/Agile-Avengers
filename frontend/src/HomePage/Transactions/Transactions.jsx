@@ -5,11 +5,20 @@ import "./Transactions.css";
 
 const Analysis = () => { 
   const data = [
-    ["Year", "Sales", "Expenses"],
-    ["2014", 1000, 400],
-    ["2015", 1170, 460],
-    ["2016", 660, 1120],
-    ["2017", 1030, 540],
+    ["Month", "Income", "Expenses"],
+    ["January", 1000, 400],
+    ["February", 1170, 460],
+    ["March", 1260, 620],
+    ["April", 1030, 540],
+    ["May", 1530, 600],
+    ["June", 1030, 800],
+    ["July", 1260, 650],
+    ["August", 1090, 730],
+    ["September", 1350, 580],
+    ["October", 1750, 770],
+    ["November", 1280, 890],
+    ["December", 1100, 430],
+
   ];
   
   return (

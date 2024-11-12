@@ -21,7 +21,7 @@ const Manage = () => {
        <a href="/budget-plan">Budget Plan</a>
         </div>
       <div className=" new savings">
-       <h1>Savings</h1>
+       <h1>Create Savings Plan</h1>
        <p>Implement a structured savings plan that allocates a portion of income toward financial goals, ensuring disciplined contributions to build long-term financial security.</p>
        <a href="/savings">Savings</a>
         </div>
