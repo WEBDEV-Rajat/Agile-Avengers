@@ -207,8 +207,6 @@ const allProgress = asyncHandler(async (req, res) => {
     );
 });
 
-// for pdf and other documents
-
 const getReciept = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const goals = await SavingsGoal.find({ userId });

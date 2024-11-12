@@ -33,14 +33,11 @@ const createBudget = asyncHandler(async (req, res) => {
 const getBudgets = asyncHandler(async (req, res) => {
   const userId = req.user._id;
 
-  const budgets = await Budget.find({ userId }).populate(
-    "categoryId",
-    "name icon type"
-  );
-  res
-    .status(200)
-    .json(new ApiResponse(200, budgets, "Budgets retrieved successfully"));
+  const budgets = await Budget.find({ userId })
+    .populate("categoryId", "name icon type"); 
+  res.status(200).json(new ApiResponse(200, budgets, "Budgets retrieved successfully"));
 });
+
 
 const updateBudget = asyncHandler(async (req, res) => {
   const { budgetId } = req.params;
@@ -85,8 +82,6 @@ const deleteBudget = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, null, "Budget deleted successfully"));
 });
 
-
-// check it again
 const checkBudgetUsage = asyncHandler(async (req, res) => {
   const { category, period } = req.body;
   const userId = req.user._id;

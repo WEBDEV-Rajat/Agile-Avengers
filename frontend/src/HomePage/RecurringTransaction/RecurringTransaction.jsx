@@ -122,7 +122,7 @@ const RecurringTransaction = () => {
 
       <div className="flex flex-grow mt-5">
         <div className="w-64 bg-gray-100 p-6 space-y-6 border-r mt-10 border-gray-300 shadow-lg rounded-lg fixed h-full">
-          <h2 className="text-xl font-semibold text-gray-800">
+          <h2 className="heading text-xl font-semibold">
             Recurring Transactions
           </h2>
           <button
