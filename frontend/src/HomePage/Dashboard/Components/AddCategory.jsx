@@ -1,37 +1,77 @@
-import React, {useState} from "react";
-import "../Dashboard.css"
+import React, { useState } from "react";
+import "../Dashboard.css";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-const AddCategory = () => {
-    const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-    const openCategoryPopup = () => setIsCategoryOpen(true);
-    const closeCategoryPopup = () => setIsCategoryOpen(false);
+const AddCategory = ({ type }) => {
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [icon, setIcon] = useState("");
+
+  const openCategoryPopup = () => setIsCategoryOpen(true);
+  const closeCategoryPopup = () => setIsCategoryOpen(false);
+  console.log("ashfdsguidgdsuifguidsguicgdiuf");
+  
+  const addCategory = async (e) => {
+    e.preventDefault();
+    try {
+      console.log("sahfkdu vufdsyufi udsuf");
+      
+      const form = { name, icon, type }; 
+      const url = 'http://localhost:5000/api/v1/category/add-category';
+      const response = await axios.post(url, form, {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" },
+      });
+      console.log("dsgfshgfhjk",response.data); 
+      closeCategoryPopup(); 
+      toast.success(response.data.message);
+    } catch (error) {
+      console.error("Error adding category:", error);
+      toast.error(error.response.data.message);
+    }
+  };
+
   return (
     <div>
       <button
         type="button"
         onClick={openCategoryPopup}
-        className="create-category-btn">
+        className="create-category-btn"
+      >
         + Create New Category
       </button>
       {isCategoryOpen && (
         <div className="popup-overlay" onClick={closeCategoryPopup}>
           <div className="popup" onClick={(e) => e.stopPropagation()}>
             <h2>Create New Category</h2>
-            <form>
+            <form onSubmit={addCategory}>
               <label>
                 Type
-                <select>
-                  <option value="">Income</option>
-                  <option value="">Expense</option>
-                </select>
+                <input
+                  type="text"
+                  value={type}
+                  readOnly
+                  className="type-input"
+                />
               </label>
               <label>
                 Category Name
-                <input type="text" required />
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
               </label>
               <label>
                 Icon
-                <input type="text" required />
+                <input
+                  type="text"
+                  value={icon}
+                  onChange={(e) => setIcon(e.target.value)}
+                  required
+                />
               </label>
               <button
                 type="button"
@@ -40,7 +80,7 @@ const AddCategory = () => {
               >
                 Close
               </button>
-              <button type="submit" className="button1">
+              <button type="submit" className="button1" onClick={addCategory}>
                 Submit
               </button>
             </form>

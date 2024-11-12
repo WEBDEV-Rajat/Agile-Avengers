@@ -19,6 +19,7 @@ import Savings from "./HomePage/Savings/Savings";
 import TransactionDetails from "./HomePage/Dashboard/Components/TransactionDetails";
 import Analysis from "./HomePage/Transactions/Transactions";
 import RecurringTransaction from "./HomePage/RecurringTransaction/RecurringTransaction";
+import Recard from "./HomePage/RecurringTransaction/Recard";
 function App() {
   return (
     <div className="App">
@@ -42,7 +43,7 @@ function App() {
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route path="/dashboard" element = {<Dashboard/>}/>
         <Route path="/transaction/:id" element = {<TransactionDetails/>}/>
-        
+        <Route path="/card" element = {<Recard/>}/>
       </Routes>
       <ToastContainer position="top-right" theme="dark" />
     </div>
