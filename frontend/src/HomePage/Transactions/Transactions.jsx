@@ -4,7 +4,7 @@ import "./Transactions.css";
 import TodoInput from './ToDoInput';
 import Todolist from './TodoList';
 const Transactions = () => {
-  const [listTodo, setListTodo]=useState([]);
+  const [listTodo, setListTodo] = useState([]);
   let addList = (inputText)=>{
     if(inputText!=='')
       setListTodo([...listTodo,inputText]);
@@ -18,7 +18,8 @@ const Transactions = () => {
     <>
      <Navbar/>
     <div className="main-container">
-      <h1>Transaction History</h1>
+      <div className='new-transaction'>
+      <h1>Create New Transaction</h1>
       <div className="center-container">
         <TodoInput addList={addList}/>
         {listTodo.map((listItem,i)=>{
@@ -27,6 +28,8 @@ const Transactions = () => {
           )
         })}
       </div>
+      </div>
+     <h1>Transaction History</h1>
       <table>
       <tr>
     <th>Category</th>

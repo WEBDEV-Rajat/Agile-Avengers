@@ -1,4 +1,5 @@
 import React from 'react';
+import {DayPicker} from "react-day-picker";
 import "./Overview.css";
 import img1 from './assets/img-1.avif';
 import img2 from './assets/img-2.png';
@@ -7,7 +8,9 @@ import img3 from './assets/img-3.png';
 const Overview = () => {
   return (
     <div className='overview'>
+      <div className='calendar'>
       <h1>Overview</h1>
+      </div>
       <div className='incexpbal'>
       <div className='Income'>
     <img src={img1} alt="Income" />

@@ -1,0 +1,32 @@
+.cat{
+    width: 100%;
+    position : absolute;
+    margin-top: 100px;
+}
+.manage-cats{
+    display : flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 15px;
+}
+.manage-cats h1{
+    font-size : 25px;
+    color : green;
+}
+.manage-cats button {
+   padding : 5px;
+   font-weight : 500;
+   font-size: 12px;
+   border: 1px solid rgba(87, 87, 87, 0.566);
+   background-color : green;
+   color: white;
+   margin: 25px 15px 0 0;
+   border-radius: 15px;
+}
+.cats{
+    border: 1px solid rgba(159, 159, 159, 0.717);
+    height : 150px;
+    margin : 10px 10px 0 10px;
+    overflow-x: auto;
+    
+}
