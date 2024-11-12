@@ -26,7 +26,6 @@ const Dashboard = () => {
   const openExpensePopup = () => setIsExpenseOpen(true);
   const closeExpensePopup = () => setIsExpenseOpen(false);
 
-
   const incomeHandler = async () => {
     const form = new FormData();
     form.append("amount", amount);
@@ -86,7 +85,7 @@ const Dashboard = () => {
       toast.warning(error?.response?.data?.message);
     }
   };
-
+  const [x, setX] = useState(null);
   useEffect(() => {
     const fetchIncomeCategories = async () => {
       try {
@@ -125,12 +124,33 @@ const Dashboard = () => {
 
   console.log("Income Categories:", incomecategories);
   console.log("Expense Categories:", expensecategories);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/v1/users/get-user",
+          {
+            withCredentials: true,
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        console.log("Fetched Expense Categores:", response.data.data);
+        setX(response.data.data);
+      } catch (error) {
+        console.error(
+          "Error fetching data:",
+          error.response ? error.response.data.message : error.message
+        );
+      }
+    };
 
+    fetchData();
+  }, []);
   return (
     <div className="dashboard">
       <Navigationbar />
       <div className="Hellouser">
-        <h1 className="hello">Hello, {user?.name || "A"}!</h1>
+        <h1 className="hello">Hello, {x?.name || "A"}!</h1>
         <div className="buttons">
           <button className="income" onClick={openIncomePopup}>
             New Income
@@ -171,7 +191,7 @@ const Dashboard = () => {
                         </option>
                       ))}
                     </select>
-                    <AddCategory type = {"income"}/>
+                    <AddCategory type={"income"} />
                   </div>
                   <label>
                     Transaction Date
@@ -242,7 +262,7 @@ const Dashboard = () => {
                         </option>
                       ))}
                     </select>
-                    <AddCategory type = {"expense"}/>
+                    <AddCategory type={"expense"} />
                   </div>
                   <label>
                     Transaction Date
