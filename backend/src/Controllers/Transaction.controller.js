@@ -59,7 +59,9 @@ const editTransaction = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const userId = req.user._id;
   const { amount, date, category, type, note } = req.body;
-
+  console.log("amount: " + amount);
+  console.log("category:",category);
+  
   const transaction = await Transaction.findOne({ _id: id, userId });
   if (!transaction) {
     return res.status(404).json({
@@ -247,7 +249,7 @@ const totalTransaction = asyncHandler(async (req, res) => {
 
 const getFilteredTransactions = asyncHandler(async (req, res) => {
   const userId = req.user._id;
-  const { type, category } = req.body; // Change req.query to req.body
+  const { type, category } = req.body; 
 
   if (!userId) {
     return res

@@ -171,7 +171,7 @@ const Dashboard = () => {
                         </option>
                       ))}
                     </select>
-                    <AddCategory/>
+                    <AddCategory type = {"income"}/>
                   </div>
                   <label>
                     Transaction Date
@@ -236,13 +236,13 @@ const Dashboard = () => {
                       onChange={(e) => setCategory(e.target.value)}
                     >
                       <option value="">Select expense Categories</option>
-                      <AddCategory />
                       {expensecategories.map((cat) => (
                         <option key={cat._id} value={cat.name}>
                           {cat.name}
                         </option>
                       ))}
                     </select>
+                    <AddCategory type = {"expense"}/>
                   </div>
                   <label>
                     Transaction Date

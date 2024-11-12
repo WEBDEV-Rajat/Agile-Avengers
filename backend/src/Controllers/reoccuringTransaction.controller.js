@@ -6,7 +6,12 @@ import asyncHandler from "../Utils/asyncHandler.js";
 const addTransaction = asyncHandler(async (req, res) => {
   const { amount, category, frequency, nextDueDate, note } = req.body;
   const userId = req.user._id;
-
+  console.log("amount: " + amount);
+  console.log("category: " + category);
+  console.log("frequency: " + frequency);
+  console.log("nextDueDate: " + nextDueDate);
+  console.log("note: " + note);
+  
   if (!amount || !category || !frequency || !nextDueDate || !note) {
     return res
       .status(400)
@@ -47,8 +52,7 @@ const getallRecurringTransactions = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const recurringTransactions = await RecurringTransaction.find({
     userId,
-    active: true,
-  });
+  }).populate("categoryId", "type name icon"); 
   return res
     .status(200)
     .json(
@@ -132,7 +136,7 @@ const deleteRecurringTransaction = asyncHandler(async (req, res) => {
 
 const getUpcomingTransactions = asyncHandler(async (req, res) => {
   const userId = req.user._id;
-  const { days } = req.query;
+  const { days } = req.body
   const upcomingDate = new Date();
   upcomingDate.setDate(upcomingDate.getDate() + parseInt(days, 10));
 
@@ -140,7 +144,7 @@ const getUpcomingTransactions = asyncHandler(async (req, res) => {
     userId,
     nextDueDate: { $lte: upcomingDate },
     active: true,
-  }).sort({ nextDueDate: 1 });
+  }).sort({ nextDueDate: 1 }).populate("categoryId", "type name icon");
 
   return res
     .status(200)
@@ -153,11 +157,25 @@ const getUpcomingTransactions = asyncHandler(async (req, res) => {
     );
 });
 
+const getdetails = asyncHandler(async(req,res)=>{
+  const userId = req.user._id
+  const { id } = req.params
+  const transaction = await RecurringTransaction.findOne({
+    _id: id,
+    userId: userId,
+  })
+  if(!transaction){
+    return res.status(404).json(new ApiResponse(404, null, "Transaction not found"))
+  }
+  res.status(200).json(new ApiResponse(200, transaction, "Transaction details fetched successfully"))
+})
+
 export {
   addTransaction,
   getallRecurringTransactions,
   updateRecurringTransaction,
   ChangeStatusRecurringTransaction,
   getUpcomingTransactions,
-  deleteRecurringTransaction
+  deleteRecurringTransaction,
+  getdetails
 };
