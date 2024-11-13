@@ -45,7 +45,10 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> bb5514c542b9c3c2e08baff2e34d38b4d1b79855
 UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   
@@ -56,7 +59,6 @@ UserSchema.pre("save", async function (next) {
 UserSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
-
 
 UserSchema.methods.generateAccessToken = function () {
   return jwt.sign(
@@ -70,7 +72,6 @@ UserSchema.methods.generateAccessToken = function () {
     }
   );
 };
-
 
 UserSchema.methods.generateRefreshToken = function () {
   const refreshToken = jwt.sign(
