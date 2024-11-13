@@ -141,7 +141,7 @@ const trackGoalProgress = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, progress, "Progress tracked successfully"));
 });
 
-// abhi implement nahi huaa hai
+
 const sendDeadlineReminder = asyncHandler(async (req, res) => {
   const { goalId } = req.params;
   const userId = req.user._id;
@@ -165,7 +165,7 @@ const sendDeadlineReminder = asyncHandler(async (req, res) => {
     res.status(400).json({ success: false, message: "No reminder needed yet" });
   }
 });
-// abhi implement nahi huaa hai
+
 const checkGoalCompletion = asyncHandler(async (req, res) => {
   const { goalId } = req.params;
   const userId = req.user._id;

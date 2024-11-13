@@ -7,9 +7,9 @@ import { ApiResponse } from "../Utils/ApiResponse.js";
 const createBudget = asyncHandler(async (req, res) => {
   const { category, limit, period } = req.body;
   const userId = req.user._id;
-  console.log("category: " + category);
-  console.log("limit:",limit);
-  console.log("period:",period);
+  // console.log("category: " + category);
+  // console.log("limit:",limit);
+  // console.log("period:",period);
   
   const categoryId = await Category.findOne({ userId, name: category });
   if (!categoryId) {
@@ -101,7 +101,7 @@ const checkBudgetUsage = asyncHandler(async (req, res) => {
     { $match: { userId, categoryId, type: "expense" } },
     { $group: { _id: "$categoryId", totalAmount: { $sum: "$amount" } } },
   ]);
-  console.log("xyz :",totalSpent);
+  // console.log("xyz :",totalSpent);
   
   const remainingBudget = budget.limit - (totalSpent[0]?.totalAmount || 0);
 

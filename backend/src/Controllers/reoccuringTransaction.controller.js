@@ -6,11 +6,11 @@ import asyncHandler from "../Utils/asyncHandler.js";
 const addTransaction = asyncHandler(async (req, res) => {
   const { amount, category, frequency, nextDueDate, note } = req.body;
   const userId = req.user._id;
-  console.log("amount: " + amount);
-  console.log("category: " + category);
-  console.log("frequency: " + frequency);
-  console.log("nextDueDate: " + nextDueDate);
-  console.log("note: " + note);
+  // console.log("amount: " + amount);
+  // console.log("category: " + category);
+  // console.log("frequency: " + frequency);
+  // console.log("nextDueDate: " + nextDueDate);
+  // console.log("note: " + note);
   
   if (!amount || !category || !frequency || !nextDueDate || !note) {
     return res
