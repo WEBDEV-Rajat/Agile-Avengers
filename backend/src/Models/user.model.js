@@ -45,21 +45,19 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-// Pre-save hook to hash password before saving
+
 UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
-  // console.log("Saving password", this.password);
   
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
-// Method to check if the password is correct
 UserSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-// Method to generate an access token
+
 UserSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
@@ -73,7 +71,7 @@ UserSchema.methods.generateAccessToken = function () {
   );
 };
 
-// Method to generate a refresh token
+
 UserSchema.methods.generateRefreshToken = function () {
   const refreshToken = jwt.sign(
     {
@@ -85,7 +83,6 @@ UserSchema.methods.generateRefreshToken = function () {
     }
   );
 
-  // Save the refresh token in the database
   this.refreshToken = refreshToken;
   this.save();
 

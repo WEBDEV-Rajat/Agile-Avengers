@@ -20,7 +20,7 @@ export const ResetPasswordPage = () => {
       return;
     }
 
-    const formData = { password: newPassword, token }; // Include token in formData
+    const formData = { password: newPassword, token }; 
     dispatch(resetPassword(formData)); 
   };
 

@@ -8,7 +8,7 @@ function Testimonials() {
         Hear from our satisfied users and learn how our service has positively impacted their experiences.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {/* Testimonial Card 1 */}
+
         <div className="bg-white shadow-lg rounded-lg p-6 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl hover:bg-indigo-50">
           <p className="text-gray-600 mb-4">
             "This service has been a game-changer for me. The ease of use and efficiency have exceeded my expectations!"
@@ -26,7 +26,7 @@ function Testimonials() {
           </div>
         </div>
         
-        {/* Testimonial Card 2 */}
+
         <div className="bg-white shadow-lg rounded-lg p-6 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl hover:bg-indigo-50">
           <p className="text-gray-600 mb-4">
             "I would highly recommend this to anyone looking for reliable and top-quality service."
@@ -44,7 +44,7 @@ function Testimonials() {
           </div>
         </div>
         
-        {/* Testimonial Card 3 */}
+
         <div className="bg-white shadow-lg rounded-lg p-6 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl hover:bg-indigo-50">
           <p className="text-gray-600 mb-4">
             "Fantastic! The support and features offered are unmatched. I couldn’t be happier."

@@ -67,7 +67,7 @@ const SignUppage = () => {
                   onChange={(e) => setName(e.target.value)}
                   className="flex-1 p-2 focus:outline-none"
                 />
-                {/* <FaPencilAlt className="text-gray-400 ml-2" /> */}
+                
               </div>
             </div>
             <div className="mb-4">
@@ -80,7 +80,7 @@ const SignUppage = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   className="flex-1 p-2 focus:outline-none"
                 />
-                {/* <MdOutlineMailOutline className="text-gray-400 ml-2" /> */}
+               
               </div>
             </div>
             <div className="mb-4">
@@ -93,7 +93,7 @@ const SignUppage = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   className="flex-1 p-2 focus:outline-none"
                 />
-                {/* <RiLock2Fill className="text-gray-400 ml-2" /> */}
+                
               </div>
             </div>
             <div className="mb-4">
@@ -106,7 +106,7 @@ const SignUppage = () => {
                   onChange={(e) => setFullName(e.target.value)}
                   className="flex-1 p-2 focus:outline-none"
                 />
-                {/* <FaPencilAlt className="text-gray-400 ml-2" /> */}
+                
               </div>
             </div>
             <button

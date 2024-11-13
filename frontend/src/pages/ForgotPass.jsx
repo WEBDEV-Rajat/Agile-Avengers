@@ -17,23 +17,23 @@ function ForgotPass() {
     if (email) {
       const formData = new FormData();
       formData.append("email", email);
-      dispatch(forgotPassword(formData)); // Dispatch action to send forgot password request
+      dispatch(forgotPassword(formData)); 
     } else {
       toast.warning("Please enter your email address.");
     }
   };
 
 
-  // Display success or error messages as toasts and handle navigation
+
   useEffect(() => {
     if (message) {
-      toast.success(message); // Display the success message
-      navigate(-1); // Navigate back after showing the success toast
+      toast.success(message); 
+      navigate(-1); 
     }
     if (error) {
-      toast.error(error); // Display error messages
+      toast.error(error); 
     }
-  }, [message, error, navigate]); // Ensure navigate is included in the dependencies
+  }, [message, error, navigate]); 
 
 
   return (

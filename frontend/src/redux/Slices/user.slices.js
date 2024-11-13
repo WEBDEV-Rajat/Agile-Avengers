@@ -10,7 +10,6 @@ const userSlice = createSlice({
     user: {},
     error: null,
     message: null,
-    // token
   },
   reducers: {
     registerRequest(state) {

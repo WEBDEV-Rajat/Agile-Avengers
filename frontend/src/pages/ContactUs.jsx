@@ -11,7 +11,7 @@ function ContactUs() {
         </p>
        
         <form className="space-y-6">
-          {/* Name Field */}
+
           <div>
             <label className="block text-sm font-medium text-gray-700">Name</label>
             <input
@@ -22,7 +22,6 @@ function ContactUs() {
             />
           </div>
          
-          {/* Email Field */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Email</label>
             <input
@@ -33,7 +32,6 @@ function ContactUs() {
             />
           </div>
          
-          {/* Subject Field */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Subject</label>
             <input
@@ -44,7 +42,6 @@ function ContactUs() {
             />
           </div>
          
-          {/* Message Field */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Message</label>
             <textarea
@@ -55,7 +52,7 @@ function ContactUs() {
             ></textarea>
           </div>
          
-          {/* Submit Button */}
+
           <div className="text-center">
             <button
               type="submit"

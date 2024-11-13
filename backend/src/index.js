@@ -5,12 +5,9 @@ dotenv.config({
 
 import connectDB from "./Database/ConnectDb.js";
 import { app } from "./app.js";
-// asynce return promise here it is db connect
 connectDB()
 .then(()=>{
     const port = process.env.PORT || 7000;
-    // listen for errors and
-    /* vks */
     app.on("error", (error)=>{
         console.log("error on port: " + error);
         throw error;
