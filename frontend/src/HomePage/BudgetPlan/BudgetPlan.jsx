@@ -7,11 +7,9 @@ import { Link } from "react-router-dom";
 const BudgetPlan = () => {
   const [list, setList] = useState([]);
   const [newTransaction, setNewTransaction] = useState({
-    amount: "",
+    limit: "",
+    period: "",
     category: "",
-    frequency: "",
-    nextDueDate: "",
-    note: "",
   });
   const [activeTab, setActiveTab] = useState("all");
   const [upcoming, setUpcoming] = useState([]);
@@ -20,19 +18,19 @@ const BudgetPlan = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const getCategories = async () => {
+    const getList = async () => {
       try {
-        const url = "http://localhost:5000/api/v1/category/get-all-expense";
+        const url = "http://localhost:5000/api/v1/budget/get-details";
         const response = await axios.get(url, {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
         });
-        setCategories(response.data.data);
+        setList(response.data.data);
       } catch (error) {
         setError("Error fetching categories.");
       }
     };
-    getCategories();
+    getList();
   }, []);
 
   useEffect(() => {
@@ -57,20 +55,20 @@ const BudgetPlan = () => {
   }, [days]);
 
   useEffect(() => {
-    const getAllTransactions = async () => {
+    const getAllcate = async () => {
       try {
-        const url = "http://localhost:5000/api/v1/budget/get-details";
+        const url = "http://localhost:5000/api/v1/category/get-all-expense";
         const response = await axios.get(url, {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
         });
-        setList(response.data.data);
+        setCategories(response.data.data);
       } catch (error) {
         setError("Error fetching all transactions.");
       }
     };
 
-    getAllTransactions();
+    getAllcate();
   }, []);
 
   const handleTabClick = (tab) => {
@@ -97,11 +95,11 @@ const BudgetPlan = () => {
 
       setList([...list, response.data.data]);
       setNewTransaction({
-        amount: "",
+        limit: "",
         category: "",
-        frequency: "",
-        nextDueDate: "",
-        note: "",
+        period: "",
+        
+        
       });
       toast.success(response.data.message);
 
@@ -170,14 +168,15 @@ const BudgetPlan = () => {
                   >
                     <div className="flex justify-between items-center">
                       <p className="text-lg font-semibold">
-                        ₹{transaction.amount} - {transaction.category?.name}
+                        Limit: ₹{transaction.limit}
                       </p>
                       <p className="text-sm text-gray-500">
-                        Next Due: {formatDate(transaction.nextDueDate)}
+                        <span>{transaction.categoryId?.name}</span>
+                        <span>{transaction.categoryId?.icon}</span>
                       </p>
                     </div>
                     <p className="text-gray-700 mt-2">{transaction.note}</p>
-                    <Link to={`/card/${transaction._id}`}>
+                    <Link to={`/budget/${transaction._id}`}>
                       <button className="mt-2 text-blue-500 hover:text-blue-700 border border-blue-500 py-1 px-3 rounded-full focus:ring-2 focus:ring-blue-500 transition duration-300">
                         Manage
                       </button>
@@ -196,15 +195,15 @@ const BudgetPlan = () => {
               <form onSubmit={handleNewTransactionSubmit} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Amount
+                    Amount Limit
                   </label>
                   <input
                     type="number"
-                    value={newTransaction.amount}
+                    value={newTransaction.limit}
                     onChange={(e) =>
                       setNewTransaction({
                         ...newTransaction,
-                        amount: e.target.value,
+                        limit: e.target.value,
                       })
                     }
                     placeholder="Amount"
@@ -237,6 +236,27 @@ const BudgetPlan = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
+                    Period
+                  </label>
+                  <select
+                    value={newTransaction.period}
+                    onChange={(e) =>
+                      setNewTransaction({
+                        ...newTransaction,
+                        period: e.target.value,
+                      })
+                    }
+                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Select Period</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
                     Date
                   </label>
                   <input
@@ -264,7 +284,6 @@ const BudgetPlan = () => {
                         note: e.target.value,
                       })
                     }
-                    rows={4}
                     placeholder="Add a note (optional)"
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
                   />
@@ -272,9 +291,9 @@ const BudgetPlan = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 transition duration-300"
+                  className="bg-blue-500 text-white py-2 px-4 rounded-lg focus:ring-2 focus:ring-blue-500 transition duration-300 hover:bg-blue-600"
                 >
-                  Add Budget Plan
+                  Add Transaction
                 </button>
               </form>
             </div>
@@ -294,18 +313,17 @@ const BudgetPlan = () => {
                   >
                     <div className="flex justify-between items-center">
                       <p className="text-lg font-semibold">
-                        ₹{transaction.amount} - {transaction.category?.name}
+                        Limit: ₹{transaction.limit}
                       </p>
                       <p className="text-sm text-gray-500">
-                        Next Due: {formatDate(transaction.nextDueDate)}
+                        <span>{transaction.categoryId?.name}</span>
+                        <span>{transaction.categoryId?.icon}</span>
                       </p>
                     </div>
                     <p className="text-gray-700 mt-2">{transaction.note}</p>
-                    <Link to={`/card/${transaction._id}`}>
-                      <button className="mt-2 text-blue-500 hover:text-blue-700 border border-blue-500 py-1 px-3 rounded-full focus:ring-2 focus:ring-blue-500 transition duration-300">
-                        Manage
-                      </button>
-                    </Link>
+                    <p className="text-sm text-gray-500">
+                      Due on: {formatDate(transaction.nextDueDate)}
+                    </p>
                   </li>
                 ))}
               </ul>

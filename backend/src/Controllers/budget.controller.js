@@ -7,7 +7,10 @@ import { ApiResponse } from "../Utils/ApiResponse.js";
 const createBudget = asyncHandler(async (req, res) => {
   const { category, limit, period } = req.body;
   const userId = req.user._id;
-
+  console.log("category: " + category);
+  console.log("limit:",limit);
+  console.log("period:",period);
+  
   const categoryId = await Category.findOne({ userId, name: category });
   if (!categoryId) {
     return res.status(404).json({

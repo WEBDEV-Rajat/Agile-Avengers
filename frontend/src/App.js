@@ -22,6 +22,7 @@ import Recard from "./HomePage/RecurringTransaction/Recard";
 
 import IncomeCategories from "./HomePage/IncomeCategories/IncomeCategories";
 import ExpenseCategories from "./HomePage/ExpenseCategories/ExpenseCategories";
+import UpdatePage from "./HomePage/BudgetPlan/UpdatePage";
 function App() {
   return (
     <div className="App">
@@ -45,6 +46,7 @@ function App() {
         <Route path="/expense-categories" element={<ExpenseCategories/>}/>
         <Route path="/transaction/:id" element={<TransactionDetails />} />
         <Route path="/card/:id" element={<Recard />} />
+        <Route path="/budget/:id" element={<UpdatePage/>} />
       </Routes>
       <ToastContainer position="top-right" theme="dark" />
     </div>
