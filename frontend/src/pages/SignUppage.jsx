@@ -45,7 +45,7 @@ const SignUppage = () => {
     }
     if (isAuthenticated) {
       toast.success("Registered successfully");
-      navigateTo("/");
+      navigateTo("/dashboard");
     }
   }, [dispatch, error, isAuthenticated, navigateTo]);
 

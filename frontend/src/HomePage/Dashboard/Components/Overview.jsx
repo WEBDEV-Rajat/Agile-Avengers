@@ -100,69 +100,64 @@ const Overview = () => {
   const incomeOptions = {
     title: "Incomes By Category",
     pieHole: 0.4,
-    is3D: false,
+    is3D: true,
   };
 
   const expenseOptions = {
     title: "Expenses By Category",
     pieHole: 0.4,
-    is3D: false,
+    is3D: true,
   };
 
   return (
-    <div className="overview">
+    <div className="mt-[130px] ">
       <div className="calendar">
-        <h1>Overview</h1>
+        <h1 className="text-green-700 text-2xl mb-5 ml-5 font-semibold">Overview</h1>
       </div>
-      <div className="incexpbal">
-        <div className="Income">
-          <img src={img1} alt="Income" />
-          <div className="Amount">
-            <p>Income</p>
+      <div className="grid md:grid-cols-3 gap-5 sm:grid-cols-1 ml-5 mr-5 translate-y-3">
+        <div className="border-2 border-green-400 rounded-lg">
+          <img src={img1} alt="Income" className="float-left w-[90px] h-[90px] ml-2"   />
+          <div className="font-semibold text-xl flex flex-col mt-5 items-center text-green-600">
+            <p className="text-green-600">Income</p>
             <h2>₹{data.totalIncome}</h2>
           </div>
         </div>
-        <div className="Expense">
-          <img src={img2} alt="Expense" />
-          <div className="Amount">
-            <p>Expense</p>
+        <div className="border-2 border-red-400 rounded-lg">
+          <img src={img2} alt="Expense" className="float-left w-[90px] h-[90px] ml-2" />
+          <div className="font-semibold text-xl flex flex-col mt-5 items-center text-red-600">
+            <p className="text-red-600">Expense</p>
             <h2>₹{data.totalExpense}</h2>
           </div>
         </div>
-        <div className="Balance">
-          <img src={img3} alt="Balance" />
-          <div className="Amount">
-            <p>Balance</p>
+        <div className="border-2 border-blue-400 rounded-lg">
+          <img src={img3} alt="Balance" className="float-left w-[90px] h-[90px] ml-2" />
+          <div className="font-semibold text-xl flex flex-col mt-5 items-center text-blue-600">
+            <p className="text-blue-600">Balance</p>
             <h2>₹{data.difference}</h2>
           </div>
         </div>
       </div>
-
-      <div className="incexpbycat">
-        <div className="incbycat">
-          <div className="incomes">
+        <div className="w-full grid md:grid-cols-2 translate-y-7 mt-5 ">
+          <div className="ml-2 mr-2 border border-gray-500 rounded-lg flex items-center justify-center">
             <Chart
               chartType="PieChart"
-              width="100%"
-              height="299px"
+              width="95%"
+              height="290px"
               data={income}
               options={incomeOptions}
             />
           </div>
-        </div>
-        <div className="expbycat">
-          <div className="expenses">
+          <div className="ml-2 mr-2 border border-gray-500 rounded-lg flex items-center justify-center">
             <Chart
               chartType="PieChart"
-              width="100%"
-              height="299px"
+              width="95%"
+              height="290px"
               data={expense}
               options={expenseOptions}
-            />
+              />
+          </div>
           </div>
         </div>
-      </div>
-    </div>
   );
 };
 

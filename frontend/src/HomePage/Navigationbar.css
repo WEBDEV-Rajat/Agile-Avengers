@@ -1,4 +1,4 @@
-*{
+/* *{
     margin : 0;
     padding : 0;
     box-sizing : border-box;
@@ -44,7 +44,7 @@
 .logout {
     margin-inline-start: auto;
     margin-inline-end: 5%;
-}
+} */
 
 
 
