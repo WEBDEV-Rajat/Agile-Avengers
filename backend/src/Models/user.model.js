@@ -45,10 +45,6 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-<<<<<<< HEAD
-
-=======
->>>>>>> bb5514c542b9c3c2e08baff2e34d38b4d1b79855
 UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   
