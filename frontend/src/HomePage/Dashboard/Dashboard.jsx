@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Navigationbar from "../Navigationbar";
-import "./Dashboard.css";
 import Overview from "./Components/Overview";
 import History from "./Components/History";
 import { useDispatch, useSelector } from "react-redux";
@@ -147,12 +146,12 @@ const Dashboard = () => {
     fetchData();
   }, []);
   return (
-    <div className="dashboard">
+    <div>
       <Navigationbar />
-      <div className="Hellouser">
-        <h1 className="hello">Hello, {x?.name || "A"}!</h1>
-        <div className="buttons">
-          <button className="income" onClick={openIncomePopup}>
+      <div className="relative top-[110px] flex flex-row justify-between font-semibold border-b border-b-slate-400 max-[530px]:flex-col max-[530px]:w-full">
+        <h1 className="text-green-700 text-2xl ml-5 mb-4">Welcome, {x?.name || "A"}!</h1>
+        <div className="flex gap-14 mr-7 max-[530px]:gap-5 mt-3">
+          <button className="bg-[#0f664f] text-white rounded-lg pt-2 pb-2 pl-3 pr-3 shadow-md border-2 border-green-500 mb-1 -translate-y-4 max-[530px]:ml-5" onClick={openIncomePopup}>
             New Income
           </button>
           {isIncomeOpen && (
@@ -220,7 +219,7 @@ const Dashboard = () => {
             </div>
           )}
 
-          <button className="expense" onClick={openExpensePopup}>
+          <button className="bg-[#4b0519] text-white rounded-lg pt-1 pb-1 pl-3 pr-3 shadow-md border-2 border-[#de164f] mb-1 -translate-y-4" onClick={openExpensePopup}>
             New Expense
           </button>
           {isExpenseOpen && (
@@ -292,8 +291,8 @@ const Dashboard = () => {
           )}
         </div>
       </div>
-      <Overview />
-      <History />
+        <Overview />
+        <History />
     </div>
   );
 };

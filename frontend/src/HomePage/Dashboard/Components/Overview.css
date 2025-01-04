@@ -1,4 +1,4 @@
-.overview{
+ /* .overview{
     height : 530px;
     margin-top : 20px;
     border-bottom: 1px solid rgba(159, 159, 159, 0.429);
@@ -45,16 +45,9 @@ p{
     width : 30%;
     border-radius: 10px;
     box-shadow: 5px 5px 5px rgba(188, 188, 188, 0.591);
-}
-img{
-    float: left;
-    margin: 2px 10px;
-    width : 90px;
-    height : 90px;
-    z-index : 100;
-    border-radius: 20px;
-}
-.incexpbycat{
+} */
+
+/* .incexpbycat{
     margin-top: 30px;
     display : flex;
     gap : 20px;
@@ -65,25 +58,16 @@ img{
 .incexpbycat .p1{
     margin : 20px;
     color : rgb(75, 75, 75);
-}
+} 
 
 .incbycat{
- width : 48%;
- font-size : 20px;
+ width : 48%;   
  margin-left : 1%;
- font-weight : 400;
- border-radius: 10px;
- border: 1px solid rgba(188, 188, 188, 0.591);
  box-shadow: 5px 5px 5px rgba(188, 188, 188, 0.591);
  
 }
 .expbycat{
   width : 48%;
-  font-size: 20px;
-  font-weight : 400;
-  border: 1px solid rgba(188, 188, 188, 0.591);
-  color : green;
-  border-radius: 10px;
   box-shadow: 5px 5px 5px rgba(188, 188, 188, 0.591);
 }
 
@@ -120,5 +104,5 @@ img{
   .incexpbycat .incomes div, .expbycat .expenses div {
     margin: 10px;
     text-align: center;
-  }
+  } */
   

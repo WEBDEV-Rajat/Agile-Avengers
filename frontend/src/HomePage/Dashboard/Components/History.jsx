@@ -1,4 +1,4 @@
-import "./History.css";
+
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -62,8 +62,8 @@ const History = () => {
   }, [type]);
 
   return (
-    <div className="history p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold  mb-6 text-gray-800">History</h1>
+    <div className="relative top-16 p-6 min-h-screen">
+      <h1 className="text-2xl font-semibold text-green-700 mb-4">History</h1>
 
       <div className="filters flex  space-x-4 mb-6">
         <select

@@ -12,7 +12,7 @@ function Card({ _id, type, category, amount, date }) {
           <span className="text-blue-600">{category?.name || "No Category"}</span> -{" "}
           <span className="text-blue-600">{category?.icon || ""}</span> -{" "}
 
-          <span className="text-green-600 font-semibold"> ₹{amount}</span> -{" "}
+          <span className={type === "expense" ? "text-red-600" : "text-green-600 font-semibold"}> ₹{amount}</span> -{" "}
           <span className="text-gray-500">{new Date(date).toLocaleDateString()}</span>
         </p>
       </Link>

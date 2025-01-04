@@ -1,49 +1,58 @@
-import React from "react";
-import "./Navbar.css";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { logout } from "../../redux/Slices/user.slices";
-import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
+import { EllipsisVertical } from "lucide-react";
 
 const Navbar = () => {
-  const { loading, isAuthenticated, error } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
+  const [Navbar, setNavbar] = useState(false);
+  
 
-  const handleLogout = () => {
-    dispatch(logout());
-    toast.success("Logged out successfully.");
+  const toggleNavbar = () => {
+    setNavbar(!Navbar);
   };
 
   return (
-    <div className="container">
-        <div className="glass">
-          <nav>
-            <h1 >
+    <div className="fixed top-0 z-50 w-full h-20 flex flex-row bg-gradient-to-r m-auto from-[#ADEDF0] from-50% to-[#82DF90] to-50% shadow-md">
+        <div className="w-full">
+          <nav className=" w-full h-20 flex flex-row justify-around items-center font-semibold max-[768px]:justify-between">
+            <h1 className="text-orange-500 text-2xl p-5">
               <Link  to="/">ExpenseGuru</Link>
             </h1>
+            <div className="w-full h-20 flex flex-row justify-around items-center font-semibold max-[768px]:hidden">
+            <h1>
+              <Link to="/features" className="p-3 rounded-lg hover:bg-[#fcfbfa]">Features</Link>
+            </h1>
+            <h1>
+              <Link to="/testimonials" className="p-3 rounded-lg hover:bg-[#fcfbfa]">Testimonials</Link>
+            </h1>
+            <h1>
+              <Link to="/about-us" className="p-3 rounded-lg hover:bg-[#fcfbfa] ">About Us</Link>
+            </h1>
             <h1 >
-              <Link to="/features">Features</Link>
+              <Link to="/contact-us" className="p-3 rounded-lg hover:bg-[#fcfbfa] ">Contact Us</Link>
             </h1>
             <h1>
-              <Link to="/testimonials">Testimonials</Link>
-            </h1>
-            <h1>
-              <Link to="/about-us">About Us</Link>
-            </h1>
-            <h1>
-              <Link to="/contact-us">Contact Us</Link>
-            </h1>
-            <h1>
-              {isAuthenticated ? (
-                <button onClick={handleLogout}>Logout</button>
-              ) : (
-                <div className="get-started">
-                  <Link to="/login">Login</Link>
-                  <span> / </span>
-                  <Link to="/register">Get Started</Link>
+                <div className="p-3 rounded-lg text-white bg-blue-600 hover:bg-blue-700 cursor-pointer">
+                  <Link to="/login" className="">Sign In </Link>
+                  <span>/</span>
+                  <Link to="/register" className=""> Sign Up</Link>
                 </div>
-              )}
             </h1>
+            
+            </div>
+            {Navbar && (
+              <div className="md:hidden transition-all bg-slate-100 absolute top-[70px] right-5 rounded-lg p-2">
+              <ul className="flex flex-col gap-5 ml-2 p-2">
+                <Link to="/features" className="border border-b-black p-1 bg-slate-200 hover:bg-slate-400 rounded-lg text-lg">Features</Link>
+                <Link to="/testimonials" className="border border-b-black p-1 bg-slate-200 hover:bg-slate-400 rounded-lg text-lg">Testimonials</Link>
+                <Link to="/about" className="border border-b-black p-1 bg-slate-200 hover:bg-slate-400 rounded-lg text-lg">About Us</Link>
+                <Link to="/contact" className="border border-b-black p-1 bg-slate-200 hover:bg-slate-400 rounded-lg text-lg">Contact Us</Link>
+                <Link to="/login" className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-md text-lg">Sign In / Sign Up</Link>
+              </ul>
+              </div>
+            )}
+            <EllipsisVertical className="hidden max-[768px]:block transition-all" onClick={toggleNavbar}/>
+            
           </nav>
         </div>
       </div>
