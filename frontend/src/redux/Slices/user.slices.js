@@ -209,7 +209,7 @@ export const resetPassword = (data) => async (dispatch) => {
 };
 
 
-export const getUser = () => async (dispatch) => {
+export const GetUser = () => async (dispatch) => {
   dispatch(userSlice.actions.fetchUserRequest());
   try {
     const response = await axios.get(
