@@ -7,14 +7,15 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { Chart } from "react-google-charts";
-
-const Overview = () => {
+import {GetUser} from "../../../redux/Slices/user.slices.js";
+const Overview = ({getUser,incomeHandler,expenseHandler}) => {
   const { user } = useSelector((state) => state.user);
   const [data, setData] = useState(null);
   const [expense, setExpense] = useState([["Category", "Amount"]]);
   const [income, setIncome] = useState([["Category", "Amount"]]);
-
+const dispatch = useDispatch();
   useEffect(() => {
+    
     const fetchData = async () => {
       try {
         const response = await axios.get(
@@ -41,7 +42,7 @@ const Overview = () => {
         );
         const incomeData = response.data.data || [];
 
-        // Check and transform income data to the format required by Google Charts
+   
         const transformedIncome = [["Category", "Amount"]];
         incomeData.forEach((item) => {
           if (item.category && typeof item.total === "number") {
@@ -70,7 +71,7 @@ const Overview = () => {
         );
         const expenseData = response.data.data || [];
 
-        // Check and transform expense data to the format required by Google Charts
+   
         const transformedExpense = [["Category", "Amount"]];
         expenseData.forEach((item) => {
           if (item.category && typeof item.total === "number") {
@@ -91,7 +92,7 @@ const Overview = () => {
     fetchData();
     fetchIncome();  
     fetchExpense();
-  }, []);
+  }, [incomeHandler,expenseHandler,getUser]);
 
   if (!data || income.length <= 1 || expense.length <= 1) {
     return <div>Loading...</div>;

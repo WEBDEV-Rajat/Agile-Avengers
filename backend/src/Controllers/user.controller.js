@@ -13,13 +13,17 @@ const options = {
 const registerUser = asyncHandler(async (req, res) => {
   const { email, fullName, password, name } = req.body;
 
-  if (!email ||!fullName||! password||!name) {
-    return res.status(400).json(new ApiResponse(400, null, "All fields are required"));
+  if (!email || !fullName || !password || !name) {
+    return res
+      .status(400)
+      .json(new ApiResponse(400, null, "All fields are required"));
   }
 
   const existingUser = await User.findOne({ email });
   if (existingUser) {
-    return res.status(400).json(new ApiResponse(400, null, "Email is already registered"));
+    return res
+      .status(400)
+      .json(new ApiResponse(400, null, "Email is already registered"));
   }
 
   const newUser = await User.create({
@@ -40,24 +44,38 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, googleId } = req.body;
+  console.log("jdasvhjdsjsdhvsufcuifgcuif");
 
-  if (!email || !password) {
-    return res.status(400).json(new ApiResponse(400, null, "All fields are required"));
+  let user;
+
+  if (googleId) {
+    user = await User.findOne({ googleId });
+  } else if (email && password) {
+    user = await User.findOne({ email });
+    if (!user) {
+      return res
+        .status(401)
+        .json(new ApiResponse(401, null, "Email is not registered"));
+    }
+    if (!(await user.isPasswordCorrect(password))) {
+      return res
+        .status(401)
+        .json(new ApiResponse(401, null, "Incorrect password"));
+    }
   }
+  console.log("user: ", user);
 
-  const user = await User.findOne({ email });
   if (!user) {
-    return res.status(401).json(new ApiResponse(401, null, "Email is not registered"));
-  }
-  if (!(await user.isPasswordCorrect(password))) {
-    return res.status(401).json(new ApiResponse(401, null, "Incorrect password"));
+    return res
+      .status(401)
+      .json(new ApiResponse(401, null, "Invalid credentials"));
   }
 
   const accessToken = user.generateAccessToken();
   const refreshToken = user.generateRefreshToken();
-  console.log("user:",user);
-  
+  console.log("user:", user);
+
   res
     .status(200)
     .cookie("accessToken", accessToken, options)
@@ -78,29 +96,41 @@ const changePassword = asyncHandler(async (req, res) => {
   const userId = req.user._id;
 
   if (!oldPassword || !newPassword) {
-    return res.status(400).json(new ApiResponse(400, null, "Old password and new password are required"));
+    return res
+      .status(400)
+      .json(
+        new ApiResponse(400, null, "Old password and new password are required")
+      );
   }
 
   const user = await User.findById(userId);
   if (!user || !(await user.isPasswordCorrect(oldPassword))) {
-    return res.status(401).json(new ApiResponse(401, null, "Old password is incorrect"));
+    return res
+      .status(401)
+      .json(new ApiResponse(401, null, "Old password is incorrect"));
   }
 
   user.password = newPassword;
   await user.save();
-  return res.status(200).json(new ApiResponse(200, user, "Password changed successfully"));
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Password changed successfully"));
 });
 
 const refreshToken = asyncHandler(async (req, res) => {
   const { refreshToken: token } = req.cookies;
 
   if (!token) {
-    return res.status(401).json(new ApiResponse(401, null, "Refresh token not provided"));
+    return res
+      .status(401)
+      .json(new ApiResponse(401, null, "Refresh token not provided"));
   }
 
   jwt.verify(token, process.env.JWT_REFRESH_SECRET, async (err, decoded) => {
     if (err) {
-      return res.status(403).json(new ApiResponse(403, null, "Invalid or expired refresh token"));
+      return res
+        .status(403)
+        .json(new ApiResponse(403, null, "Invalid or expired refresh token"));
     }
 
     const user = await User.findById(decoded.userId);
@@ -109,12 +139,23 @@ const refreshToken = asyncHandler(async (req, res) => {
     }
 
     if (user.refreshToken !== token) {
-      return res.status(403).json(new ApiResponse(403, null, "Refresh token does not match"));
+      return res
+        .status(403)
+        .json(new ApiResponse(403, null, "Refresh token does not match"));
     }
 
     const newAccessToken = user.generateAccessToken();
 
-    res.status(200).cookie("accessToken", newAccessToken, options).json(new ApiResponse(200, { accessToken: newAccessToken }, "New access token generated"));
+    res
+      .status(200)
+      .cookie("accessToken", newAccessToken, options)
+      .json(
+        new ApiResponse(
+          200,
+          { accessToken: newAccessToken },
+          "New access token generated"
+        )
+      );
   });
 });
 
@@ -191,7 +232,9 @@ const forgotPassword = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    return res.status(404).json(new ApiResponse(404, null, "This email is not registered"));
+    return res
+      .status(404)
+      .json(new ApiResponse(404, null, "This email is not registered"));
   }
 
   const resetToken = crypto.randomBytes(20).toString("hex");
@@ -208,18 +251,24 @@ const forgotPassword = asyncHandler(async (req, res) => {
     htmlContent: generateResetEmail(resetUrl),
   });
 
-  res.status(200).json(new ApiResponse(200, null, "Password reset link sent to email"));
+  res
+    .status(200)
+    .json(new ApiResponse(200, null, "Password reset link sent to email"));
 });
 
 const getUser = asyncHandler(async (req, res) => {
   const userId = req.user._id;
-  const user = await User.findById(userId).select("-password -createdAt -updatedAt");
+  const user = await User.findById(userId).select(
+    "-password -createdAt -updatedAt"
+  );
 
   if (!user) {
     return res.status(404).json(new ApiResponse(404, null, "User not found"));
   }
 
-  res.status(200).json(new ApiResponse(200, user, "User retrieved successfully"));
+  res
+    .status(200)
+    .json(new ApiResponse(200, user, "User retrieved successfully"));
 });
 
 const resetPassword = asyncHandler(async (req, res) => {
@@ -232,7 +281,9 @@ const resetPassword = asyncHandler(async (req, res) => {
   });
 
   if (!user) {
-    return res.status(404).json(new ApiResponse(404, null, "Invalid or expired reset token"));
+    return res
+      .status(404)
+      .json(new ApiResponse(404, null, "Invalid or expired reset token"));
   }
 
   user.password = password;
@@ -240,9 +291,11 @@ const resetPassword = asyncHandler(async (req, res) => {
   user.resetPasswordExpires = undefined;
   await user.save();
 
-  res.status(200).json(new ApiResponse(200, null, "Password has been reset successfully"));
+  res
+    .status(200)
+    .json(new ApiResponse(200, null, "Password has been reset successfully"));
 });
-
+// const GoogleLogin =
 export {
   registerUser,
   loginUser,

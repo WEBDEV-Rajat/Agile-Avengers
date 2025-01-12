@@ -220,6 +220,7 @@ const transactionDetails = asyncHandler(async (req, res) => {
 
 const totalTransaction = asyncHandler(async (req, res) => {
   const userId = req.user._id;
+console.log("Transaction details retrieved successfully");
 
   const transactions = await Transaction.find({ userId });
 
@@ -331,6 +332,7 @@ const getincomePercentage = asyncHandler(async (req, res) => {
       new ApiResponse(200, categoryPercentages, "Data fetched successfully")
     );
 });
+
 const getExpensePercentage = asyncHandler(async (req, res) => {
   const userId = req.user._id;
 

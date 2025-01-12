@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Card from "./Card";
-const History = () => {
+const History = ({getUser}) => {
   const [history, setHistory] = useState([]);
   const [category, setCategory] = useState("all");
   const [type, setType] = useState("all");
@@ -31,7 +31,7 @@ const History = () => {
       }
     };
     fetchHistory();
-  }, [type, category]);
+  }, [type, category,getUser]);
 
   useEffect(() => {
     const fetchCategories = async () => {

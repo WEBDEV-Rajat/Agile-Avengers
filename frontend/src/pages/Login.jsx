@@ -7,6 +7,7 @@ import {
   forgotPassword,
 } from "../redux/Slices/user.slices.js";
 import { toast } from "react-toastify";
+import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -26,7 +27,10 @@ const Login = () => {
     formData.append("password", password);
     dispatch(login(formData));
   };
-
+  const handleGoogleLoginSuccess = () => {
+    window.open("http://localhost:5000/auth/google/callback", "_self");
+    // dispatch(login({ googleToken: token }));
+  };
   useEffect(() => {
     if (error) {
       toast.error(error);
@@ -82,6 +86,18 @@ const Login = () => {
           >
             {loading ? "Loading..." : "Login"}
           </button>
+          <div className="mt-6 flex items-center justify-center">
+            <span className="text-gray-600">Or</span>
+          </div>
+          <div className="mt-4">
+            <button
+              onClick={handleGoogleLoginSuccess}
+              className="flex items-center justify-center w-full py-2 border border-gray-300 rounded-md hover:bg-gray-100 transition duration-300"
+            >
+              <FcGoogle className="mr-2 text-xl" />
+              Login with Google
+            </button>
+          </div>
           <div className="mt-4 text-center">
             <Link
               to={"/forgot-password"}
