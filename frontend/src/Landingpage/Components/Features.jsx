@@ -8,9 +8,9 @@ import img6 from "../Assets/feature-img-6-dod.webp";
 
 const Features = () => {
   return (
-    <div className="mt-20">
-      <h1 className='text-center text-3xl font-semibold text-[#0D5B19]'>Features</h1>
-      <div className='grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-10 m-10'>
+    <div className="mt-20"> 
+      <h1 className='text-center text-3xl font-bold text-[#0D5B19]'>Features</h1>
+      <div className='grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-10 m-10 pb-10 border-b'>
         <div>
           <div className='flex bg-slate-100 p-2 border border-slate-400 rounded-3xl shadow-lg'>
           <img src={img1} alt="" className='float-left border border-slate-400 z-10 w-[100px] h-[100px] mr-5 rounded-lg' />

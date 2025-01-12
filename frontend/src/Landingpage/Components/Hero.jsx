@@ -6,7 +6,7 @@ const Hero = () => {
   return (
     <div className="relative top-14 w-full h-auto p-10 bg-gradient-to-r m-auto from-[#ADEDF0] from-50% to-[#82DF90] to-50%">
     <div className="flex flex-row w-full h-auto text-xl">
-      <div className='ml-5 mr-15 w-1/2 float-left mt-2 max-[768px]:ml-0 '>
+      <div className='ml-5 mr-15 w-1/2 float-left mt-5 max-[768px]:ml-0 '>
       <div className='flex flex-col gap-5'>
       <h1 className='text-4xl font-semibold tracking-wider text-[#0D5B19] max-[640px]:text-2xl max-[430px]:text-xl max-[375px]:text-base'>Empower Your</h1>
       <h1 className='text-4xl font-semibold tracking-wider text-[#26A038] max-[640px]:text-2xl max-[430px]:text-xl max-[375px]:text-base'>Finances</h1> 
