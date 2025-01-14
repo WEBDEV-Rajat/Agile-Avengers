@@ -8,6 +8,8 @@ import {
 } from "../redux/Slices/user.slices.js";
 import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
+import { WiDirectionLeft } from "react-icons/wi";
+import Footer from "../Landingpage/Components/Footer.jsx"
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -27,10 +29,11 @@ const Login = () => {
     formData.append("password", password);
     dispatch(login(formData));
   };
+
   const handleGoogleLoginSuccess = () => {
     window.open("http://localhost:5000/auth/google/callback", "_self");
-    // dispatch(login({ googleToken: token }));
   };
+
   useEffect(() => {
     if (error) {
       toast.error(error);
@@ -43,15 +46,22 @@ const Login = () => {
   }, [dispatch, error, isAuthenticated, navigateTo]);
 
   return (
-    <section className="flex items-center justify-center h-screen bg-gray-100">
+    <div>
+    <Link to="/" className="absolute p-2 flex bg-black text-white mt-4 ml-4">
+    <WiDirectionLeft size={25} />
+    <p className="font-semibold">Back To Home Page</p>
+    </Link>
+    <section className="flex items-center justify-center h-screen bg-gradient-to-r from-blue-100 to-green-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <div className="mb-6 text-center">
-          <h3 className="text-2xl font-semibold">Login</h3>
+          <h3 className="text-3xl font-semibold text-blue-600">Welcome Back!</h3>
         </div>
         <form onSubmit={handleLogin}>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Email Address</label>
-            <div className="flex items-center border border-gray-300 rounded-md">
+            <label className="block text-blue-600 font-medium mb-2">
+              Email Address
+            </label>
+            <div className="flex items-center border border-blue-300 rounded-md">
               <input
                 type="email"
                 placeholder="youremail@gmail.com"
@@ -63,8 +73,10 @@ const Login = () => {
             </div>
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Password</label>
-            <div className="flex items-center border border-gray-300 rounded-md">
+            <label className="block text-blue-600 font-medium mb-2">
+              Password
+            </label>
+            <div className="flex items-center border border-blue-300 rounded-md">
               <input
                 type="password"
                 placeholder="Your Password"
@@ -72,7 +84,7 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 className="flex-1 p-2 focus:outline-none"
                 required
-              />
+                />
             </div>
           </div>
           <button
@@ -80,10 +92,10 @@ const Login = () => {
             disabled={loading}
             className={`w-full py-2 rounded-md transition duration-300 ${
               loading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-500 text-white hover:bg-blue-600"
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-blue-500 text-white hover:bg-blue-700"
             }`}
-          >
+            >
             {loading ? "Loading..." : "Login"}
           </button>
           <div className="mt-6 flex items-center justify-center">
@@ -92,8 +104,8 @@ const Login = () => {
           <div className="mt-4">
             <button
               onClick={handleGoogleLoginSuccess}
-              className="flex items-center justify-center w-full py-2 border border-gray-300 rounded-md hover:bg-gray-100 transition duration-300"
-            >
+              className="flex items-center justify-center w-full py-2 border border-gray-300 rounded-md hover:bg-green-100 transition duration-300"
+              >
               <FcGoogle className="mr-2 text-xl" />
               Login with Google
             </button>
@@ -102,19 +114,22 @@ const Login = () => {
             <Link
               to={"/forgot-password"}
               className="text-blue-500 hover:underline"
-            >
+              >
               Forgot Password?
             </Link>
           </div>
           <div className="mt-4 text-center">
-            <Link to={"/register"} className="text-blue-500 hover:underline">
+            <Link to={"/register"} className="text-white bg-green-600 p-2 rounded-md hover:bg-green-700">
               Create an Account
             </Link>
           </div>
         </form>
       </div>
     </section>
+    <Footer/>
+    </div>
   );
 };
 
 export default Login;
+

@@ -4,7 +4,7 @@ import img from "../Assets/contact.png";
 
 const ContactUs = () => {
   return (
-    <section className="bg-white pb-8">
+    <section className="bg-white pb-8" id='contact-us'>
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center text-[#0D5B19] mb-8">Get in Touch</h2>
         <form className="max-w-[900px] mx-auto bg-slate-100 p-6 rounded-lg shadow-lg border">

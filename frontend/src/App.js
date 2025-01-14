@@ -19,7 +19,6 @@ import TransactionDetails from "./HomePage/Dashboard/Components/TransactionDetai
 import Analysis from "./HomePage/Transactions/Transactions";
 import RecurringTransaction from "./HomePage/RecurringTransaction/RecurringTransaction";
 import Recard from "./HomePage/RecurringTransaction/Recard";
-
 import IncomeCategories from "./HomePage/IncomeCategories/IncomeCategories";
 import ExpenseCategories from "./HomePage/ExpenseCategories/ExpenseCategories";
 import UpdatePage from "./HomePage/BudgetPlan/UpdatePage";
