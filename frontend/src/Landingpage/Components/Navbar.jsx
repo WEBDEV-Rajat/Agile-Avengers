@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { EllipsisVertical } from "lucide-react";
+import {RxCross2, RxHamburgerMenu} from "react-icons/rx"
 
 const Navbar = () => {
   const [Navbar, setNavbar] = useState(false);
+
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   
 
   const toggleNavbar = () => {
     setNavbar(!Navbar);
+    setIsNavbarOpen(!isNavbarOpen);
   };
 
   return (
-    <div className="fixed top-0 z-50 w-full h-20 flex flex-row bg-gradient-to-r m-auto from-[#ADEDF0] from-50% to-[#82DF90] to-50% shadow-md">
+    <div className="fixed top-0 z-50 w-full h-20 flex flex-row bg-green-300 shadow-md">
         <div className="w-full">
           <nav className=" w-full h-20 flex flex-row justify-around items-center font-semibold max-[768px]:justify-between">
             <h1 className="text-orange-500 text-2xl p-5">
@@ -20,16 +22,16 @@ const Navbar = () => {
             </h1>
             <div className="w-full h-20 flex flex-row justify-around items-center font-semibold max-[768px]:hidden">
             <h1>
-              <Link to="/features" className="p-3 rounded-lg hover:bg-[#fcfbfa]">Features</Link>
+              <Link to="#features" className="p-3 rounded-lg hover:bg-[#fcfbfa]">Features</Link>
             </h1>
             <h1>
-              <Link to="/testimonials" className="p-3 rounded-lg hover:bg-[#fcfbfa]">Testimonials</Link>
+              <Link to="#testimonials" className="p-3 rounded-lg hover:bg-[#fcfbfa]">Testimonials</Link>
             </h1>
             <h1>
               <Link to="/about-us" className="p-3 rounded-lg hover:bg-[#fcfbfa] ">About Us</Link>
             </h1>
             <h1 >
-              <Link to="/contact-us" className="p-3 rounded-lg hover:bg-[#fcfbfa] ">Contact Us</Link>
+              <Link to="#contact-us" className="p-3 rounded-lg hover:bg-[#fcfbfa] ">Contact Us</Link>
             </h1>
             <h1>
                 <div className="p-3 rounded-lg text-white bg-blue-600 hover:bg-blue-700 cursor-pointer">
@@ -51,8 +53,14 @@ const Navbar = () => {
               </ul>
               </div>
             )}
-            <EllipsisVertical className="hidden max-[768px]:block transition-all" onClick={toggleNavbar}/>
-            
+            {isNavbarOpen ? (
+              <>
+               <RxCross2 size={25} className="mr" onClick={toggleNavbar}/>
+              </>
+            ) : 
+            (<>
+            <RxHamburgerMenu size={25} className="hidden max-[768px]:block transition-all mr-5" onClick={toggleNavbar}/>
+            </>)}
           </nav>
         </div>
       </div>

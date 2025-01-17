@@ -112,7 +112,7 @@ const dispatch = useDispatch();
 
   return (
     <div className="mt-[130px] ">
-      <div className="calendar">
+      <div>
         <h1 className="text-green-700 text-2xl mb-5 ml-5 font-semibold">Overview</h1>
       </div>
       <div className="grid md:grid-cols-3 gap-5 sm:grid-cols-1 ml-5 mr-5 translate-y-3">
@@ -149,7 +149,7 @@ const dispatch = useDispatch();
             />
           </div>
           <div className="ml-2 mr-2 border border-gray-500 rounded-lg flex items-center justify-center">
-            <Chart
+          <Chart
               chartType="PieChart"
               width="95%"
               height="290px"
