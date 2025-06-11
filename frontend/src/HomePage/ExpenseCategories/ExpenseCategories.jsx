@@ -21,7 +21,7 @@ const ExpenseCategories = () => {
       }
     };
     getCategories();
-  }, []);
+  }, [categories]);
 
   const handleDeleteCategory = async (categoryId) => {
     try {

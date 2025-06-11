@@ -86,6 +86,14 @@ const Login = () => {
                 required
                 />
             </div>
+            <div className="mt-2">
+            <Link
+              to={"/forgot-password"}
+              className="text-blue-500 hover:underline"
+              >
+              Forgot Password?
+            </Link>
+          </div>
           </div>
           <button
             type="submit"
@@ -110,15 +118,9 @@ const Login = () => {
               Login with Google
             </button>
           </div>
+          
           <div className="mt-4 text-center">
-            <Link
-              to={"/forgot-password"}
-              className="text-blue-500 hover:underline"
-              >
-              Forgot Password?
-            </Link>
-          </div>
-          <div className="mt-4 text-center">
+            <span className="text-gray-600 mr-4">Don't have an account? </span>
             <Link to={"/register"} className="text-white bg-green-600 p-2 rounded-md hover:bg-green-700">
               Create an Account
             </Link>

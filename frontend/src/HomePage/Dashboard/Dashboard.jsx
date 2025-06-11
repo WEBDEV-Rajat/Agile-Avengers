@@ -479,7 +479,7 @@ const Dashboard = () => {
 
     fetchIncomeCategories();
     fetchExpenseCategories();
-  }, []); 
+  }, [incomecategories, expensecategories]); 
 
   return (
     <div>

@@ -31,7 +31,7 @@ const History = ({getUser}) => {
       }
     };
     fetchHistory();
-  }, [type, category,getUser]);
+  }, [type, category, getUser]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -65,7 +65,7 @@ const History = ({getUser}) => {
     <div className="relative top-16 p-6 min-h-screen">
       <h1 className="text-2xl font-semibold text-green-700 mb-4">History</h1>
 
-      <div className="filters flex  space-x-4 mb-6">
+      <div className="filters flex space-x-4 mb-6">
         <select
           onChange={(e) => setCategory(e.target.value)}
           value={category}

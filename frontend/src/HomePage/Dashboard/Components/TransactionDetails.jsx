@@ -137,7 +137,7 @@ function TransactionDetails() {
                 </select>
               ) : (
                 <span className="ml-2 mr-2">
-                  {details.category?.name || "No Category"}
+                  {details.category?.name}
                 </span>
               )}
               <span>{details.category?.icon}</span>

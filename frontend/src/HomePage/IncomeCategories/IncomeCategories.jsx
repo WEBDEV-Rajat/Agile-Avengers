@@ -21,7 +21,7 @@ const IncomeCategories = () => {
       }
     };
     getCategories();
-  }, []);
+  }, [categories]);
 
   const handleDeleteCategory = async (categoryId) => {
     try {

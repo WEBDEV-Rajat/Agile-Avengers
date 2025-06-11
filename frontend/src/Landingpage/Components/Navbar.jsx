@@ -18,7 +18,7 @@ const Navbar = () => {
         <div className="w-full">
           <nav className=" w-full h-20 flex flex-row justify-around items-center font-semibold max-[768px]:justify-between">
             <h1 className="text-orange-500 text-2xl p-5">
-              <Link  to="/">ExpenseGuru</Link>
+            <Link  to="/">ExpenseGuru</Link>
             </h1>
             <div className="w-full h-20 flex flex-row justify-around items-center font-semibold max-[768px]:hidden">
             <h1>
