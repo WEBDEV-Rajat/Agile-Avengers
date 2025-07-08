@@ -2,7 +2,7 @@ import nodeMailer from "nodemailer";
 
 export const sendEmail = async ({ email, subject, htmlContent }) => {
   try {
-    console.log("Setting up mail transporter");
+    // console.log("Setting up mail transporter");
 
     const transporter = nodeMailer.createTransport({
       host: process.env.SMTP_HOST,
@@ -14,7 +14,7 @@ export const sendEmail = async ({ email, subject, htmlContent }) => {
       },
     });
     
-    console.log("Transporter setup complete");
+    // console.log("Transporter setup complete");
 
     const options = {
       from: process.env.SMTP_MAIL,
@@ -23,7 +23,7 @@ export const sendEmail = async ({ email, subject, htmlContent }) => {
       html: htmlContent,
     };
 
-    console.log("Sending mail with options:", options);
+    // console.log("Sending mail with options:", options);
     
     await transporter.sendMail(options);
     console.log("Mail sent successfully");

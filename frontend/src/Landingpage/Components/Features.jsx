@@ -8,7 +8,7 @@ import img6 from "../Assets/feature-img-6-dod.webp";
 
 const Features = () => {
   return (
-    <div className="mt-20 mb-8" id="features">
+   <section id="features" className="scroll-mt-24">
       <h1 className="text-center text-3xl font-bold text-[#0D5B19] mb-10">
         Features
       </h1>
@@ -42,7 +42,7 @@ const Features = () => {
           );
         })}
       </div>
-    </div>
+    </section>
   );
 };
 

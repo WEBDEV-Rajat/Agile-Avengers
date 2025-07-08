@@ -130,6 +130,8 @@ import categoryRouter from "./Routes/category.routes.js";
 import budgetRouter from "./Routes/budget.routes.js";
 import savingRouter from "./Routes/saving.routes.js";
 import pereatingRouter from "./Routes/reoccuring.routes.js";
+import analysisRouter from "./Routes/analysis.routes.js"
+import contactRouter from "./Routes/contactus.routes.js"
 import { runRecurringTransactions } from "./Automation/nodeCron.js";
 
 runRecurringTransactions();
@@ -140,5 +142,6 @@ app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/budget", budgetRouter);
 app.use("/api/v1/saving", savingRouter);
 app.use("/api/v1/reoccuring", pereatingRouter);
-
+app.use("/api/v1/analysis",analysisRouter);
+app.use("/api/v1/contact",contactRouter)
 export { app };

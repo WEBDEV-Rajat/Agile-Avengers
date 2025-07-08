@@ -24,7 +24,8 @@ const Testimonials = () => {
   ];
 
   return (
-    <section className="bg-white py-12" id="testimonials">
+    
+    <section className="bg-white py-12 scroll-mt-24" id="testimonials">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center text-[#0D5B19] mb-12">
           What Our Users Say

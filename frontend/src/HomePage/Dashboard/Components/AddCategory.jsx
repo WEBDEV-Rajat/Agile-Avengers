@@ -3,19 +3,19 @@ import "../Dashboard.css";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const AddCategory = ({ type }) => {
+const AddCategory = ({ type ,onCategoryAdded}) => {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [name, setName] = useState("");
   const [icon, setIcon] = useState("");
 
   const openCategoryPopup = () => setIsCategoryOpen(true);
   const closeCategoryPopup = () => setIsCategoryOpen(false);
-  console.log("ashfdsguidgdsuifguidsguicgdiuf");
+  // console.log("ashfdsguidgdsuifguidsguicgdiuf");
   
   const addCategory = async (e) => {
     e.preventDefault();
     try {
-      console.log("sahfkdu vufdsyufi udsuf");
+      // console.log("sahfkdu vufdsyufi udsuf");
       
       const form = { name, icon, type }; 
       const url = 'http://localhost:5000/api/v1/category/add-category';
@@ -23,13 +23,17 @@ const AddCategory = ({ type }) => {
         withCredentials: true,
         headers: { "Content-Type": "application/json" },
       });
-      console.log("dsgfshgfhjk",response.data); 
+      // console.log("dsgfshgfhjk",response.data); 
       closeCategoryPopup(); 
       toast.success(response.data.message);
+      if(onCategoryAdded){
+        onCategoryAdded();
+      }
     } catch (error) {
       console.error("Error adding category:", error);
       toast.error(error.response.data.message);
     }
+    
   };
 
   return (
