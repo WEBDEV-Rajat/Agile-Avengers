@@ -98,7 +98,7 @@ const AnalysisPage = () => {
 
         <div className="flex gap-4">
           <aside
-            className={`fixed mt-16 top-0 left-0 h-full w-64 bg-white p-4 z-20 transform ${
+            className={`fixed mt-16 top-0 left-0 h-full w-64 bg-white p-4 z-40 transform ${
               sidebarOpen ? "translate-x-0" : "-translate-x-full"
             } md:static md:translate-x-0 md:w-60 md:h-auto border md:border-0 shadow-md md:shadow-none transition-transform duration-300 ease-in-out`}
           >
