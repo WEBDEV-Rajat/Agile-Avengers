@@ -23,8 +23,9 @@ const ContactUs = () => {
       const response = await axios.post("http://localhost:5000/api/v1/contact/us", formData, {
         headers: { "Content-Type": "application/json" },
       });
+      console.log(response);
 
-      toast.success("Message sent successfully!");
+      toast.success(response.data.message);
       setFormData({ name: "", email: "", message: "" });
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {

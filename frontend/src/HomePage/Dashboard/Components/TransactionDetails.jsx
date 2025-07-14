@@ -126,7 +126,7 @@ function TransactionDetails() {
                   name="category"
                   value={editedDetails.category?.name || ""}
                   onChange={handleChange}
-                  disabled // Disable to make it unchangeable
+                  disabled 
                   className="border rounded p-1 ml-2 mr-2"
                 >
                   {categories.map((cat) => (

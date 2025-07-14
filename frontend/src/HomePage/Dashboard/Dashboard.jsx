@@ -21,19 +21,21 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [userData, setUserData] = useState({});
-
+  // console.log(user);
+  // console.log(isAuthenticated);
+  
+  
   const openIncomePopup = () => setIsIncomeOpen(true);
   const closeIncomePopup = () => setIsIncomeOpen(false);
   const openExpensePopup = () => setIsExpenseOpen(true);
   const closeExpensePopup = () => setIsExpenseOpen(false);
-
+  
   const getUser = async () => {
     try {
       const response = await axios.get("http://localhost:5000/login/success", {
         withCredentials: true,
         headers: { "Content-Type": "application/json" },
       });
-
       if (response.data.user) {
         // console.log("User data received:", response.data.user);
         setUserData(response.data.user);
@@ -47,6 +49,9 @@ const Dashboard = () => {
   const logout = () => {
     window.open("http://localhost:6005/logout", "_self");
   };
+  useEffect(() => {
+    document.title = "ExpenseGuru";
+  }, []);
 
   const incomeHandler = async () => {
     const form = new FormData();
