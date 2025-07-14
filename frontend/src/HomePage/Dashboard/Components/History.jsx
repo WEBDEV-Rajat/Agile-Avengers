@@ -21,17 +21,14 @@ const History = ({ transactionHandler }) => {
 
   const fetchHistory = async () => {
     setLoading(true);
-    console.log("fetchHistory called with category:", category, "type:", type);
     try {
       const response = await axios.post(
         "http://localhost:5000/api/v1/transaction/get-all",
         { category, type },
         { withCredentials: true }
       );
-      console.log("fetchHistory response:", response.data.data);
       setHistory(response.data.data);
     } catch (error) {
-      console.error("fetchHistory error:", error?.response?.data?.message || error.message);
       toast.warning(error?.response?.data?.message || "Failed to load history");
     } finally {
       setLoading(false);
@@ -58,7 +55,6 @@ const History = ({ transactionHandler }) => {
   };
 
   useEffect(() => {
-    console.log("History useEffect triggered with transactionHandler:", transactionHandler);
     fetchHistory();
   }, [category, type, transactionHandler]);
 
@@ -77,7 +73,6 @@ const History = ({ transactionHandler }) => {
       toast.success("Transaction deleted successfully");
       fetchHistory();
     } catch (error) {
-      console.error("Delete error:", error?.response?.data?.message || error.message);
       toast.error("Failed to delete transaction");
     }
   };
@@ -93,7 +88,6 @@ const History = ({ transactionHandler }) => {
   };
 
   const handleSave = () => {
-    console.log("handleSave called, refreshing history");
     fetchHistory();
   };
 
@@ -105,14 +99,16 @@ const History = ({ transactionHandler }) => {
   const totalPages = Math.ceil(history.length / ITEMS_PER_PAGE);
 
   return (
-    <div className="relative top-16 p-6 min-h-screen">
-      <h1 className="text-2xl font-bold text-green-700 mb-4">Transaction History</h1>
+    <div className="relative top-16 p-4 min-h-screen">
+      <h1 className="text-xl md:text-2xl font-bold text-green-700 mb-4 text-center md:text-left">
+        Transaction History
+      </h1>
 
-      <div className="filters flex space-x-4 mb-4">
+      <div className="filters flex flex-wrap gap-4 mb-4 justify-center md:justify-start">
         <select
           onChange={(e) => setCategory(e.target.value)}
           value={category}
-          className="border p-2 rounded"
+          className="border p-2 rounded w-full md:w-auto"
         >
           <option value="all">All Categories</option>
           {categories.map((cat) => (
@@ -126,7 +122,7 @@ const History = ({ transactionHandler }) => {
             setType(e.target.value);
           }}
           value={type}
-          className="border p-2 rounded"
+          className="border p-2 rounded w-full md:w-auto"
         >
           <option value="all">All Types</option>
           <option value="income">Income</option>
@@ -135,73 +131,52 @@ const History = ({ transactionHandler }) => {
       </div>
 
       {loading ? (
-        <p>Loading...</p>
+        <p className="text-center">Loading...</p>
       ) : (
-        <table className="min-w-full bg-white border">
-          <thead>
-            <tr>
-              <th className="border px-4 py-2 text-center">Type</th>
-              <th className="border px-4 py-2 text-center">Category</th>
-              <th className="border px-4 py-2 text-center">Amount</th>
-              <th className="border px-4 py-2 text-center">Date</th>
-              <th className="border px-4 py-2 text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedData.map((item) => (
-              <motion.tr
-                key={item._id}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.5 }}
-              >
-                <td className="border px-4 py-2 text-center">
-                  {item.type === "income" ? (
-                    <b className="text-green-600 px-3 py-2 border rounded-3xl bg-green-100">{item.type}</b>
-                  ) : (
-                    <b className="text-red-600 px-3 py-2 border rounded-3xl bg-red-100">{item.type}</b>
-                  )}
-                </td>
-                <td className="border px-4 py-2 text-center">
-                  {item.category?.name || "N/A"}
-                </td>
-                <td className="border px-4 py-2 text-center">{item.amount}</td>
-                <td className="border px-4 py-2 text-center">
-                  {new Date(item.date).toLocaleDateString()}
-                </td>
-                <td className="flex gap-4 border px-4 py-2 justify-center space-x-2">
-                  <button
-                    className="bg-blue-600 text-white px-2 py-1 rounded"
-                    onClick={() => handleView(item)}
-                  >
-                    View
-                  </button>
-                  <button
-                    className="bg-green-700 text-white px-2 py-1 rounded"
-                    onClick={() => handleEdit(item)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="bg-red-500 text-white px-2 py-1 rounded"
-                    onClick={() => handleDelete(item._id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </motion.tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white border text-sm md:text-base">
+            <thead>
+              <tr>
+                <th className="border px-2 md:px-4 py-2 text-center">Type</th>
+                <th className="border px-2 md:px-4 py-2 text-center">Category</th>
+                <th className="border px-2 md:px-4 py-2 text-center">Amount</th>
+                <th className="border px-2 md:px-4 py-2 text-center">Date</th>
+                <th className="border px-2 md:px-4 py-2 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedData.map((item) => (
+                <motion.tr
+                  key={item._id}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <td className="border px-2 md:px-4 py-2 text-center">{item.type}</td>
+                  <td className="border px-2 md:px-4 py-2 text-center">{item.category?.name || "N/A"}</td>
+                  <td className="border px-2 md:px-4 py-2 text-center">{item.amount}</td>
+                  <td className="border px-2 md:px-4 py-2 text-center">
+                    {new Date(item.date).toLocaleDateString()}
+                  </td>
+                  <td className="flex flex-wrap gap-2 border px-2 md:px-4 py-2 justify-center">
+                    <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs md:text-sm" onClick={() => handleView(item)}>View</button>
+                    <button className="bg-green-700 text-white px-2 py-1 rounded text-xs md:text-sm" onClick={() => handleEdit(item)}>Edit</button>
+                    <button className="bg-red-500 text-white px-2 py-1 rounded text-xs md:text-sm" onClick={() => handleDelete(item._id)}>Delete</button>
+                  </td>
+                </motion.tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
-      <div className="flex justify-center mt-4 space-x-2">
+      <div className="flex flex-wrap justify-center mt-4 space-x-2">
         {Array.from({ length: totalPages }, (_, i) => (
           <button
             key={i}
             onClick={() => setCurrentPage(i + 1)}
-            className={`px-3 py-1 rounded ${currentPage === i + 1 ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+            className={`px-2 md:px-3 py-1 rounded text-xs md:text-sm ${currentPage === i + 1 ? "bg-blue-600 text-white" : "bg-gray-200"}`}
           >
             {i + 1}
           </button>
