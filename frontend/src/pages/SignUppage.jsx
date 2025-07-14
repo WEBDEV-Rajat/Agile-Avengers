@@ -5,6 +5,7 @@ import { clearAllUserErrors, register } from "../redux/Slices/user.slices.js";
 import { toast } from "react-toastify";
 import { WiDirectionLeft } from "react-icons/wi";
 import Footer from "../Landingpage/Components/Footer.jsx";
+import { FcGoogle } from "react-icons/fc";
 
 const SignUppage = () => {
   const [name, setName] = useState("");
@@ -18,7 +19,9 @@ const SignUppage = () => {
 
   const dispatch = useDispatch();
   const navigateTo = useNavigate();
-
+  const handleGoogleLoginSuccess = () => {
+    window.open("http://localhost:5000/auth/google/callback", "_self");
+  };
   const handleRegister = (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -43,8 +46,8 @@ const SignUppage = () => {
   return (
     <>
       <Link to="/" className="absolute p-2 flex bg-black text-white mt-4 ml-4">
-          <WiDirectionLeft size={25} />
-          <p className="font-semibold">Back To Home Page</p>
+        <WiDirectionLeft size={25} />
+        <p className="font-semibold">Back To Home Page</p>
       </Link>
       <section className="flex items-center justify-center h-screen bg-gradient-to-r from-blue-100 to-green-100">
         <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
@@ -110,16 +113,32 @@ const SignUppage = () => {
             >
               {loading ? "Loading..." : "Register"}
             </button>
+            <div className="mt-6 flex items-center justify-center">
+              <span className="text-gray-600">Or</span>
+            </div>
+            <div className="mt-4">
+              <button
+                onClick={handleGoogleLoginSuccess}
+                className="flex items-center justify-center w-full py-2 border border-gray-300 rounded-md hover:bg-green-100 transition duration-300"
+              >
+                <FcGoogle className="mr-2 text-xl" />
+                Signup with Google
+              </button>
+            </div>
+
             <div className="mt-4 text-center">
               <span className="text-gray-600">Already have an account?</span>{" "}
-              <Link to={"/login"} className="bg-green-600 p-2 ml-4 text-white rounded-md hover:bg-green-700">
+              <Link
+                to={"/login"}
+                className="bg-green-600 p-2 ml-4 text-white rounded-md hover:bg-green-700"
+              >
                 Login Now
               </Link>
             </div>
           </form>
         </div>
       </section>
-      <Footer/>
+      <Footer />
     </>
   );
 };

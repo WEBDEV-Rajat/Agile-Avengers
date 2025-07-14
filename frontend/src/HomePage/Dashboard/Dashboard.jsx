@@ -44,14 +44,13 @@ const Dashboard = () => {
   };
 
   const closeExpensePopup = () => setIsExpenseOpen(false);
-
+  
   const getUser = async () => {
     try {
       const response = await axios.get("http://localhost:5000/login/success", {
         withCredentials: true,
         headers: { "Content-Type": "application/json" },
       });
-
       if (response.data.user) {
         setUserData(response.data.user);
         dispatch(login({ googleId: response.data.user.googleId }));
