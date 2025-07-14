@@ -1,39 +1,69 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
 
-const FinancialOverview = () => {
-  const analysis = useSelector((state) => state.analysis);
-  const { topTransactions = {}, fromDate, toDate } = analysis || {};
-  const transactions = topTransactions?.transactions || [];
+const FinancialOverview = ({ overview, loading, error }) => {
+  if (loading) {
+    return <p className="text-blue-600 text-center">Loading overview...</p>;
+  }
 
-  const filteredTransactions = transactions.filter((tx) => {
-    const txDate = new Date(tx.date);
-    return txDate >= new Date(fromDate) && txDate <= new Date(toDate);
-  });
+  if (error) {
+    return <p className="text-red-500 text-center">Error: {error}</p>;
+  }
 
-  const income = filteredTransactions
-    .filter((tx) => tx.type === "income")
-    .reduce((sum, tx) => sum + tx.amount, 0);
-
-  const expense = filteredTransactions
-    .filter((tx) => tx.type === "expense")
-    .reduce((sum, tx) => sum + tx.amount, 0);
-
-  const balance = income - expense;
+  const chartData = [
+    {
+      name: "Income",
+      amount: overview?.income || 0,
+    },
+    {
+      name: "Expense",
+      amount: overview?.expense || 0,
+    },
+    {
+      name: "Balance",
+      amount: overview?.balance || 0,
+    },
+  ];
 
   return (
-    <div className="grid grid-cols-3 gap-4 text-center">
-      <div className="bg-green-100 p-4 rounded shadow">
-        <h4 className="text-lg font-bold text-green-700">Income</h4>
-        <p className="text-xl font-semibold">₹{income}</p>
+    <div className="space-y-6">
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-lg">
+        <div className="bg-blue-50 p-4 rounded-lg shadow-sm border border-blue-200">
+          <p className="text-blue-700 font-medium">Total Income</p>
+          <p className="text-2xl font-bold">₹{overview?.income?.toFixed(2) || "0.00"}</p>
+        </div>
+        <div className="bg-red-50 p-4 rounded-lg shadow-sm border border-red-200">
+          <p className="text-red-700 font-medium">Total Expense</p>
+          <p className="text-2xl font-bold">₹{overview?.expense?.toFixed(2) || "0.00"}</p>
+        </div>
+        <div className="bg-green-50 p-4 rounded-lg shadow-sm border border-green-200">
+          <p className="text-green-700 font-medium">Net Balance</p>
+          <p className="text-2xl font-bold">₹{overview?.balance?.toFixed(2) || "0.00"}</p>
+        </div>
       </div>
-      <div className="bg-red-100 p-4 rounded shadow">
-        <h4 className="text-lg font-bold text-red-700">Expense</h4>
-        <p className="text-xl font-semibold">₹{expense}</p>
-      </div>
-      <div className="bg-blue-100 p-4 rounded shadow">
-        <h4 className="text-lg font-bold text-blue-700">Balance</h4>
-        <p className="text-xl font-semibold">₹{balance}</p>
+
+      <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-md">
+        <h3 className="text-lg font-semibold text-gray-700 mb-4">Financial Summary (Bar Chart)</h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip formatter={(value) => `₹${value.toFixed(2)}`} />
+            <Legend />
+            <Bar dataKey="amount" fill="#3b82f6" />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );

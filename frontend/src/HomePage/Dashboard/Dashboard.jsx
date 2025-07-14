@@ -7,7 +7,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import AddCategory from "./Components/AddCategory";
-import { login } from "../../redux/Slices/user.slices.js";
+import { login, GetUser } from "../../redux/Slices/user.slices.js";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Dashboard = () => {
@@ -20,8 +20,7 @@ const Dashboard = () => {
   const [incomecategories, setIncomeCategories] = useState([]);
   const [expensecategories, setExpenseCategories] = useState([]);
   const dispatch = useDispatch();
-  const { isAuthenticated, user } = useSelector((state) => state.user);
-  const [userData, setUserData] = useState({});
+
   const [transactionTrigger, setTransactionTrigger] = useState(0);
 
   const resetForm = () => {
@@ -44,21 +43,6 @@ const Dashboard = () => {
   };
 
   const closeExpensePopup = () => setIsExpenseOpen(false);
-  
-  const getUser = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/login/success", {
-        withCredentials: true,
-        headers: { "Content-Type": "application/json" },
-      });
-      if (response.data.user) {
-        setUserData(response.data.user);
-        dispatch(login({ googleId: response.data.user.googleId }));
-      }
-    } catch (error) {
-      console.error("Error getting user data:", error);
-    }
-  };
 
   const incomeHandler = async () => {
     const form = {
@@ -83,12 +67,17 @@ const Dashboard = () => {
       setTransactionTrigger((prev) => {
         console.log("Incrementing transactionTrigger to:", prev + 1);
         return prev + 1;
-      }); // Trigger refresh
+      });
       resetForm();
       closeIncomePopup();
     } catch (error) {
-      console.error("Error adding income transaction:", error?.response?.data?.message || error.message);
-      toast.warning(error?.response?.data?.message || "Failed to add income transaction");
+      console.error(
+        "Error adding income transaction:",
+        error?.response?.data?.message || error.message
+      );
+      toast.warning(
+        error?.response?.data?.message || "Failed to add income transaction"
+      );
     }
   };
 
@@ -115,12 +104,17 @@ const Dashboard = () => {
       setTransactionTrigger((prev) => {
         console.log("Incrementing transactionTrigger to:", prev + 1);
         return prev + 1;
-      }); // Trigger refresh
+      });
       resetForm();
       closeExpensePopup();
     } catch (error) {
-      console.error("Error adding expense transaction:", error?.response?.data?.message || error.message);
-      toast.warning(error?.response?.data?.message || "Failed to add expense transaction");
+      console.error(
+        "Error adding expense transaction:",
+        error?.response?.data?.message || error.message
+      );
+      toast.warning(
+        error?.response?.data?.message || "Failed to add expense transaction"
+      );
     }
   };
 
@@ -155,10 +149,13 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    getUser();
+    dispatch(GetUser());
     refreshIncomeCategories();
     refreshExpenseCategories();
-  }, []);
+  }, [dispatch]);
+  const { user, loading, isAuthenticated } = useSelector((state) => state.user);
+
+  // console.log(user);
 
   const popupAnimation = {
     hidden: { opacity: 0, scale: 0.9 },
@@ -171,8 +168,9 @@ const Dashboard = () => {
       <Navigationbar />
       <div className="relative top-[110px] flex flex-row justify-between font-semibold border-b border-b-slate-400 max-[530px]:flex-col max-[530px]:w-full">
         <h1 className="text-green-700 text-2xl ml-5 mb-4">
-          Welcome, {userData?.name || "A"}!
+          Welcome, {isAuthenticated ? user?.name || "A" : "loading name..."}
         </h1>
+
         <div className="flex gap-14 mr-7 max-[530px]:gap-5 mt-3">
           <button
             className="bg-[#0f664f] text-white rounded-lg pt-2 pb-2 pl-3 pr-3 shadow-md border-2 border-green-500 mb-1 -translate-y-4 max-[530px]:ml-5"
@@ -358,11 +356,11 @@ const Dashboard = () => {
       </div>
 
       <Overview
-        getUser={getUser}
+        getUser={GetUser}
         incomeHandler={transactionTrigger}
         expenseHandler={transactionTrigger}
       />
-      <History getUser={getUser} transactionHandler={transactionTrigger} />
+      <History getUser={GetUser} transactionHandler={transactionTrigger} />
     </div>
   );
 };

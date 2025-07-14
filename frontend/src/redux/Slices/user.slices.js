@@ -212,13 +212,17 @@ export const resetPassword = (data) => async (dispatch) => {
 export const GetUser = () => async (dispatch) => {
   dispatch(userSlice.actions.fetchUserRequest());
   try {
+    // console.log("ggbd");
+    
     const response = await axios.get(
       "http://localhost:5000/api/v1/users/get-user",
       {
         withCredentials: true,
       }
     );
-    dispatch(userSlice.actions.fetchUserSuccess(response.data.user));
+    // console.log(response);
+    
+    dispatch(userSlice.actions.fetchUserSuccess(response.data.data));
     dispatch(userSlice.actions.clearAllErrors());
   } catch (error) {
     const errorMessage = error.response ? error.response.data.message : "Something went wrong!";

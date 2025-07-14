@@ -1,31 +1,45 @@
-import React from "react";
+import React from 'react';
 
-const TopTransactions = ({ trendData, fromDate, toDate }) => {
-  if (!Array.isArray(trendData)) {
-    console.error("trendData is not an array:", trendData);
-    return <p>No transactions to display</p>;
+const TopTransactions = ({ data, limit, type, loading, error }) => {
+  if (loading) {
+    return <p className="text-blue-600 text-center">Loading top transactions...</p>;
   }
 
-  const filteredTransactions = trendData.filter((tx) => {
-    const txDate = new Date(tx.date);
-    return txDate >= new Date(fromDate) && txDate <= new Date(toDate);
-  });
-
-  const sortedTransactions = filteredTransactions.sort((a, b) => b.total - a.total);
-
+  if (error) {
+    return <p className="text-red-500 text-center">Error: {error}</p>;
+  }
+//  console.log(data);
+ 
   return (
-    <div>
-      <h3 className="text-lg font-bold mb-2">Top Transactions</h3>
-      {sortedTransactions.length === 0 ? (
-        <p>No transactions to display</p>
-      ) : (
-        <ul>
-          {sortedTransactions.map((tx) => (
-            <li key={tx._id}>
-              {tx.type.toUpperCase()} - ₹{tx.total} on {new Date(tx.date).toLocaleDateString()}
+    <div className="max-h-[400px] overflow-y-auto pr-1">
+      {(data || []).length > 0 ? (
+        <ul className="space-y-2">
+          {data.map((txn, idx) => (
+            <li
+              key={txn._id || idx}
+              className={`flex justify-between items-center p-3 rounded-md shadow-sm border 
+                ${txn.type === 'expense' ? 'bg-red-50 border-red-200' : 'bg-green-50 border-green-200'}`}
+            >
+              <div className="flex-1 pr-3">
+                <p className="font-semibold text-gray-800">{txn.note || "No Note"}</p>
+                <p className="text-sm text-gray-600 capitalize">
+                  {txn.category?.icon || '🔸'} {txn.category?.name || 'Unknown'} • {new Date(txn.date).toLocaleDateString()}
+                </p>
+              </div>
+              <span
+                className={`font-bold text-lg ${
+                  txn.type === 'expense' ? 'text-red-700' : 'text-green-700'
+                }`}
+              >
+                ₹{txn.amount?.toFixed(2)}
+              </span>
             </li>
           ))}
         </ul>
+      ) : (
+        <p className="text-gray-600 text-center py-4">
+          No top transactions available for the selected criteria.
+        </p>
       )}
     </div>
   );
