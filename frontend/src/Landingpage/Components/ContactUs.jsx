@@ -46,7 +46,7 @@ const ContactUs = () => {
               <img
                 src={img}
                 alt="Contact"
-                className="lg:w-[400px] lg:h-[400px] md:w-[340px] md:h-[340px] max-[600px]:w-[200px] max-[600px]:h-[200px]"
+                className ="lg:w-[400px] lg:h-[400px] md:w-[340px] md:h-[340px] max-[600px]:w-[200px] max-[600px]:h-[200px]"
               />
             </div>
 

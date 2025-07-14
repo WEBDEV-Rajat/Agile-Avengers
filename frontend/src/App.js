@@ -15,13 +15,13 @@ import { ToastContainer } from "react-toastify";
 import Dashboard from "./HomePage/Dashboard/Dashboard";
 import BudgetPlan from "./HomePage/BudgetPlan/BudgetPlan";
 import Savings from "./HomePage/Savings/Savings";
-import TransactionDetails from "./HomePage/Dashboard/Components/TransactionDetails";
-import Analysis from "./HomePage/Transactions/Transactions";
+import Modal from "./HomePage/Dashboard/Components/Modal.jsx";
 import RecurringTransaction from "./HomePage/RecurringTransaction/RecurringTransaction";
 import Recard from "./HomePage/RecurringTransaction/Recard";
 import IncomeCategories from "./HomePage/IncomeCategories/IncomeCategories";
 import ExpenseCategories from "./HomePage/ExpenseCategories/ExpenseCategories";
 import UpdatePage from "./HomePage/BudgetPlan/UpdatePage";
+import AnalysisPage from "./HomePage/Analysis/AnalysisPage.jsx";
 function App() {
   return (
     <div className="App">
@@ -37,14 +37,14 @@ function App() {
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/analysis" element={<Analysis />} />
+        <Route path="/analysis" element={<AnalysisPage />} />
         <Route path="/manage" element={<Manage />} />
         <Route path="/budget-plan" element={<BudgetPlan />} />
         <Route path="/recurring-transactions" element={<RecurringTransaction />} />
         <Route path="/savings" element={<Savings />} />
         <Route path="/income-categories" element={<IncomeCategories/>}/>
         <Route path="/expense-categories" element={<ExpenseCategories/>}/>
-        <Route path="/transaction/:id" element={<TransactionDetails />} />
+        <Route path="/transaction/:id" element={<Modal />} />
         <Route path="/card/:id" element={<Recard />} />
         <Route path="/budget/:id" element={<UpdatePage/>} />
       </Routes>

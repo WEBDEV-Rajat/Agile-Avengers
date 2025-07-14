@@ -1,41 +1,42 @@
-
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
-import Card from "./Card";
+import Modal from "./Modal";
+import { motion } from "framer-motion";
 
-const History = () => {
+const ITEMS_PER_PAGE = 5;
+
+const History = ({ transactionHandler }) => {
   const [history, setHistory] = useState([]);
   const [category, setCategory] = useState("all");
   const [type, setType] = useState("all");
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [modalData, setModalData] = useState(null);
+  const [modalType, setModalType] = useState("");
 
   const { user } = useSelector((state) => state.user);
 
-
   const fetchHistory = async () => {
     setLoading(true);
+    console.log("fetchHistory called with category:", category, "type:", type);
     try {
       const response = await axios.post(
         "http://localhost:5000/api/v1/transaction/get-all",
         { category, type },
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "application/json" },
-        }
+        { withCredentials: true }
       );
-      // console.log("history data :", response);
-      
+      console.log("fetchHistory response:", response.data.data);
       setHistory(response.data.data);
     } catch (error) {
+      console.error("fetchHistory error:", error?.response?.data?.message || error.message);
       toast.warning(error?.response?.data?.message || "Failed to load history");
     } finally {
       setLoading(false);
     }
   };
-
 
   const fetchCategories = async () => {
     if (type === "all") {
@@ -49,10 +50,7 @@ const History = () => {
         : "http://localhost:5000/api/v1/category/get-all-expense";
 
     try {
-      const response = await axios.get(url, {
-        withCredentials: true,
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await axios.get(url, { withCredentials: true });
       setCategories(response.data.data);
     } catch (error) {
       toast.error(error?.response?.data?.message || "Error fetching categories");
@@ -60,41 +58,75 @@ const History = () => {
   };
 
   useEffect(() => {
+    console.log("History useEffect triggered with transactionHandler:", transactionHandler);
     fetchHistory();
-  }, [category, type]); 
+  }, [category, type, transactionHandler]);
 
   useEffect(() => {
     fetchCategories();
-  }, [type]); 
+  }, [type]);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this transaction?")) return;
+    try {
+      const url = `http://localhost:5000/api/v1/transaction/delete-transaction/${id}`;
+      await axios.delete(url, {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" },
+      });
+      toast.success("Transaction deleted successfully");
+      fetchHistory();
+    } catch (error) {
+      console.error("Delete error:", error?.response?.data?.message || error.message);
+      toast.error("Failed to delete transaction");
+    }
+  };
+
+  const handleEdit = (item) => {
+    setModalData(item);
+    setModalType("edit");
+  };
+
+  const handleView = (item) => {
+    setModalData(item);
+    setModalType("view");
+  };
+
+  const handleSave = () => {
+    console.log("handleSave called, refreshing history");
+    fetchHistory();
+  };
+
+  const paginatedData = history.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  const totalPages = Math.ceil(history.length / ITEMS_PER_PAGE);
 
   return (
     <div className="relative top-16 p-6 min-h-screen">
-      <h1 className="text-2xl font-semibold text-green-700 mb-4">History</h1>
+      <h1 className="text-2xl font-bold text-green-700 mb-4">Transaction History</h1>
 
-    
-      <div className="filters flex space-x-4 mb-6">
-   
+      <div className="filters flex space-x-4 mb-4">
         <select
           onChange={(e) => setCategory(e.target.value)}
           value={category}
-          className="filter-select bg-white border border-gray-300 text-gray-700 rounded-md p-2 focus:ring-2 focus:ring-blue-500"
+          className="border p-2 rounded"
         >
           <option value="all">All Categories</option>
           {categories.map((cat) => (
-            <option key={cat._id} value={cat.name}>
-              {cat.name}
-            </option>
+            <option key={cat._id} value={cat.name}>{cat.name}</option>
           ))}
         </select>
 
-       
         <select
           onChange={(e) => {
-            setCategory("all"); 
+            setCategory("all");
             setType(e.target.value);
           }}
           value={type}
-          className="filter-select bg-white border border-gray-300 text-gray-700 rounded-md p-2 focus:ring-2 focus:ring-blue-500"
+          className="border p-2 rounded"
         >
           <option value="all">All Types</option>
           <option value="income">Income</option>
@@ -102,16 +134,89 @@ const History = () => {
         </select>
       </div>
 
-      
-      <div className="space-y-4">
-        {loading ? (
-          <p className="text-center text-gray-400">Loading...</p>
-        ) : history.length > 0 ? (
-          history.map((item, index) => <Card key={index} {...item} />)
-        ) : (
-          <p className="text-center text-gray-500">No transactions found.</p>
-        )}
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <table className="min-w-full bg-white border">
+          <thead>
+            <tr>
+              <th className="border px-4 py-2 text-center">Type</th>
+              <th className="border px-4 py-2 text-center">Category</th>
+              <th className="border px-4 py-2 text-center">Amount</th>
+              <th className="border px-4 py-2 text-center">Date</th>
+              <th className="border px-4 py-2 text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedData.map((item) => (
+              <motion.tr
+                key={item._id}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.5 }}
+              >
+                <td className="border px-4 py-2 text-center">
+                  {item.type === "income" ? (
+                    <b className="text-green-600 px-3 py-2 border rounded-3xl bg-green-100">{item.type}</b>
+                  ) : (
+                    <b className="text-red-600 px-3 py-2 border rounded-3xl bg-red-100">{item.type}</b>
+                  )}
+                </td>
+                <td className="border px-4 py-2 text-center">
+                  {item.category?.name || "N/A"}
+                </td>
+                <td className="border px-4 py-2 text-center">{item.amount}</td>
+                <td className="border px-4 py-2 text-center">
+                  {new Date(item.date).toLocaleDateString()}
+                </td>
+                <td className="flex gap-4 border px-4 py-2 justify-center space-x-2">
+                  <button
+                    className="bg-blue-600 text-white px-2 py-1 rounded"
+                    onClick={() => handleView(item)}
+                  >
+                    View
+                  </button>
+                  <button
+                    className="bg-green-700 text-white px-2 py-1 rounded"
+                    onClick={() => handleEdit(item)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="bg-red-500 text-white px-2 py-1 rounded"
+                    onClick={() => handleDelete(item._id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </motion.tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      <div className="flex justify-center mt-4 space-x-2">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrentPage(i + 1)}
+            className={`px-3 py-1 rounded ${currentPage === i + 1 ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+          >
+            {i + 1}
+          </button>
+        ))}
       </div>
+
+      {modalData && modalType && (
+        <Modal
+          data={modalData}
+          type={modalType}
+          onClose={() => setModalData(null)}
+          onSave={handleSave}
+          categories={categories}
+        />
+      )}
     </div>
   );
 };

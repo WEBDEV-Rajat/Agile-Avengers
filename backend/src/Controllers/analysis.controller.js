@@ -1,6 +1,13 @@
 import { Transaction } from "../Models/transaction.model.js";
 import asyncHandler from "../Utils/asyncHandler.js";
 
+// Helper for date filter
+const createDateFilter = (fromDate, toDate) => {
+  return fromDate && toDate
+    ? { date: { $gte: new Date(fromDate), $lte: new Date(toDate) } }
+    : {};
+};
+
 const getAmountSpendPerCategory = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const { fromDate, toDate } = req.body;
@@ -8,14 +15,8 @@ const getAmountSpendPerCategory = asyncHandler(async (req, res) => {
   const match = {
     userId,
     type: "expense",
+    ...createDateFilter(fromDate, toDate),
   };
-
-  if (fromDate && toDate) {
-    match.date = {
-      $gte: new Date(fromDate),
-      $lte: new Date(toDate),
-    };
-  }
 
   const result = await Transaction.aggregate([
     { $match: match },
@@ -23,11 +24,6 @@ const getAmountSpendPerCategory = asyncHandler(async (req, res) => {
       $group: {
         _id: "$category",
         totalAmount: { $sum: "$amount" },
-      },
-    },
-    {
-      $match: {
-        totalAmount: { $gt: 0 },
       },
     },
     {
@@ -45,20 +41,15 @@ const getAmountSpendPerCategory = asyncHandler(async (req, res) => {
         totalAmount: 1,
       },
     },
-    {
-      $sort: { totalAmount: 1 },
-    },
+    { $sort: { totalAmount: -1 } },
   ]);
 
   const categoryMap = {};
-  result.forEach((item) => {
+  result.forEach(item => {
     categoryMap[item.category] = item.totalAmount;
   });
 
-  res.status(200).json({
-    success: true,
-    data: categoryMap,
-  });
+  res.json({ success: true, data: categoryMap });
 });
 
 const getAmountIncomePerCategory = asyncHandler(async (req, res) => {
@@ -68,14 +59,8 @@ const getAmountIncomePerCategory = asyncHandler(async (req, res) => {
   const match = {
     userId,
     type: "income",
+    ...createDateFilter(fromDate, toDate),
   };
-
-  if (fromDate && toDate) {
-    match.date = {
-      $gte: new Date(fromDate),
-      $lte: new Date(toDate),
-    };
-  }
 
   const result = await Transaction.aggregate([
     { $match: match },
@@ -83,11 +68,6 @@ const getAmountIncomePerCategory = asyncHandler(async (req, res) => {
       $group: {
         _id: "$category",
         totalAmount: { $sum: "$amount" },
-      },
-    },
-    {
-      $match: {
-        totalAmount: { $gt: 0 },
       },
     },
     {
@@ -105,45 +85,30 @@ const getAmountIncomePerCategory = asyncHandler(async (req, res) => {
         totalAmount: 1,
       },
     },
-    {
-      $sort: { totalAmount: 1 },
-    },
+    { $sort: { totalAmount: -1 } },
   ]);
 
   const categoryMap = {};
-  result.forEach((item) => {
+  result.forEach(item => {
     categoryMap[item.category] = item.totalAmount;
   });
 
-  res.status(200).json({
-    success: true,
-    data: categoryMap,
-  });
+  res.json({ success: true, data: categoryMap });
 });
 
 const getFinancialOverview = asyncHandler(async (req, res) => {
   const userId = req.user._id;
-  // console.log(req.body);
-  
-  const { fromDate, toDate } = req.query;
-  // console.log(fromDate);
-  // console.log(toDate);
+  const { fromDate, toDate } = req.body;
 
-  const dateFilter =
-    fromDate && toDate
-      ? { date: { $gte: new Date(fromDate), $lte: new Date(toDate) } }
-      : {};
-
-  const matchIncome = { userId, type: "income", ...dateFilter };
-  const matchExpense = { userId, type: "expense", ...dateFilter };
+  const dateFilter = createDateFilter(fromDate, toDate);
 
   const [incomeAgg, expenseAgg] = await Promise.all([
     Transaction.aggregate([
-      { $match: matchIncome },
+      { $match: { userId, type: "income", ...dateFilter } },
       { $group: { _id: null, total: { $sum: "$amount" } } },
     ]),
     Transaction.aggregate([
-      { $match: matchExpense },
+      { $match: { userId, type: "expense", ...dateFilter } },
       { $group: { _id: null, total: { $sum: "$amount" } } },
     ]),
   ]);
@@ -156,19 +121,33 @@ const getFinancialOverview = asyncHandler(async (req, res) => {
 
 const getTransactionTrend = asyncHandler(async (req, res) => {
   const userId = req.user._id;
-  const { type = "all" } = req.query;
-  const match = { userId };
-  if (type !== "all") match.type = type;
+  const { fromDate, toDate } = req.body;
+
+  const match = {
+    userId,
+    ...createDateFilter(fromDate, toDate),
+  };
 
   const trend = await Transaction.aggregate([
     { $match: match },
     {
       $group: {
-        _id: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+        _id: {
+          date: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+          type: "$type",
+        },
         total: { $sum: "$amount" },
       },
     },
-    { $sort: { _id: 1 } },
+    {
+      $project: {
+        date: "$_id.date",
+        type: "$_id.type",
+        total: 1,
+        _id: 0,
+      },
+    },
+    { $sort: { date: 1 } },
   ]);
 
   res.json({ trend });
@@ -178,24 +157,17 @@ const getTopTransactions = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const { type = "all", fromDate, toDate, limit = 5 } = req.query;
 
-  const match = { userId };
+  const match = { userId, ...createDateFilter(fromDate, toDate) };
   if (type !== "all") {
     match.type = type;
   }
-  if (fromDate && toDate) {
-    match.date = {
-      $gte: new Date(fromDate),
-      $lte: new Date(toDate),
-    };
-  }
 
   const transactions = await Transaction.find(match)
-    .sort({ amount: -1 }) 
+    .sort({ amount: -1 })
     .limit(Number(limit));
 
   res.json({ transactions });
 });
-
 
 const getMostUsedCategory = asyncHandler(async (req, res) => {
   const userId = req.user._id;
@@ -220,7 +192,6 @@ const getMostUsedCategory = asyncHandler(async (req, res) => {
     },
     { $unwind: "$categoryDetails" },
   ]);
-console.log(result);
 
   res.json({ category: result[0]?.categoryDetails.name || "N/A" });
 });
@@ -247,11 +218,11 @@ const getSavingsRate = asyncHandler(async (req, res) => {
 });
 
 export {
+  getAmountSpendPerCategory,
+  getAmountIncomePerCategory,
   getFinancialOverview,
   getTransactionTrend,
   getTopTransactions,
   getMostUsedCategory,
   getSavingsRate,
-  getAmountSpendPerCategory,
-  getAmountIncomePerCategory,
 };

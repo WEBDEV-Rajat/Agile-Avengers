@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Navigationbar from '../Navigationbar';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { motion } from 'framer-motion';
 
 const IncomeCategories = () => {
   const [categories, setCategories] = useState([]);
@@ -21,7 +22,7 @@ const IncomeCategories = () => {
       }
     };
     getCategories();
-  }, [categories]);
+  }, []);
 
   const handleDeleteCategory = async (categoryId) => {
     try {
@@ -39,28 +40,44 @@ const IncomeCategories = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <div className="bg-green-500 text-white p-4">
-        <h1 className="text-3xl font-semibold">Manage Your Income Categories</h1>
-      </div>
       <Navigationbar />
 
-      <div className="p-6 mt-5">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6">Income Categories</h2>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        
-        <ul className="space-y-4">
+      <div className="relative top-20 w-full max-w-5xl mx-auto p-6">
+        <h1 className="text-3xl font-bold text-center text-green-700 mb-8">Manage Your Income Categories</h1>
+        {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+
+        <motion.ul 
+          className="space-y-4"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.15,
+              }
+            }
+          }}
+        >
           {categories.map((category) => (
-            <li key={category._id} className="flex justify-between items-center p-4 bg-white border border-gray-200 rounded-lg shadow-lg">
-              <p className="text-lg font-semibold">{category.name}</p>
+            <motion.li 
+              key={category._id}
+              className="flex justify-between items-center p-5 bg-white border border-gray-300 rounded-xl shadow-md hover:shadow-xl transition-transform transform hover:scale-105"
+              initial={{ opacity: 0, x: 100 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ type: 'spring', stiffness: 120 }}
+            >
+              <span className="text-lg font-medium text-gray-800">{category.name}</span>
               <button
                 onClick={() => handleDeleteCategory(category._id)}
-                className="text-red-500 hover:text-red-700 border border-red-500 py-1 px-3 rounded-full focus:ring-2 focus:ring-red-500 transition duration-300"
+                className="bg-red-500 text-white px-4 py-1 rounded-full hover:bg-red-600 transition"
               >
                 Delete
               </button>
-            </li>
+            </motion.li>
           ))}
-        </ul>
+        </motion.ul>
       </div>
     </div>
   );

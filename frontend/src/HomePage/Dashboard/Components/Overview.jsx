@@ -1,30 +1,27 @@
-import "./Overview.css";
 import img1 from "./assets/img-1.avif";
 import img2 from "./assets/img-2.png";
 import img3 from "./assets/img-3.png";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { Chart } from "react-google-charts";
-import {GetUser} from "../../../redux/Slices/user.slices.js";
-const Overview = ({getUser,incomeHandler,expenseHandler}) => {
+import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer } from "recharts";
+import { motion } from "framer-motion";
+
+const COLORS = ["#00C49F", "#FF8042", "#0088FE", "#FFBB28", "#FF4444", "#8884d8"];
+
+const Overview = ({ getUser, incomeHandler, expenseHandler }) => {
   const { user } = useSelector((state) => state.user);
   const [data, setData] = useState(null);
-  const [expense, setExpense] = useState([["Category", "Amount"]]);
-  const [income, setIncome] = useState([["Category", "Amount"]]);
-const dispatch = useDispatch();
+  const [expense, setExpense] = useState([]);
+  const [income, setIncome] = useState([]);
+
   useEffect(() => {
-    
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/v1/transaction/get-total",
-          {
-            withCredentials: true,
-            headers: { "Content-Type": "application/json" },
-          }
-        );
+        const response = await axios.get("http://localhost:5000/api/v1/transaction/get-total", {
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
+        });
         setData(response.data.data);
       } catch (error) {
         console.error("Error fetching total data:", error);
@@ -33,28 +30,15 @@ const dispatch = useDispatch();
 
     const fetchIncome = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/v1/transaction/get-income-per",
-          {
-            withCredentials: true,
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        const incomeData = response.data.data || [];
-
-   
-        const transformedIncome = [["Category", "Amount"]];
-        incomeData.forEach((item) => {
-          if (item.category && typeof item.total === "number") {
-            transformedIncome.push([item.category, item.total]);
-          } else {
-            console.warn("Skipping income item with missing fields:", item);
-          }
+        const response = await axios.get("http://localhost:5000/api/v1/transaction/get-income-per", {
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
         });
-
-        if (transformedIncome.length > 1) {
-          setIncome(transformedIncome);
-        }
+        const transformedIncome = response.data.data.map(item => ({
+          name: item.category,
+          value: item.total
+        }));
+        setIncome(transformedIncome);
       } catch (error) {
         console.error("Error fetching income categories:", error);
       }
@@ -62,103 +46,115 @@ const dispatch = useDispatch();
 
     const fetchExpense = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/v1/transaction/get-expense-per",
-          {
-            withCredentials: true,
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        const expenseData = response.data.data || [];
-
-   
-        const transformedExpense = [["Category", "Amount"]];
-        expenseData.forEach((item) => {
-          if (item.category && typeof item.total === "number") {
-            transformedExpense.push([item.category, item.total]);
-          } else {
-            console.warn("Skipping expense item with missing fields:", item);
-          }
+        const response = await axios.get("http://localhost:5000/api/v1/transaction/get-expense-per", {
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
         });
-
-        if (transformedExpense.length > 1) {
-          setExpense(transformedExpense);
-        }
+        const transformedExpense = response.data.data.map(item => ({
+          name: item.category,
+          value: item.total
+        }));
+        setExpense(transformedExpense);
       } catch (error) {
         console.error("Error fetching expense categories:", error);
       }
     };
 
     fetchData();
-    fetchIncome();  
+    fetchIncome();
     fetchExpense();
-  }, [incomeHandler,expenseHandler,getUser]);
+  }, [incomeHandler, expenseHandler, getUser]);
 
-  if (!data || income.length <= 1 || expense.length <= 1) {
-    return <div>Loading...</div>;
-  }
-
-  const incomeOptions = {
-    title: "Incomes By Category",
-    pieHole: 0.4,
-    is3D: true,
-  };
-
-  const expenseOptions = {
-    title: "Expenses By Category",
-    pieHole: 0.4,
-    is3D: true,
-  };
+  if (!data) return <div className="text-center mt-20 text-gray-600">Loading Overview...</div>;
 
   return (
-    <div className="mt-[130px] ">
-      <div>
-        <h1 className="text-green-700 text-2xl mb-5 ml-5 font-semibold">Overview</h1>
+    <div className="mt-[120px] px-5">
+      <h1 className="text-3xl font-semibold text-green-700 mb-5 mt-5">Overview</h1>
+
+      <div className="grid md:grid-cols-3 gap-6 mb-10">
+        {[
+          { label: "Income", amount: data.totalIncome, color: "green", img: img1 },
+          { label: "Expense", amount: data.totalExpense, color: "red", img: img2 },
+          { label: "Balance", amount: data.difference, color: "blue", img: img3 },
+        ].map((item, idx) => (
+          <motion.div
+            key={idx}
+            className={`flex items-center border-2 border-${item.color}-400 rounded-xl p-4 shadow-md bg-white`}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: idx * 0.2, type: 'spring', stiffness: 120 }}
+          >
+            <img src={item.img} alt={item.label} className="w-20 h-20 mr-4 rounded-lg" />
+            <div className={`text-${item.color}-600 font-semibold text-xl`}>
+              <p>{item.label}</p>
+              <h2>₹{item.amount}</h2>
+            </div>
+          </motion.div>
+        ))}
       </div>
-      <div className="grid md:grid-cols-3 gap-5 sm:grid-cols-1 ml-5 mr-5 translate-y-3">
-        <div className="border-2 border-green-400 rounded-lg">
-          <img src={img1} alt="Income" className="float-left w-[90px] h-[90px] ml-2"   />
-          <div className="font-semibold text-xl flex flex-col mt-5 items-center text-green-600">
-            <p className="text-green-600">Income</p>
-            <h2>₹{data.totalIncome}</h2>
-          </div>
-        </div>
-        <div className="border-2 border-red-400 rounded-lg">
-          <img src={img2} alt="Expense" className="float-left w-[90px] h-[90px] ml-2" />
-          <div className="font-semibold text-xl flex flex-col mt-5 items-center text-red-600">
-            <p className="text-red-600">Expense</p>
-            <h2>₹{data.totalExpense}</h2>
-          </div>
-        </div>
-        <div className="border-2 border-blue-400 rounded-lg">
-          <img src={img3} alt="Balance" className="float-left w-[90px] h-[90px] ml-2" />
-          <div className="font-semibold text-xl flex flex-col mt-5 items-center text-blue-600">
-            <p className="text-blue-600">Balance</p>
-            <h2>₹{data.difference}</h2>
-          </div>
-        </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        <motion.div
+          className="border border-gray-300 rounded-xl p-4 bg-white shadow-sm"
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-lg font-semibold mb-2 text-green-600 text-center">Incomes By Category</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={income}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                innerRadius={50}
+                fill="#8884d8"
+                label
+              >
+                {income.map((entry, index) => (
+                  <Cell key={`cell-income-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </motion.div>
+
+        <motion.div
+          className="border border-gray-300 rounded-xl p-4 bg-white shadow-sm"
+          initial={{ opacity: 0, x: 50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-lg font-semibold mb-2 text-red-600 text-center">Expenses By Category</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={expense}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                innerRadius={50}
+                fill="#82ca9d"
+                label
+              >
+                {expense.map((entry, index) => (
+                  <Cell key={`cell-expense-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </motion.div>
       </div>
-        <div className="w-full grid md:grid-cols-2 translate-y-7 mt-5 ">
-          <div className="ml-2 mr-2 border border-gray-500 rounded-lg flex items-center justify-center">
-            <Chart
-              chartType="PieChart"
-              width="95%"
-              height="290px"
-              data={income}
-              options={incomeOptions}
-            />
-          </div>
-          <div className="ml-2 mr-2 border border-gray-500 rounded-lg flex items-center justify-center">
-          <Chart
-              chartType="PieChart"
-              width="95%"
-              height="290px"
-              data={expense}
-              options={expenseOptions}
-              />
-          </div>
-          </div>
-        </div>
+    </div>
   );
 };
 
