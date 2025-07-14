@@ -41,10 +41,7 @@ const IncomePerCategory = ({ data, loading, error }) => {
             </button>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">
-              Income per Category (Bar Chart)
-            </h3>
+          <div className="bg-white border border-gray-200 rounded-lg p-4 mt-5 shadow-sm">
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" />

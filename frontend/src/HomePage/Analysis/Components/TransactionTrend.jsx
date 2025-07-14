@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   Tooltip,
@@ -64,7 +64,6 @@ const TransactionTrend = ({ data = [], loading, error }) => {
 
   return (
     <div className="w-full">
-    
       <div className="flex justify-end gap-2 mb-4">
         <button
           onClick={exportToCSV}
@@ -74,24 +73,23 @@ const TransactionTrend = ({ data = [], loading, error }) => {
         </button>
         <button
           onClick={exportToPDF}
-          className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md shadow-sm"
+          className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md shadow-sm"
         >
           Export PDF
         </button>
       </div>
 
-   
       <div className="w-full h-[350px]">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={chartData}>
+          <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />
             <YAxis />
             <Tooltip formatter={(value) => `₹${value.toFixed(2)}`} />
             <Legend />
-            <Line type="monotone" dataKey="income" stroke="#16a34a" name="Income" />
-            <Line type="monotone" dataKey="expense" stroke="#dc2626" name="Expense" />
-          </LineChart>
+            <Bar dataKey="income" fill="#16a34a" name="Income" />
+            <Bar dataKey="expense" fill="#dc2626" name="Expense" />
+          </BarChart>
         </ResponsiveContainer>
       </div>
     </div>

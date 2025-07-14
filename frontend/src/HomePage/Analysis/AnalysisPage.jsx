@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAmountSpendPerCategory,
@@ -8,27 +7,25 @@ import {
   fetchTransactionTrend,
   fetchTopTransactions,
   fetchMostUsedCategory,
-  fetchSavingsRate,
   clearAnalysisErrors,
 } from "../../redux/Slices/analysis.slices.js";
 
 import FinancialOverview from "./Components/FinancialOverview.jsx";
 import SpendPerCategory from "./Components/SpendPerCategory.jsx";
-import IncomePerCategory from './Components/IncomePerCategory.jsx';
-import TransactionTrend from './Components/TransactionTrend.jsx';
-import TopTransactions from './Components/TopTransactions.jsx';
-import MostUsedCategory from './Components/MostUsedCategory.jsx';
-import SavingsRate from "./Components/SavingsRate.jsx";
-
+import IncomePerCategory from "./Components/IncomePerCategory.jsx";
+import TransactionTrend from "./Components/TransactionTrend.jsx";
+import TopTransactions from "./Components/TopTransactions.jsx";
+import MostUsedCategory from "./Components/MostUsedCategory.jsx";
+import Navigationbar from "../Navigationbar.jsx";
+import { Menu, X } from "lucide-react";
 
 const TABS = [
   { key: "overview", label: "Financial Overview", component: FinancialOverview },
-  { key: "spend", label: "Spend per Category", component: SpendPerCategory },
+  { key: "spend", label: "Expense per Category", component: SpendPerCategory },
   { key: "income", label: "Income per Category", component: IncomePerCategory },
   { key: "trend", label: "Transaction Trend", component: TransactionTrend },
   { key: "top", label: "Top Transactions", component: TopTransactions },
   { key: "used", label: "Most Used Category", component: MostUsedCategory },
-  // { key: "savings", label: "Savings Rate", component: SavingsRate },
 ];
 
 const FILTERABLE_TABS = ["spend", "income", "overview", "trend", "top"];
@@ -40,9 +37,9 @@ const AnalysisPage = () => {
   const [limit, setLimit] = useState(5);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const dispatch = useDispatch();
-
   const {
     expensePerCategory,
     incomePerCategory,
@@ -50,179 +47,158 @@ const AnalysisPage = () => {
     transactionTrend,
     topTransactions,
     mostUsedCategory,
-    savingsRate,
     loading,
     error,
   } = useSelector((state) => state.analysis);
 
   useEffect(() => {
     dispatch(clearAnalysisErrors());
-
-    const payload = { fromDate, toDate, type, limit };
-
-    switch (activeTab) {
-      case "overview":
-        dispatch(fetchFinancialOverview(payload));
-        break;
-      case "spend":
-        dispatch(fetchAmountSpendPerCategory(payload));
-        break;
-      case "income":
-        dispatch(fetchAmountIncomePerCategory(payload));
-        break;
-      case "trend":
-        dispatch(fetchTransactionTrend(payload));
-        break;
-      case "top":
-        dispatch(fetchTopTransactions(payload));
-        break;
-      case "used":
-        dispatch(fetchMostUsedCategory());
-        break;
-      default:
-        console.warn(`Unhandled activeTab: ${activeTab}`);
-        break;
-    }
+    fetchData();
   }, [activeTab, dispatch, fromDate, toDate, type, limit]);
 
-  const handleApplyFilter = () => {
+  const fetchData = () => {
     const payload = { fromDate, toDate, type, limit };
-
     switch (activeTab) {
-      case "overview":
-        dispatch(fetchFinancialOverview(payload));
-        break;
-      case "spend":
-        dispatch(fetchAmountSpendPerCategory(payload));
-        break;
-      case "income":
-        dispatch(fetchAmountIncomePerCategory(payload));
-        break;
-      case "trend":
-        dispatch(fetchTransactionTrend(payload));
-        break;
-      case "top":
-        dispatch(fetchTopTransactions(payload));
-        break;
-      default:
-        break;
+      case "overview": dispatch(fetchFinancialOverview(payload)); break;
+      case "spend": dispatch(fetchAmountSpendPerCategory(payload)); break;
+      case "income": dispatch(fetchAmountIncomePerCategory(payload)); break;
+      case "trend": dispatch(fetchTransactionTrend(payload)); break;
+      case "top": dispatch(fetchTopTransactions(payload)); break;
+      case "used": dispatch(fetchMostUsedCategory()); break;
+      default: break;
     }
   };
 
   const CurrentAnalysisComponent = useMemo(() => {
-    const tab = TABS.find(t => t.key === activeTab);
+    const tab = TABS.find((t) => t.key === activeTab);
     return tab ? tab.component : null;
   }, [activeTab]);
 
   return (
-    <div className="flex flex-col md:flex-row gap-6 p-4 md:p-8 max-w-7xl mx-auto bg-gray-50 rounded-lg shadow-md">
-      <div className="w-full md:w-56 flex-shrink-0 bg-white rounded-lg p-3 shadow-sm border border-gray-200">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800">Analysis Views</h2>
-        <nav className="space-y-2">
-          {TABS.map((tab) => (
-            <button
-              key={tab.key}
-              className={`w-full py-2 px-3 rounded-md text-left font-medium transition-all duration-200 ease-in-out
-                ${activeTab === tab.key
-                  ? "bg-blue-600 text-white shadow-md"
-                  : "text-gray-700 hover:bg-blue-50 focus:bg-blue-100 focus:text-blue-700"
-                }`}
-              onClick={() => setActiveTab(tab.key)}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </nav>
-      </div>
+    <div className="min-h-screen bg-gray-100">
+      <Navigationbar />
 
-      <div className="flex-1 bg-white rounded-lg p-5 md:p-6 shadow-md border border-gray-200">
-        {FILTERABLE_TABS.includes(activeTab) && (
-          <div className="flex flex-wrap items-end gap-3 md:gap-4 mb-6 p-4 bg-gray-100 rounded-lg border border-gray-200 shadow-sm">
-            <div className="flex-grow min-w-[150px]">
-              <label htmlFor="fromDate" className="block text-sm font-medium text-gray-700 mb-1">From Date</label>
-              <input
-                id="fromDate"
-                type="date"
-                value={fromDate}
-                onChange={(e) => setFromDate(e.target.value)}
-                className="w-full border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm px-3 py-2 text-gray-800"
-              />
-            </div>
-            <div className="flex-grow min-w-[150px]">
-              <label htmlFor="toDate" className="block text-sm font-medium text-gray-700 mb-1">To Date</label>
-              <input
-                id="toDate"
-                type="date"
-                value={toDate}
-                onChange={(e) => setToDate(e.target.value)}
-                className="w-full border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm px-3 py-2 text-gray-800"
-              />
-            </div>
+      <div className="max-w-7xl mx-auto p-4">
+        <div className="md:hidden flex justify-between items-center mb-4 mt-20">
+          <h2 className="text-xl font-bold">Analysis Views</h2>
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="p-2 bg-blue-600 text-white rounded-md"
+          >
+            <Menu size={20} />
+          </button>
+        </div>
 
-            {TYPE_FILTER_TABS.includes(activeTab) && (
-              <div className="flex-grow min-w-[120px]">
-                <label htmlFor="transactionType" className="block text-sm font-medium text-gray-700 mb-1">Type</label>
-                <select
-                  id="transactionType"
-                  value={type}
-                  onChange={(e) => setType(e.target.value)}
-                  className="w-full border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm px-3 py-2 text-gray-800"
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-30 z-40 md:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+
+        <div className="flex gap-4">
+          <aside
+            className={`fixed mt-16 top-0 left-0 h-full w-64 bg-white p-4 z-20 transform ${
+              sidebarOpen ? "translate-x-0" : "-translate-x-full"
+            } md:static md:translate-x-0 md:w-60 md:h-auto border md:border-0 shadow-md md:shadow-none transition-transform duration-300 ease-in-out`}
+          >
+            <div className="flex justify-between items-center md:hidden mb-4">
+              <button onClick={() => setSidebarOpen(false)} className="text-gray-500">
+                <X size={20} />
+              </button>
+            </div>
+            <nav className="space-y-2">
+              <h1 className="text-xl font-bold mb-5">Analysis Views</h1>
+              {TABS.map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => {
+                    setActiveTab(tab.key);
+                    if (window.innerWidth < 768) setSidebarOpen(false);
+                  }}
+                  className={`block w-full text-left font-semibold px-3 py-2 rounded-md ${
+                    activeTab === tab.key
+                      ? "bg-blue-600 text-white"
+                      : "text-gray-700 hover:bg-blue-50"
+                  }`}
                 >
-                  <option value="all">All</option>
-                  <option value="income">Income</option>
-                  <option value="expense">Expense</option>
-                </select>
-              </div>
-            )}
+                  {tab.label}
+                </button>
+              ))}
+            </nav>
+          </aside>
 
-            {activeTab === "top" && (
-              <div className="flex-grow min-w-[80px]">
-                <label htmlFor="limit" className="block text-sm font-medium text-gray-700 mb-1">Limit</label>
+          <main className="flex flex-col flex-1 mt-16 bg-white p-5 rounded-lg shadow-md border md:mt-16 sm:mt-1">
+            {FILTERABLE_TABS.includes(activeTab) && (
+              <div className="flex flex-wrap gap-3 bg-gray-50 p-4 rounded-md border mb-5 sm:mt-1">
                 <input
-                  id="limit"
-                  type="number"
-                  value={limit}
-                  onChange={(e) => setLimit(parseInt(e.target.value) || 1)}
-                  className="w-full border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm px-3 py-2 text-gray-800"
-                  min="1"
-                  max="100"
+                  type="date"
+                  value={fromDate}
+                  onChange={(e) => setFromDate(e.target.value)}
+                  className="border p-2 rounded-md flex-grow min-w-[140px]"
                 />
+                <input
+                  type="date"
+                  value={toDate}
+                  onChange={(e) => setToDate(e.target.value)}
+                  className="border p-2 rounded-md flex-grow min-w-[140px]"
+                />
+                {TYPE_FILTER_TABS.includes(activeTab) && (
+                  <select
+                    value={type}
+                    onChange={(e) => setType(e.target.value)}
+                    className="border p-2 rounded-md flex-grow min-w-[120px]"
+                  >
+                    <option value="all">All</option>
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                  </select>
+                )}
+                {activeTab === "top" && (
+                  <input
+                    type="number"
+                    value={limit}
+                    onChange={(e) => setLimit(Number(e.target.value))}
+                    min="1"
+                    max="100"
+                    className="border p-2 rounded-md flex-grow min-w-[80px]"
+                    placeholder="Limit"
+                  />
+                )}
+                <button
+                  onClick={fetchData}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                >
+                  Apply Filter
+                </button>
               </div>
             )}
 
-            <button
-              onClick={handleApplyFilter}
-              className="mt-auto px-5 py-2.5 bg-blue-600 text-white font-semibold rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 ease-in-out"
-            >
-              Apply Filter
-            </button>
-          </div>
-        )}
+            <h2 className="text-2xl font-bold mb-4">{TABS.find((t) => t.key === activeTab)?.label}</h2>
 
-        <h2 className="text-2xl font-bold mb-5 text-gray-900">
-          {TABS.find(t => t.key === activeTab)?.label}
-        </h2>
-
-        {CurrentAnalysisComponent && (
-          <div className="mt-4 text-gray-800">
-            <CurrentAnalysisComponent
-              overview={financialOverview}
-              data={
-                activeTab === "spend" ? expensePerCategory :
-                activeTab === "income" ? incomePerCategory :
-                activeTab === "trend" ? transactionTrend :
-                activeTab === "top" ? topTransactions :
-                null
-              }
-              category={mostUsedCategory}
-              rate={savingsRate}
-              type={type}
-              limit={limit} 
-              loading={loading}
-              error={error}
-            />
-          </div>
-        )}
+            {CurrentAnalysisComponent && (
+              <CurrentAnalysisComponent
+                overview={financialOverview}
+                data={
+                  activeTab === "spend"
+                    ? expensePerCategory
+                    : activeTab === "income"
+                    ? incomePerCategory
+                    : activeTab === "trend"
+                    ? transactionTrend
+                    : activeTab === "top"
+                    ? topTransactions
+                    : null
+                }
+                category={mostUsedCategory}
+                loading={loading}
+                error={error}
+                type={type}
+                limit={limit}
+              />
+            )}
+          </main>
+        </div>
       </div>
     </div>
   );

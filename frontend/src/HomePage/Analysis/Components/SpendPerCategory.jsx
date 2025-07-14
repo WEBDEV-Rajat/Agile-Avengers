@@ -20,13 +20,13 @@ const SpendPerCategory = ({ data, loading, error }) => {
         
           <div className="flex gap-3 mb-6 justify-end">
             <button
-              onClick={() => exportToCSV(data, "spend_per_category.csv")}
+              onClick={() => exportToCSV(data, "expense_per_category.csv")}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow-sm"
             >
               Export CSV
             </button>
             <button
-              onClick={() => exportToPDF(data, "Spend Per Category", "spend_per_category.pdf")}
+              onClick={() => exportToPDF(data, "Expense per Category", "expense_per_category.pdf")}
               className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded shadow-sm"
             >
               Export PDF

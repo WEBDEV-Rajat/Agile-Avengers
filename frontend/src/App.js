@@ -22,6 +22,7 @@ import IncomeCategories from "./HomePage/IncomeCategories/IncomeCategories";
 import ExpenseCategories from "./HomePage/ExpenseCategories/ExpenseCategories";
 import UpdatePage from "./HomePage/BudgetPlan/UpdatePage";
 import AnalysisPage from "./HomePage/Analysis/AnalysisPage.jsx";
+import Notifications from "./HomePage/Notifications/Notifications.jsx";
 function App() {
   return (
     <div className="App">
@@ -39,6 +40,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/analysis" element={<AnalysisPage />} />
         <Route path="/manage" element={<Manage />} />
+        <Route path="/notifications" element={<Notifications />} />
         <Route path="/budget-plan" element={<BudgetPlan />} />
         <Route path="/recurring-transactions" element={<RecurringTransaction />} />
         <Route path="/savings" element={<Savings />} />
