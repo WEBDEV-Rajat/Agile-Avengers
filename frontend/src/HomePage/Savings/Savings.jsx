@@ -24,7 +24,7 @@ const Savings = () => {
   useEffect(() => {
     const getCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/v1/category/get-all-expense", {
+        const response = await axios.get("https://expenseguru-backend.onrender.com/api/v1/category/get-all-expense", {
           withCredentials: true
         });
         setCategories(response.data.data);
@@ -39,7 +39,7 @@ const Savings = () => {
     const getUpcomingTransactions = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/v1/reoccuring/get-upcoming",
+          "https://expenseguru-backend.onrender.com/api/v1/reoccuring/get-upcoming",
           { days },
           { withCredentials: true }
         );
@@ -54,7 +54,7 @@ const Savings = () => {
   useEffect(() => {
     const getAllTransactions = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/v1/saving/get-all", {
+        const response = await axios.get("https://expenseguru-backend.onrender.com/api/v1/saving/get-all", {
           withCredentials: true
         });
         setList(response.data.data);
@@ -83,7 +83,7 @@ const Savings = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:5000/api/v1/saving/add-goal",
+        "https://expenseguru-backend.onrender.com/api/v1/saving/add-goal",
         transactionData,
         { withCredentials: true }
       );

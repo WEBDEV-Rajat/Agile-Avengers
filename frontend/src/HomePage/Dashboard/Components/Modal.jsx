@@ -32,7 +32,7 @@ const Modal = ({ data, type, onClose, onSave }) => {
   const handleSubmit = async () => {
     try {
       await axios.post(
-        `http://localhost:5000/api/v1/transaction/edit-transaction/${data._id}`,
+        `https://expenseguru-backend.onrender.com/api/v1/transaction/edit-transaction/${data._id}`,
         {
           type: formData.type,
           category: data.category?.name,

@@ -133,7 +133,7 @@ export const register = (data) => async (dispatch) => {
   dispatch(userSlice.actions.registerRequest());
   try {
     const response = await axios.post(
-      "http://localhost:5000/api/v1/users/register",
+      "https://expenseguru-backend.onrender.com/api/v1/users/register",
       data,
       {
         withCredentials: true,
@@ -155,7 +155,7 @@ export const login = (data) => async (dispatch) => {
   dispatch(userSlice.actions.loginRequest());
   try {
     const response = await axios.post(
-      "http://localhost:5000/api/v1/users/login",
+      "https://expenseguru-backend.onrender.com/api/v1/users/login",
       data,
       {
         withCredentials: true,
@@ -177,7 +177,7 @@ export const forgotPassword = (data) => async (dispatch) => {
   dispatch(userSlice.actions.forgotPasswordRequest());
   try {
     const response = await axios.post(
-      "http://localhost:5000/api/v1/users/forgot-password",
+      "https://expenseguru-backend.onrender.com/api/v1/users/forgot-password",
       data,
       {
         withCredentials: true,
@@ -194,7 +194,7 @@ export const resetPassword = (data) => async (dispatch) => {
   dispatch(userSlice.actions.resetPasswordRequest());
   try {
     const response = await axios.post(
-      `http://localhost:5000/api/v1/users/reset-password/${data.token}`,
+      `https://expenseguru-backend.onrender.com/api/v1/users/reset-password/${data.token}`,
       { password: data.password },
       {
         withCredentials: true,
@@ -215,7 +215,7 @@ export const GetUser = () => async (dispatch) => {
     // console.log("ggbd");
     
     const response = await axios.get(
-      "http://localhost:5000/api/v1/users/get-user",
+      "https://expenseguru-backend.onrender.com/api/v1/users/get-user",
       {
         withCredentials: true,
       }
@@ -234,7 +234,7 @@ export const GetUser = () => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   try {
     await axios.get(
-      "http://localhost:5000/api/v1/users/logout",
+      "https://expenseguru-backend.onrender.com/api/v1/users/logout",
       {
         withCredentials: true,
       }

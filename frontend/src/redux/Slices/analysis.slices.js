@@ -161,7 +161,7 @@ const analysisSlice = createSlice({
 export const fetchAmountSpendPerCategory = (data) => async (dispatch) => {
   dispatch(analysisSlice.actions.analysisRequest());
   try {
-    const response = await axios.post("http://localhost:5000/api/v1/analysis/category/expense", data, {
+    const response = await axios.post("https://expenseguru-backend.onrender.com/api/v1/analysis/category/expense", data, {
       params:data,
       withCredentials: true,
     });
@@ -174,7 +174,7 @@ export const fetchAmountSpendPerCategory = (data) => async (dispatch) => {
 export const fetchAmountIncomePerCategory = (data) => async (dispatch) => {
   dispatch(analysisSlice.actions.analysisRequest());
   try {
-    const response = await axios.post("http://localhost:5000/api/v1/analysis/category/income", data, {
+    const response = await axios.post("https://expenseguru-backend.onrender.com/api/v1/analysis/category/income", data, {
       params:data,
       withCredentials: true,
     });
@@ -187,7 +187,7 @@ export const fetchAmountIncomePerCategory = (data) => async (dispatch) => {
 export const fetchFinancialOverview = (data) => async (dispatch) => {
   dispatch(analysisSlice.actions.analysisRequest());
   try {
-    const response = await axios.post("http://localhost:5000/api/v1/analysis/overview", data, {
+    const response = await axios.post("https://expenseguru-backend.onrender.com/api/v1/analysis/overview", data, {
       params:data,
       withCredentials: true,
     });
@@ -201,7 +201,7 @@ export const fetchTransactionTrend = (data) => async (dispatch) => {
   dispatch(analysisSlice.actions.analysisRequest());
   try {
     console.log(data);
-    const response = await axios.post("http://localhost:5000/api/v1/analysis/trend", data, {
+    const response = await axios.post("https://expenseguru-backend.onrender.com/api/v1/analysis/trend", data, {
       params:data,
       withCredentials: true,
     });
@@ -214,7 +214,7 @@ export const fetchTransactionTrend = (data) => async (dispatch) => {
 export const fetchTopTransactions = (params) => async (dispatch) => {
   dispatch(analysisSlice.actions.analysisRequest());
   try {
-    const response = await axios.post("http://localhost:5000/api/v1/analysis/top-transactions",params, {
+    const response = await axios.post("https://expenseguru-backend.onrender.com/api/v1/analysis/top-transactions",params, {
       params:params,
       withCredentials: true,
     });
@@ -227,7 +227,7 @@ export const fetchTopTransactions = (params) => async (dispatch) => {
 export const fetchMostUsedCategory = () => async (dispatch) => {
   dispatch(analysisSlice.actions.analysisRequest());
   try {
-    const response = await axios.get("http://localhost:5000/api/v1/analysis/most-used-category", {
+    const response = await axios.get("https://expenseguru-backend.onrender.com/api/v1/analysis/most-used-category", {
       withCredentials: true,
     });
     dispatch(analysisSlice.actions.setMostUsedCategory(response.data.category));
@@ -239,7 +239,7 @@ export const fetchMostUsedCategory = () => async (dispatch) => {
 export const fetchSavingsRate = () => async (dispatch) => {
   dispatch(analysisSlice.actions.analysisRequest());
   try {
-    const response = await axios.get("http://localhost:5000/api/v1/analysis/savings-rate",{
+    const response = await axios.get("https://expenseguru-backend.onrender.com/api/v1/analysis/savings-rate",{
       withCredentials: true,
     });
     dispatch(analysisSlice.actions.setSavingsRate(response.data.savingsRate));

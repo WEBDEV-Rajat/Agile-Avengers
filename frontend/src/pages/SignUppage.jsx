@@ -20,7 +20,7 @@ const SignUppage = () => {
   const dispatch = useDispatch();
   const navigateTo = useNavigate();
   const handleGoogleLoginSuccess = () => {
-    window.open("http://localhost:5000/auth/google/callback", "_self");
+    window.open("https://expenseguru-backend.onrender.com/auth/google/callback", "_self");
   };
   const handleRegister = (e) => {
     e.preventDefault();

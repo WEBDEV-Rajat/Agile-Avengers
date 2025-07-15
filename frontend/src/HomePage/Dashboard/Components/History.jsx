@@ -23,7 +23,7 @@ const History = ({ transactionHandler }) => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/v1/transaction/get-all",
+        "https://expenseguru-backend.onrender.com/api/v1/transaction/get-all",
         { category, type },
         { withCredentials: true }
       );
@@ -43,8 +43,8 @@ const History = ({ transactionHandler }) => {
 
     const url =
       type === "income"
-        ? "http://localhost:5000/api/v1/category/get-all-income"
-        : "http://localhost:5000/api/v1/category/get-all-expense";
+        ? "https://expenseguru-backend.onrender.com/api/v1/category/get-all-income"
+        : "https://expenseguru-backend.onrender.com/api/v1/category/get-all-expense";
 
     try {
       const response = await axios.get(url, { withCredentials: true });
@@ -68,7 +68,7 @@ const History = ({ transactionHandler }) => {
     if (!window.confirm("Are you sure you want to delete this transaction?"))
       return;
     try {
-      const url = `http://localhost:5000/api/v1/transaction/delete-transaction/${id}`;
+      const url = `https://expenseguru-backend.onrender.com/api/v1/transaction/delete-transaction/${id}`;
       await axios.delete(url, {
         withCredentials: true,
         headers: { "Content-Type": "application/json" },

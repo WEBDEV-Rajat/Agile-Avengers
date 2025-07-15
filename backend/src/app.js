@@ -95,13 +95,13 @@ app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "em
 app.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "http://localhost:3000/login",
+    failureRedirect: "https://expenseguru-black.vercel.app/login",
     failureFlash: true,
   }),
   (req, res) => {
     res.cookie("accessToken", req.user.accessToken, { httpOnly: true, secure: true });
     res.cookie("refreshToken", req.user.refreshToken, { httpOnly: true, secure: true });
-    res.redirect("http://localhost:3000/dashboard");
+    res.redirect("https://expenseguru-black.vercel.app/dashboard");
   }
 );
 
@@ -120,7 +120,7 @@ app.get("/logout", (req, res, next) => {
     }
     res.clearCookie("accessToken");
     res.clearCookie("refreshToken");
-    res.redirect("http://localhost:3000");
+    res.redirect("https://expenseguru-black.vercel.app");
   });
 });
 

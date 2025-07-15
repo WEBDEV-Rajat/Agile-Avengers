@@ -18,7 +18,7 @@ const Overview = ({ getUser, incomeHandler, expenseHandler }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/v1/transaction/get-total", {
+        const response = await axios.get("https://expenseguru-backend.onrender.com/api/v1/transaction/get-total", {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
         });
@@ -30,7 +30,7 @@ const Overview = ({ getUser, incomeHandler, expenseHandler }) => {
 
     const fetchIncome = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/v1/transaction/get-income-per", {
+        const response = await axios.get("https://expenseguru-backend.onrender.com/api/v1/transaction/get-income-per", {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
         });
@@ -46,7 +46,7 @@ const Overview = ({ getUser, incomeHandler, expenseHandler }) => {
 
     const fetchExpense = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/v1/transaction/get-expense-per", {
+        const response = await axios.get("https://expenseguru-backend.onrender.com/api/v1/transaction/get-expense-per", {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
         });

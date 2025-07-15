@@ -25,7 +25,7 @@ const RecurringTransaction = () => {
     const getCategories = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/api/v1/category/get-all-expense",
+          "https://expenseguru-backend.onrender.com/api/v1/category/get-all-expense",
           { withCredentials: true }
         );
         setCategories(res.data.data);
@@ -40,7 +40,7 @@ const RecurringTransaction = () => {
     const fetchUpcoming = async () => {
       try {
         const res = await axios.post(
-          "http://localhost:5000/api/v1/reoccuring/get-upcoming",
+          "https://expenseguru-backend.onrender.com/api/v1/reoccuring/get-upcoming",
           { days },
           { withCredentials: true }
         );
@@ -56,7 +56,7 @@ const RecurringTransaction = () => {
     const fetchAll = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/api/v1/reoccuring/get-all",
+          "https://expenseguru-backend.onrender.com/api/v1/reoccuring/get-all",
           { withCredentials: true }
         );
         setList(res.data.data);
@@ -85,7 +85,7 @@ const RecurringTransaction = () => {
       };
 
       const res = await axios.post(
-        "http://localhost:5000/api/v1/reoccuring/add-transaction",
+        "https://expenseguru-backend.onrender.com/api/v1/reoccuring/add-transaction",
         payload,
         { withCredentials: true }
       );

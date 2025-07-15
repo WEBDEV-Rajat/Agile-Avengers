@@ -28,7 +28,7 @@ const Login = () => {
   };
 
   const handleGoogleLoginSuccess = () => {
-    window.open("http://localhost:5000/auth/google/callback", "_self");
+    window.open("https://expenseguru-backend.onrender.com/auth/google/callback", "_self");
   };
 
   useEffect(() => {

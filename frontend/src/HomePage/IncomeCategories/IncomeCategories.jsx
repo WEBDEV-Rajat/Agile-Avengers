@@ -11,7 +11,7 @@ const IncomeCategories = () => {
   useEffect(() => {
     const getCategories = async () => {
       try {
-        const url = "http://localhost:5000/api/v1/category/get-all-income";
+        const url = "https://expenseguru-backend.onrender.com/api/v1/category/get-all-income";
         const response = await axios.get(url, {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
@@ -26,7 +26,7 @@ const IncomeCategories = () => {
 
   const handleDeleteCategory = async (categoryId) => {
     try {
-      const url = `http://localhost:5000/api/v1/category/delete-category/${categoryId}`;
+      const url = `https://expenseguru-backend.onrender.com/api/v1/category/delete-category/${categoryId}`;
       await axios.delete(url, {
         withCredentials: true,
         headers: { "Content-Type": "application/json" },

@@ -43,7 +43,7 @@ export const runRecurringTransactions = async () => {
             </div>
             <p style="font-size: 0.875rem; color: #718096; margin-top: 20px; text-align: center;">Please make sure to manage your budget accordingly.</p>
             <p style="text-align: center; margin-top: 20px;">
-              <a href="http://localhost:3000/" style="display: inline-block; font-size: 1rem; color: #fff; background-color: #4299e1; padding: 10px 20px; border-radius: 5px; text-decoration: none;">View All Transactions</a>
+              <a href="https://expenseguru-black.vercel.app/" style="display: inline-block; font-size: 1rem; color: #fff; background-color: #4299e1; padding: 10px 20px; border-radius: 5px; text-decoration: none;">View All Transactions</a>
             </p>
           </div>
         `;

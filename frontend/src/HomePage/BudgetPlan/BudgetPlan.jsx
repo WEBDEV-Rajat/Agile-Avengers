@@ -24,7 +24,7 @@ const BudgetPlan = () => {
   useEffect(() => {
     const getList = async () => {
       try {
-        const url = "http://localhost:5000/api/v1/budget/get-details";
+        const url = "https://expenseguru-backend.onrender.com/api/v1/budget/get-details";
         const response = await axios.get(url, { withCredentials: true });
         setList(response.data.data);
       } catch {
@@ -37,7 +37,7 @@ const BudgetPlan = () => {
   useEffect(() => {
     const getUpcomingTransactions = async () => {
       try {
-        const url = "http://localhost:5000/api/v1/reoccuring/get-upcoming";
+        const url = "https://expenseguru-backend.onrender.com/api/v1/reoccuring/get-upcoming";
         const response = await axios.post(url, { days }, { withCredentials: true });
         setUpcoming(response.data.data);
       } catch {
@@ -50,7 +50,7 @@ const BudgetPlan = () => {
   useEffect(() => {
     const getAllCategories = async () => {
       try {
-        const url = "http://localhost:5000/api/v1/category/get-all-expense";
+        const url = "https://expenseguru-backend.onrender.com/api/v1/category/get-all-expense";
         const response = await axios.get(url, { withCredentials: true });
         setCategories(response.data.data);
       } catch {
@@ -77,7 +77,7 @@ const BudgetPlan = () => {
         category: selectedCategory ? selectedCategory.name : "",
       };
 
-      const url = "http://localhost:5000/api/v1/budget/add-new";
+      const url = "https://expenseguru-backend.onrender.com/api/v1/budget/add-new";
       const response = await axios.post(url, transactionData, { withCredentials: true });
 
       setList([...list, response.data.data]);

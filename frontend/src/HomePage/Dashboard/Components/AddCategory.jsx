@@ -15,7 +15,7 @@ const AddCategory = ({ type, onCategoryAdded }) => {
     e.preventDefault();
     try {
       const form = { name, icon, type };
-      const response = await axios.post("http://localhost:5000/api/v1/category/add-category", form, {
+      const response = await axios.post("https://expenseguru-backend.onrender.com/api/v1/category/add-category", form, {
         withCredentials: true,
         headers: { "Content-Type": "application/json" },
       });

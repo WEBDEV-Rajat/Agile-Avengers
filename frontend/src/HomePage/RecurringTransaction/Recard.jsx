@@ -13,7 +13,7 @@ function Recard() {
   useEffect(() => {
     const fetchTransaction = async () => {
       try {
-        const url = `http://localhost:5000/api/v1/reoccuring/get-details/${id}`;
+        const url = `https://expenseguru-backend.onrender.com/api/v1/reoccuring/get-details/${id}`;
         const response = await axios.get(url, {
           withCredentials: true,
           headers: { 'Content-Type': 'application/json' },
@@ -41,7 +41,7 @@ function Recard() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = `http://localhost:5000/api/v1/reoccuring/update-transaction/${id}`;
+      const url = `https://expenseguru-backend.onrender.com/api/v1/reoccuring/update-transaction/${id}`;
       const response = await axios.put(url, formData, {
         withCredentials: true,
         headers: { 'Content-Type': 'application/json' },
@@ -58,7 +58,7 @@ function Recard() {
   const handleDelete = async () => {
     
       try {
-        const url = `http://localhost:5000/api/v1/reoccuring/delete/${id}`;
+        const url = `https://expenseguru-backend.onrender.com/api/v1/reoccuring/delete/${id}`;
         const response = await axios.delete(url, {
           withCredentials: true,
           headers: { 'Content-Type': 'application/json' },

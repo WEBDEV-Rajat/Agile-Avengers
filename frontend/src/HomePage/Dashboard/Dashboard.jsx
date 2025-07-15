@@ -40,7 +40,7 @@ const Dashboard = () => {
     const form = { amount, category, note, date, type };
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/v1/transaction/add-transaction",
+        "https://expenseguru-backend.onrender.com/api/v1/transaction/add-transaction",
         form,
         {
           withCredentials: true,
@@ -57,12 +57,12 @@ const Dashboard = () => {
   };
 
   const refreshIncomeCategories = async () => {
-    const res = await axios.get("http://localhost:5000/api/v1/category/get-all-income", { withCredentials: true });
+    const res = await axios.get("https://expenseguru-backend.onrender.com/api/v1/category/get-all-income", { withCredentials: true });
     setIncomeCategories(res.data.data);
   };
 
   const refreshExpenseCategories = async () => {
-    const res = await axios.get("http://localhost:5000/api/v1/category/get-all-expense", { withCredentials: true });
+    const res = await axios.get("https://expenseguru-backend.onrender.com/api/v1/category/get-all-expense", { withCredentials: true });
     setExpenseCategories(res.data.data);
   };
 

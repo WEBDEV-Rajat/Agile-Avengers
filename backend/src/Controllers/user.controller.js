@@ -243,7 +243,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
   await user.save();
 
-  const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
+  const resetUrl = `https://expenseguru-black.vercel.app/reset-password/${resetToken}`;
 
   await sendEmail({
     email: user.email,
