@@ -4,18 +4,18 @@ import { ApiResponse } from "../Utils/ApiResponse.js";
 import asyncHandler from "../Utils/asyncHandler.js";
 
 const addTransaction = asyncHandler(async (req, res) => {
-  console.log("well here i am");
+  // console.log("well here i am");
 
   const userId = req.user._id;
-  console.log("user", userId);
+  // console.log("user", userId);
 
   const { amount, date, category, type, note } = req.body;
-  console.log("amount", amount);
-  console.log(date);
-  console.log("category", category);
-  console.log("type", type);
+  // console.log("amount", amount);
+  // console.log(date);
+  // console.log("category", category);
+  // console.log("type", type);
 
-  console.log("note", note);
+  // console.log("note", note);
 
   if (!amount || !category || !type) {
     return res.status(400).json({
@@ -38,7 +38,7 @@ const addTransaction = asyncHandler(async (req, res) => {
       .status(400)
       .json(new ApiResponse(400, null, "Category not found"));
   }
-  console.log("cvbnbvbcxzvzb", categoryData);
+  // console.log("cvbnbvbcxzvzb", categoryData);
 
   const newTransaction = await Transaction.create({
     amount,
@@ -59,8 +59,8 @@ const editTransaction = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const userId = req.user._id;
   const { amount, date, category, type, note } = req.body;
-  console.log("amount: " + amount);
-  console.log("category:",category);
+  // console.log("amount: " + amount);
+  // console.log("category:",category);
   
   const transaction = await Transaction.findOne({ _id: id, userId });
   if (!transaction) {
@@ -116,7 +116,7 @@ const deleteTransaction = asyncHandler(async (req, res) => {
     });
   }
   const transaction = await Transaction.findByIdAndDelete({ _id: id, userId });
-  console.log("sd,n.f", transaction);
+  // console.log("sd,n.f", transaction);
 
   return res
     .status(200)
@@ -220,7 +220,7 @@ const transactionDetails = asyncHandler(async (req, res) => {
 
 const totalTransaction = asyncHandler(async (req, res) => {
   const userId = req.user._id;
-console.log("Transaction details retrieved successfully");
+  console.log("Transaction details retrieved successfully");
 
   const transactions = await Transaction.find({ userId });
 

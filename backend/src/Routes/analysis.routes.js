@@ -25,5 +25,5 @@ router.route("/savings-rate").get(verifyJWT, getSavingsRate);
 router.route("/category/expense").post(verifyJWT, getAmountSpendPerCategory);
 
 router.route("/category/income").post(verifyJWT, getAmountIncomePerCategory);
-
+ 
 export default router;

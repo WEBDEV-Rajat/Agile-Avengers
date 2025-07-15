@@ -1,11 +1,11 @@
 import { Transaction } from "../Models/transaction.model.js";
 import asyncHandler from "../Utils/asyncHandler.js";
 
-// Helper for date filter
 const createDateFilter = (fromDate, toDate) => {
-  return fromDate && toDate
-    ? { date: { $gte: new Date(fromDate), $lte: new Date(toDate) } }
-    : {};
+  if (fromDate && toDate) {
+    return { date: { $gte: new Date(fromDate), $lte: new Date(toDate) } };
+  }
+  return {};
 };
 
 const getAmountSpendPerCategory = asyncHandler(async (req, res) => {
@@ -20,12 +20,7 @@ const getAmountSpendPerCategory = asyncHandler(async (req, res) => {
 
   const result = await Transaction.aggregate([
     { $match: match },
-    {
-      $group: {
-        _id: "$category",
-        totalAmount: { $sum: "$amount" },
-      },
-    },
+    { $group: { _id: "$category", totalAmount: { $sum: "$amount" } } },
     {
       $lookup: {
         from: "categories",
@@ -64,12 +59,7 @@ const getAmountIncomePerCategory = asyncHandler(async (req, res) => {
 
   const result = await Transaction.aggregate([
     { $match: match },
-    {
-      $group: {
-        _id: "$category",
-        totalAmount: { $sum: "$amount" },
-      },
-    },
+    { $group: { _id: "$category", totalAmount: { $sum: "$amount" } } },
     {
       $lookup: {
         from: "categories",
@@ -121,12 +111,18 @@ const getFinancialOverview = asyncHandler(async (req, res) => {
 
 const getTransactionTrend = asyncHandler(async (req, res) => {
   const userId = req.user._id;
-  const { fromDate, toDate } = req.body;
+  const { fromDate, toDate, type } = req.query;
 
   const match = {
     userId,
     ...createDateFilter(fromDate, toDate),
   };
+
+  if (type && type !== "all" && ["income", "expense"].includes(type)) {
+    match.type = type;
+  } else if (type === "all") {
+    // No need to filter by type; include both income and expense
+  }
 
   const trend = await Transaction.aggregate([
     { $match: match },
@@ -150,36 +146,46 @@ const getTransactionTrend = asyncHandler(async (req, res) => {
     { $sort: { date: 1 } },
   ]);
 
-  res.json({ trend });
+  res.status(200).json({ trend });
 });
 
 const getTopTransactions = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const { type = "all", fromDate, toDate, limit = 5 } = req.query;
+  // console.log("hello");
+  
+  const match = {
+    userId,
+    ...createDateFilter(fromDate, toDate),
+  };
 
-  const match = { userId, ...createDateFilter(fromDate, toDate) };
-  if (type !== "all") {
+  if (type && type !== "all" && ["income", "expense"].includes(type)) {
     match.type = type;
+  } else if (type === "all") {
   }
+
+  const limitValue = isNaN(Number(limit)) ? 5 : Number(limit);
 
   const transactions = await Transaction.find(match)
     .sort({ amount: -1 })
-    .limit(Number(limit));
+    .limit(limitValue)
+    .populate("category")
 
   res.json({ transactions });
 });
 
 const getMostUsedCategory = asyncHandler(async (req, res) => {
   const userId = req.user._id;
+  const { fromDate, toDate } = req.query;
+
+  const match = {
+    userId,
+    ...createDateFilter(fromDate, toDate),
+  };
 
   const result = await Transaction.aggregate([
-    { $match: { userId } },
-    {
-      $group: {
-        _id: "$category",
-        count: { $sum: 1 },
-      },
-    },
+    { $match: match },
+    { $group: { _id: "$category", count: { $sum: 1 } } },
     { $sort: { count: -1 } },
     { $limit: 1 },
     {
@@ -198,14 +204,17 @@ const getMostUsedCategory = asyncHandler(async (req, res) => {
 
 const getSavingsRate = asyncHandler(async (req, res) => {
   const userId = req.user._id;
+  const { fromDate, toDate } = req.query;
+
+  const dateFilter = createDateFilter(fromDate, toDate);
 
   const [incomeAgg, expenseAgg] = await Promise.all([
     Transaction.aggregate([
-      { $match: { userId, type: "income" } },
+      { $match: { userId, type: "income", ...dateFilter } },
       { $group: { _id: null, total: { $sum: "$amount" } } },
     ]),
     Transaction.aggregate([
-      { $match: { userId, type: "expense" } },
+      { $match: { userId, type: "expense", ...dateFilter } },
       { $group: { _id: null, total: { $sum: "$amount" } } },
     ]),
   ]);

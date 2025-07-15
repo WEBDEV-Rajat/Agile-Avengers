@@ -4,7 +4,7 @@ import { sendEmail } from "../Utils/sendEmail.js";
 
 const submitContactForm = asyncHandler(async (req, res) => {
   const { name, email, message } = req.body;
-console.log("in the form ");
+  // console.log("in the form ");
 
   if (!name || !email || !message) {
     return res
@@ -12,10 +12,24 @@ console.log("in the form ");
       .json({ success: false, message: "All fields are required" });
   }
 
- 
+  const user = await Contact.findOne({ email });
+  // console.log(user);
+  
+  if (user) {
+    // console.log("efwd");
+    
+    return res.status(200).json({
+      success: false,
+      message:
+        "We have already received your message. Our team will get back to you shortly.",
+    });
+  }
+  // console.log("ddsrvrv"); 
+
+  
   await Contact.create({ name, email, message });
 
-  const subject = "Thank you for contacting Expense Guru!";
+  let subject = "Thank you for contacting Expense Guru!";
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px;">
       <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
@@ -41,7 +55,8 @@ console.log("in the form ");
 
   res.status(200).json({
     success: true,
-    message: "Your message has been received. A confirmation email has been sent.",
+    message:
+      "Your message has been received. A confirmation email has been sent.",
   });
 });
 
