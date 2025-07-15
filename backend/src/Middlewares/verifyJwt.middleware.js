@@ -1,15 +1,15 @@
 import jwt from "jsonwebtoken";
-import  asyncHandler  from "../Utils/asyncHandler.js"
-import { ApiError } from "../Utils/ApiError.js"
-import { User } from "../Models/user.model.js"
+import asyncHandler from "../Utils/asyncHandler.js";
+import { ApiError } from "../Utils/ApiError.js";
+import { User } from "../Models/user.model.js";
 export const verifyJWT = asyncHandler(async (req, res, next) => {
   try {
-    // console.log("inside verify");
-    
     const token =
       req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", "");
-      
+
+    console.log("Access Token in verifyJWT:", token);
+
     if (!token) {
       throw new ApiError(401, "You are not authenticated");
     }
@@ -19,7 +19,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
     const user = await User.findById(decoded?._id).select(
       "-password -refreshToken"
     );
-    // console.log("user found", user);
+
     req.user = user;
     next();
   } catch (error) {
@@ -27,5 +27,3 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
     throw new ApiError(400, "Error getting token from server");
   }
 });
-
-

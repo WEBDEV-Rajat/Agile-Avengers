@@ -1,4 +1,3 @@
-
 import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
@@ -52,7 +51,9 @@ passport.use(
         let user = await User.findOne({ googleId: profile.id });
 
         if (!user) {
-          user = await User.findOne({ email: profile.emails?.[0]?.value || "" });
+          user = await User.findOne({
+            email: profile.emails?.[0]?.value || "",
+          });
           if (user) {
             console.log("User found by email, updating googleId");
             user.googleId = profile.id;
@@ -90,7 +91,10 @@ passport.deserializeUser((data, done) => {
   done(null, data);
 });
 
-app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
 
 app.get(
   "/auth/google/callback",
@@ -99,15 +103,25 @@ app.get(
     failureFlash: true,
   }),
   (req, res) => {
-    res.cookie("accessToken", req.user.accessToken, { httpOnly: true, secure: true });
-    res.cookie("refreshToken", req.user.refreshToken, { httpOnly: true, secure: true });
+    res.cookie("accessToken", req.user.accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
+    res.cookie("refreshToken", req.user.refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
     res.redirect("https://expenseguru-black.vercel.app/dashboard");
   }
 );
 
 app.get("/login/success", async (req, res) => {
   if (req.user) {
-    return res.status(200).json({ message: "User logged in", user: req.user.user });
+    return res
+      .status(200)
+      .json({ message: "User logged in", user: req.user.user });
   } else {
     return res.status(401).json({ message: "Not Authorized", user: {} });
   }
@@ -130,8 +144,8 @@ import categoryRouter from "./Routes/category.routes.js";
 import budgetRouter from "./Routes/budget.routes.js";
 import savingRouter from "./Routes/saving.routes.js";
 import pereatingRouter from "./Routes/reoccuring.routes.js";
-import analysisRouter from "./Routes/analysis.routes.js"
-import contactRouter from "./Routes/contactus.routes.js"
+import analysisRouter from "./Routes/analysis.routes.js";
+import contactRouter from "./Routes/contactus.routes.js";
 import { runRecurringTransactions } from "./Automation/nodeCron.js";
 
 runRecurringTransactions();
@@ -142,6 +156,6 @@ app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/budget", budgetRouter);
 app.use("/api/v1/saving", savingRouter);
 app.use("/api/v1/reoccuring", pereatingRouter);
-app.use("/api/v1/analysis",analysisRouter);
-app.use("/api/v1/contact",contactRouter)
+app.use("/api/v1/analysis", analysisRouter);
+app.use("/api/v1/contact", contactRouter);
 export { app };
