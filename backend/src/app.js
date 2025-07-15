@@ -12,7 +12,7 @@ import { User } from "./Models/user.model.js";
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://expenseguru-black.vercel.app",
     credentials: true,
   })
 );
