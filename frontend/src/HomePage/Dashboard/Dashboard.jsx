@@ -5,9 +5,8 @@ import History from "./Components/History";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
 import AddCategory from "./Components/AddCategory";
-import { login, GetUser } from "../../redux/Slices/user.slices.js";
+import { GetUser } from "../../redux/Slices/user.slices.js";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Dashboard = () => {
@@ -20,8 +19,15 @@ const Dashboard = () => {
   const [incomecategories, setIncomeCategories] = useState([]);
   const [expensecategories, setExpenseCategories] = useState([]);
   const dispatch = useDispatch();
-
   const [transactionTrigger, setTransactionTrigger] = useState(0);
+
+  const { user, isAuthenticated } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(GetUser());
+    refreshIncomeCategories();
+    refreshExpenseCategories();
+  }, [dispatch]);
 
   const resetForm = () => {
     setAmount(null);
@@ -30,29 +36,8 @@ const Dashboard = () => {
     setDate(null);
   };
 
-  const openIncomePopup = () => {
-    resetForm();
-    setIsIncomeOpen(true);
-  };
-
-  const closeIncomePopup = () => setIsIncomeOpen(false);
-
-  const openExpensePopup = () => {
-    resetForm();
-    setIsExpenseOpen(true);
-  };
-
-  const closeExpensePopup = () => setIsExpenseOpen(false);
-
-  const incomeHandler = async () => {
-    const form = {
-      amount,
-      category,
-      note,
-      date,
-      type: "income",
-    };
-
+  const handleTransaction = async (type) => {
+    const form = { amount, category, note, date, type };
     try {
       const response = await axios.post(
         "http://localhost:5000/api/v1/transaction/add-transaction",
@@ -62,100 +47,24 @@ const Dashboard = () => {
           headers: { "Content-Type": "application/json" },
         }
       );
-      console.log("Income transaction added:", response.data);
       toast.success(response.data.message);
-      setTransactionTrigger((prev) => {
-        console.log("Incrementing transactionTrigger to:", prev + 1);
-        return prev + 1;
-      });
+      setTransactionTrigger((prev) => prev + 1);
       resetForm();
-      closeIncomePopup();
-    } catch (error) {
-      console.error(
-        "Error adding income transaction:",
-        error?.response?.data?.message || error.message
-      );
-      toast.warning(
-        error?.response?.data?.message || "Failed to add income transaction"
-      );
-    }
-  };
-
-  const expenseHandler = async () => {
-    const form = {
-      amount,
-      category,
-      note,
-      date,
-      type: "expense",
-    };
-
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/transaction/add-transaction",
-        form,
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      console.log("Expense transaction added:", response.data);
-      toast.success(response.data.message);
-      setTransactionTrigger((prev) => {
-        console.log("Incrementing transactionTrigger to:", prev + 1);
-        return prev + 1;
-      });
-      resetForm();
-      closeExpensePopup();
-    } catch (error) {
-      console.error(
-        "Error adding expense transaction:",
-        error?.response?.data?.message || error.message
-      );
-      toast.warning(
-        error?.response?.data?.message || "Failed to add expense transaction"
-      );
+      type === "income" ? setIsIncomeOpen(false) : setIsExpenseOpen(false);
+    } catch (err) {
+      toast.error(err?.response?.data?.message || `Failed to add ${type}`);
     }
   };
 
   const refreshIncomeCategories = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:5000/api/v1/category/get-all-income",
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      setIncomeCategories(response.data.data);
-    } catch (error) {
-      console.error("Error fetching income categories:", error);
-    }
+    const res = await axios.get("http://localhost:5000/api/v1/category/get-all-income", { withCredentials: true });
+    setIncomeCategories(res.data.data);
   };
 
   const refreshExpenseCategories = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:5000/api/v1/category/get-all-expense",
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      setExpenseCategories(response.data.data);
-    } catch (error) {
-      console.error("Error fetching expense categories:", error);
-    }
+    const res = await axios.get("http://localhost:5000/api/v1/category/get-all-expense", { withCredentials: true });
+    setExpenseCategories(res.data.data);
   };
-
-  useEffect(() => {
-    dispatch(GetUser());
-    refreshIncomeCategories();
-    refreshExpenseCategories();
-  }, [dispatch]);
-  const { user, loading, isAuthenticated } = useSelector((state) => state.user);
-
-  // console.log(user);
 
   const popupAnimation = {
     hidden: { opacity: 0, scale: 0.9 },
@@ -163,203 +72,110 @@ const Dashboard = () => {
     exit: { opacity: 0, scale: 0.9 },
   };
 
+  const renderTransactionPopup = (type) => {
+    const isIncome = type === "income";
+    const categories = isIncome ? incomecategories : expensecategories;
+    const closePopup = isIncome ? () => setIsIncomeOpen(false) : () => setIsExpenseOpen(false);
+    const refreshCategories = isIncome ? refreshIncomeCategories : refreshExpenseCategories;
+
+    return (
+      <motion.div
+        className="popup-overlay"
+        onClick={closePopup}
+        variants={popupAnimation}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+      >
+        <motion.div
+          className="popup"
+          onClick={(e) => e.stopPropagation()}
+          variants={popupAnimation}
+        >
+          <h2>
+            Create a new <span className={isIncome ? "s1" : "s2"}>{type}</span> transaction
+          </h2>
+          <form>
+            <label>
+              Description
+              <input
+                type="text"
+                value={note || ""}
+                onChange={(e) => setNote(e.target.value)}
+              />
+            </label>
+            <label>
+              Amount
+              <input
+                type="number"
+                value={amount || ""}
+                onChange={(e) => setAmount(e.target.value)}
+              />
+            </label>
+            <label>Category</label>
+            <div className="catselect">
+              <select value={category || ""} onChange={(e) => setCategory(e.target.value)}>
+                <option value="">Select {type} Categories</option>
+                {categories.map((cat) => (
+                  <option key={cat._id} value={cat.name}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+              <AddCategory type={type} onCategoryAdded={refreshCategories} />
+            </div>
+            <label>
+              Transaction Date
+              <input
+                type="date"
+                value={date || ""}
+                onChange={(e) => setDate(e.target.value)}
+              />
+            </label>
+            <div className="popup-buttons">
+              <button type="button" className="button2" onClick={closePopup}>
+                Close
+              </button>
+              <button type="button" className="button1" onClick={() => handleTransaction(type)}>
+                Submit
+              </button>
+            </div>
+          </form>
+        </motion.div>
+      </motion.div>
+    );
+  };
+
   return (
     <div>
       <Navigationbar />
-      <div className="relative top-[110px] flex flex-row justify-between font-semibold border-b border-b-slate-400 max-[530px]:flex-col max-[530px]:w-full">
-        <h1 className="text-green-700 text-2xl ml-5 mb-4">
-          Welcome, {isAuthenticated ? user?.name || "A" : "loading name..."}
+      <div className="relative top-[110px] flex flex-wrap justify-between font-semibold border-b border-b-slate-400 px-5 py-3">
+        <h1 className="text-green-700 text-2xl mb-3">
+          Welcome, {isAuthenticated ? user?.name || "User" : "loading..."}
         </h1>
 
-        <div className="flex gap-14 mr-7 max-[530px]:gap-5 mt-3">
+        <div className="flex gap-5 flex-wrap">
           <button
-            className="bg-[#0f664f] text-white rounded-lg pt-2 pb-2 pl-3 pr-3 shadow-md border-2 border-green-500 mb-1 -translate-y-4 max-[530px]:ml-5"
-            onClick={openIncomePopup}
+            onClick={() => { resetForm(); setIsIncomeOpen(true); }}
+            className="bg-[#0f664f] text-white rounded-lg pt-2 pb-2 pl-3 pr-3 shadow-md border-2 border-green-500"
           >
             New Income
           </button>
-
-          <AnimatePresence>
-            {isIncomeOpen && (
-              <motion.div
-                className="popup-overlay"
-                onClick={closeIncomePopup}
-                variants={popupAnimation}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-              >
-                <motion.div
-                  className="popup"
-                  onClick={(e) => e.stopPropagation()}
-                  variants={popupAnimation}
-                >
-                  <h2>
-                    Create a new <span className="s1">income</span> transaction
-                  </h2>
-                  <form>
-                    <label>
-                      Description
-                      <input
-                        type="text"
-                        value={note || ""}
-                        onChange={(e) => setNote(e.target.value)}
-                      />
-                    </label>
-                    <br />
-                    <label>
-                      Amount
-                      <input
-                        type="number"
-                        required
-                        value={amount || ""}
-                        onChange={(e) => setAmount(e.target.value)}
-                      />
-                    </label>
-                    <br />
-                    <label>Category</label>
-                    <div className="catselect">
-                      <select onChange={(e) => setCategory(e.target.value)}>
-                        <option value="">Select income Categories</option>
-                        {incomecategories.map((cat) => (
-                          <option key={cat._id} value={cat.name}>
-                            {cat.name}
-                          </option>
-                        ))}
-                      </select>
-                      <AddCategory
-                        type="income"
-                        onCategoryAdded={refreshIncomeCategories}
-                      />
-                    </div>
-                    <label>
-                      Transaction Date
-                      <input
-                        type="date"
-                        required
-                        value={date || ""}
-                        onChange={(e) => setDate(e.target.value)}
-                      />
-                    </label>
-                    <button
-                      type="button"
-                      className="button2"
-                      onClick={closeIncomePopup}
-                    >
-                      Close
-                    </button>
-                    <button
-                      type="button"
-                      className="button1"
-                      onClick={incomeHandler}
-                    >
-                      Submit
-                    </button>
-                  </form>
-                </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
           <button
-            className="bg-[#4b0519] text-white rounded-lg pt-1 pb-1 pl-3 pr-3 shadow-md border-2 border-[#de164f] mb-1 -translate-y-4"
-            onClick={openExpensePopup}
+            onClick={() => { resetForm(); setIsExpenseOpen(true); }}
+            className="bg-[#4b0519] text-white rounded-lg pt-1 pb-1 pl-3 pr-3 shadow-md border-2 border-[#de164f]"
           >
             New Expense
           </button>
-
-          <AnimatePresence>
-            {isExpenseOpen && (
-              <motion.div
-                className="popup-overlay"
-                onClick={closeExpensePopup}
-                variants={popupAnimation}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-              >
-                <motion.div
-                  className="popup"
-                  onClick={(e) => e.stopPropagation()}
-                  variants={popupAnimation}
-                >
-                  <h2>
-                    Create a new <span className="s2">expense</span> transaction
-                  </h2>
-                  <form>
-                    <label>
-                      Description
-                      <input
-                        type="text"
-                        value={note || ""}
-                        onChange={(e) => setNote(e.target.value)}
-                      />
-                    </label>
-                    <br />
-                    <label>
-                      Amount
-                      <input
-                        type="number"
-                        required
-                        value={amount || ""}
-                        onChange={(e) => setAmount(e.target.value)}
-                      />
-                    </label>
-                    <br />
-                    <label>Category</label>
-                    <div className="catselect">
-                      <select
-                        value={category || ""}
-                        onChange={(e) => setCategory(e.target.value)}
-                      >
-                        <option value="">Select expense Categories</option>
-                        {expensecategories.map((cat) => (
-                          <option key={cat._id} value={cat.name}>
-                            {cat.name}
-                          </option>
-                        ))}
-                      </select>
-                      <AddCategory
-                        type="expense"
-                        onCategoryAdded={refreshExpenseCategories}
-                      />
-                    </div>
-                    <label>
-                      Transaction Date
-                      <input
-                        type="date"
-                        required
-                        value={date || ""}
-                        onChange={(e) => setDate(e.target.value)}
-                      />
-                    </label>
-                    <button
-                      className="button2"
-                      type="button"
-                      onClick={closeExpensePopup}
-                    >
-                      Close
-                    </button>
-                    <button
-                      type="button"
-                      className="button1"
-                      onClick={expenseHandler}
-                    >
-                      Submit
-                    </button>
-                  </form>
-                </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
       </div>
 
-      <Overview
-        getUser={GetUser}
-        incomeHandler={transactionTrigger}
-        expenseHandler={transactionTrigger}
-      />
+      <AnimatePresence>
+        {isIncomeOpen && renderTransactionPopup("income")}
+        {isExpenseOpen && renderTransactionPopup("expense")}
+      </AnimatePresence>
+
+      <Overview getUser={GetUser} incomeHandler={transactionTrigger} expenseHandler={transactionTrigger} />
       <History getUser={GetUser} transactionHandler={transactionTrigger} />
     </div>
   );

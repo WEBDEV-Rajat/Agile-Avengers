@@ -3,37 +3,29 @@ import "../Dashboard.css";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const AddCategory = ({ type ,onCategoryAdded}) => {
+const AddCategory = ({ type, onCategoryAdded }) => {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [name, setName] = useState("");
   const [icon, setIcon] = useState("");
 
   const openCategoryPopup = () => setIsCategoryOpen(true);
   const closeCategoryPopup = () => setIsCategoryOpen(false);
-  // console.log("ashfdsguidgdsuifguidsguicgdiuf");
-  
+
   const addCategory = async (e) => {
     e.preventDefault();
     try {
-      // console.log("sahfkdu vufdsyufi udsuf");
-      
-      const form = { name, icon, type }; 
-      const url = 'http://localhost:5000/api/v1/category/add-category';
-      const response = await axios.post(url, form, {
+      const form = { name, icon, type };
+      const response = await axios.post("http://localhost:5000/api/v1/category/add-category", form, {
         withCredentials: true,
         headers: { "Content-Type": "application/json" },
       });
-      // console.log("dsgfshgfhjk",response.data); 
-      closeCategoryPopup(); 
       toast.success(response.data.message);
-      if(onCategoryAdded){
-        onCategoryAdded();
-      }
-    } catch (error) {
-      console.error("Error adding category:", error);
-      toast.error(error.response.data.message);
+      closeCategoryPopup();
+      if (onCategoryAdded) onCategoryAdded();
+    } catch (err) {
+      console.error("Error adding category:", err);
+      toast.error(err?.response?.data?.message || "Failed to add category");
     }
-    
   };
 
   return (
@@ -45,6 +37,7 @@ const AddCategory = ({ type ,onCategoryAdded}) => {
       >
         + Create New Category
       </button>
+
       {isCategoryOpen && (
         <div className="popup-overlay" onClick={closeCategoryPopup}>
           <div className="popup" onClick={(e) => e.stopPropagation()}>
@@ -52,12 +45,7 @@ const AddCategory = ({ type ,onCategoryAdded}) => {
             <form onSubmit={addCategory}>
               <label>
                 Type
-                <input
-                  type="text"
-                  value={type}
-                  readOnly
-                  className="type-input"
-                />
+                <input type="text" value={type} readOnly className="type-input" />
               </label>
               <label>
                 Category Name
@@ -77,16 +65,14 @@ const AddCategory = ({ type ,onCategoryAdded}) => {
                   required
                 />
               </label>
-              <button
-                type="button"
-                className="button2"
-                onClick={closeCategoryPopup}
-              >
-                Close
-              </button>
-              <button type="submit" className="button1" onClick={addCategory}>
-                Submit
-              </button>
+              <div className="popup-buttons">
+                <button type="button" className="button2" onClick={closeCategoryPopup}>
+                  Close
+                </button>
+                <button type="submit" className="button1">
+                  Submit
+                </button>
+              </div>
             </form>
           </div>
         </div>
