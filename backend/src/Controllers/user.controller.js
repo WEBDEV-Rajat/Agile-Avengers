@@ -45,7 +45,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password, googleId } = req.body;
-  console.log("jdasvhjdsjsdhvsufcuifgcuif");
+  // console.log("jdasvhjdsjsdhvsufcuifgcuif");
 
   let user;
 

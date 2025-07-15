@@ -46,8 +46,8 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        console.log("Profile ID:", profile.id);
-        console.log("Email from profile:", profile.emails?.[0]?.value);
+        // console.log("Profile ID:", profile.id);
+        // console.log("Email from profile:", profile.emails?.[0]?.value);
 
         let user = await User.findOne({ googleId: profile.id });
 
@@ -69,7 +69,7 @@ passport.use(
           }
         }
 
-        console.log("User authenticated:", user);
+        // console.log("User authenticated:", user);
 
         const accessToken = user.generateAccessToken();
         const refreshToken = user.generateRefreshToken();
