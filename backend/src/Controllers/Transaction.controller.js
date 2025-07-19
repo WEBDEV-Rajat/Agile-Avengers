@@ -3,6 +3,12 @@ import { Category } from "../Models/category.model.js";
 import { ApiResponse } from "../Utils/ApiResponse.js";
 import asyncHandler from "../Utils/asyncHandler.js";
 
+const options = {
+  httpOnly: true,
+  secure: true,
+  sameSite : "none"
+};
+
 const addTransaction = asyncHandler(async (req, res) => {
   // console.log("well here i am");
 

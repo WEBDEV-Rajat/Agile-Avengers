@@ -3,6 +3,12 @@ import { RecurringTransaction } from "../Models/reoccuringtransaction.model.js";
 import { ApiResponse } from "../Utils/ApiResponse.js";
 import asyncHandler from "../Utils/asyncHandler.js";
 
+const options = {
+  httpOnly: true,
+  secure: true,
+  sameSite : "none"
+};
+
 const addTransaction = asyncHandler(async (req, res) => {
   const { amount, category, frequency, nextDueDate, note } = req.body;
   const userId = req.user._id;

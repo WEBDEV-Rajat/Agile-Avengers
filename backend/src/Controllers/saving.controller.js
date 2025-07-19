@@ -3,6 +3,13 @@ import { ApiResponse } from "../Utils/ApiResponse.js";
 import asyncHandler from "../Utils/asyncHandler.js";
 import { Parser } from "json2csv";
 import PDFDocument from "pdfkit";
+
+const options = {
+  httpOnly: true,
+  secure: true,
+  sameSite : "none"
+};
+
 const addGoal = asyncHandler(async (req, res) => {
   const { goalName, targetAmount, deadline } = req.body;
   const userId = req.user._id;

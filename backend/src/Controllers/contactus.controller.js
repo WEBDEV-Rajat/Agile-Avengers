@@ -2,6 +2,12 @@ import asyncHandler from "../Utils/asyncHandler.js";
 import { Contact } from "../Models/contactus.model.js";
 import { sendEmail } from "../Utils/sendEmail.js";
 
+const options = {
+  httpOnly: true,
+  secure: true,
+  sameSite : "none"
+};
+
 const submitContactForm = asyncHandler(async (req, res) => {
   const { name, email, message } = req.body;
   // console.log("in the form ");

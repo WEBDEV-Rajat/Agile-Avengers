@@ -8,12 +8,13 @@ import { ApiResponse } from "../Utils/ApiResponse.js";
 const options = {
   httpOnly: true,
   secure: true,
+  sameSite : "none"
 };
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { email, fullName, password, name } = req.body;
+  const { email, password, name } = req.body;
 
-  if (!email || !fullName || !password || !name) {
+  if (!email || !password || !name) {
     return res
       .status(400)
       .json(new ApiResponse(400, null, "All fields are required"));
@@ -28,7 +29,6 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const newUser = await User.create({
     email,
-    fullName,
     password,
     name,
   });

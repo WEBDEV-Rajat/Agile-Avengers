@@ -1,6 +1,12 @@
 import { Transaction } from "../Models/transaction.model.js";
 import asyncHandler from "../Utils/asyncHandler.js";
 
+const options = {
+  httpOnly: true,
+  secure: true,
+  sameSite : "none"
+};
+
 const createDateFilter = (fromDate, toDate) => {
   if (fromDate && toDate) {
     return { date: { $gte: new Date(fromDate), $lte: new Date(toDate) } };

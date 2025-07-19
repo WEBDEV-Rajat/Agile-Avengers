@@ -2,6 +2,12 @@ import { Category } from "../Models/category.model.js";
 import { ApiResponse } from "../Utils/ApiResponse.js";
 import asyncHandler from "../Utils/asyncHandler.js";
 
+const options = {
+  httpOnly: true,
+  secure: true,
+  sameSite : "none"
+};
+
 const addCategory = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const { name, icon, type } = req.body;

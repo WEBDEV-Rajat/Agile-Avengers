@@ -4,6 +4,12 @@ import asyncHandler from "../Utils/asyncHandler.js";
 import { Category } from "../Models/category.model.js";
 import { ApiResponse } from "../Utils/ApiResponse.js";
 
+const options = {
+  httpOnly: true,
+  secure: true,
+  sameSite : "none"
+};
+
 const createBudget = asyncHandler(async (req, res) => {
   const { category, limit, period } = req.body;
   const userId = req.user._id;

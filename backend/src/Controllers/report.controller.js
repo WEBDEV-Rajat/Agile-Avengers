@@ -2,6 +2,12 @@ import asyncHandler from "../Utils/asyncHandler.js";
 import { Transaction } from "../Models/transaction.model.js";
 import { Parser } from "json2csv";
 
+const options = {
+  httpOnly: true,
+  secure: true,
+  sameSite : "none"
+};
+
 export const downloadReport = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const { fromDate, toDate } = req.query;
